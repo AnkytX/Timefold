@@ -1,0 +1,27 @@
+{
+  "name": "timefold",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Piyush07d/Timefold#readme",
+  "bugs": {
+    "url": "https://github.com/Piyush07d/Timefold/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Piyush07d/Timefold.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.4",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "mssql": "^12.7.2"
+  }
+}
