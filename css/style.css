@@ -34,6 +34,23 @@ a {
     text-decoration: none;
 }
 
+.page-section {
+    display: none;
+}
+
+.page-section.active {
+    display: block;
+}
+
+
+.seperation-line {
+    height: 0.45px;
+    width: 100%;
+    background-color: var(--nav-color);
+    border-radius: 100px;
+    margin: 20px auto 0px auto;
+}
+
 /* ---------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
                                                 LOGIN PAGE
@@ -134,11 +151,9 @@ input:focus::placeholder {
 
 /* ---------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
-                                                HOME PAGE
+                                                HEADER
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------ */
-
-/* HEADER */
 
 .main-head {
     display: flex;
@@ -186,6 +201,70 @@ input:focus::placeholder {
     color: var(--nav-color);
 }
 
+
+/* ---------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+                                                NAV BAR
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------ */
+
+nav {
+    background-color: var(--nav-color);
+    margin: 10px auto;
+    border-radius: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 50px;
+    width: 40vw;
+    height: 30px;
+    box-shadow: var(--shadow);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.nav-button-div {
+    height: 5.5vh;
+    width: 2.5vw;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-button {
+    background-color: transparent;
+    height: 5.5vh;
+    width: 2.5vw;
+    box-shadow: none;
+    border: none;
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+}
+
+.nav-button:hover {
+    cursor: pointer;
+}
+
+.current-page {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: rgba(125, 89, 146, 0.204);
+}
+
+
+/* ---------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+                                                HOME PAGE
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------ */
+
 /* HERO SECTION */
 .hero-first-div {
     width: 60vw;
@@ -210,15 +289,6 @@ input:focus::placeholder {
     font-size: 1.3rem;
 }
 
-/* HR */
-
-.greet-seperation {
-    height: 0.45px;
-    width: 100%;
-    background-color: var(--nav-color);
-    border-radius: 100px;
-    margin: 20px auto 0px auto;
-}
 
 .current {
     height: 20vh;
@@ -346,61 +416,6 @@ input:focus::placeholder {
 }
 
 
-/* ---------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------
-                                                NAV BAR
-------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------- */
-
-nav {
-    background-color: var(--nav-color);
-    margin: 10px auto;
-    border-radius: 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 50px;
-    width: 40vw;
-    height: 30px;
-    box-shadow: var(--shadow);
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-}
-
-.nav-button-div {
-    height: 5.5vh;
-    width: 2.5vw;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.nav-button {
-    background-color: transparent;
-    height: 5.5vh;
-    width: 2.5vw;
-    box-shadow: none;
-    border: none;
-    border-radius: 10px;
-    transition: all 0.2s ease-in-out;
-}
-
-.nav-button:hover {
-    cursor: pointer;
-}
-
-.current-page {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: rgba(125, 89, 146, 0.204);
-}
 
 
 /* ---------------------------------------------------------------------------------------------------------------------------
@@ -471,4 +486,168 @@ nav {
 
 .map-lec-sub {
     color: var(--yellow-ink);
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+                                                NOTICE PAGE
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------ */
+
+#notice-page section {
+    /* background-color: red; */
+    width: 58vw;
+    margin: 0px auto;
+}
+
+.notice-title h1,
+p {
+    color: var(--purple-ink);
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+                                                SCHEDULE PAGE
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------ */
+
+#schedule-page section {
+    margin: 0px auto;
+    width: fit-content;
+    padding: 0px 10px;
+    height: 105vh;
+}
+
+.schedule-title {
+    margin: 0px auto;
+    color: var(--purple-ink);
+
+}
+
+.schedule-container {
+    gap: 1vw;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    width: 40vw;
+    margin: 0px auto;
+}
+
+
+/* =========================
+   TIMETABLE
+========================= */
+
+.timetable {
+    width: 100%;
+    max-width: 800px;
+    margin: 25px auto;
+}
+
+
+/* DAYS */
+
+.day-selector {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.day {
+    border: none;
+    border-radius: 10px;
+
+    background: #eeeaf1;
+    color: #3d0b59;
+
+    padding: 10px 5px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 2px;
+
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.day span {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.day strong {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+
+/* ACTIVE DAY */
+
+.day.active {
+    background: #f8d548;
+}
+
+
+/* SCHEDULE LIST */
+
+.schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+
+/* SCHEDULE CARD */
+
+.schedule-card {
+    min-height: 62px;
+    padding: 12px 14px;
+    background: #fff2c9;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+}
+
+
+/* TIME */
+
+.time {
+    width: 85px;
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    line-height: 1.35;
+    color: #3d0b59;
+}
+
+
+/* DIVIDER */
+
+.divider {
+    width: 1px;
+    height: 38px;
+    background: #6d5b76;
+    margin: 0 18px;
+}
+
+
+/* SUBJECT */
+
+.subject {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    color: #3d0b59;
+}
+
+.subject strong {
+    font-size: 16px;
+}
+
+.subject span {
+    font-size: 13px;
+    margin-top: 2px;
 }
