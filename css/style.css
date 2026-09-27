@@ -558,7 +558,8 @@ p {
     border-radius: 10px;
 
     background: #eeeaf1;
-    color: #3d0b59;
+    /* color: var(--yellow-ink); */
+    color: var(--purple-ink);
 
     padding: 10px 5px;
 
@@ -587,7 +588,8 @@ p {
 /* ACTIVE DAY */
 
 .day.active {
-    background: #f8d548;
+    background: var(--yellow-card-color);
+    color: var(--yellow-ink);
 }
 
 
@@ -605,7 +607,7 @@ p {
 .schedule-card {
     min-height: 62px;
     padding: 12px 14px;
-    background: #fff2c9;
+    background: var(--yellow-card-content-color);
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -619,17 +621,18 @@ p {
     display: flex;
     flex-direction: column;
     font-size: 13px;
+    font-weight: 800;
     line-height: 1.35;
-    color: #3d0b59;
+    color: var(--yellow-ink);
 }
 
 
 /* DIVIDER */
 
 .divider {
-    width: 1px;
-    height: 38px;
-    background: #6d5b76;
+    width: 2px;
+    height: 45px;
+    background: var(--yellow-ink);
     margin: 0 18px;
 }
 
@@ -640,7 +643,7 @@ p {
     display: flex;
     flex-direction: column;
     flex: 1;
-    color: #3d0b59;
+    color: var(--yellow-ink);
 }
 
 .subject strong {
@@ -649,5 +652,6 @@ p {
 
 .subject span {
     font-size: 13px;
+    font-weight: 800;
     margin-top: 2px;
 }
