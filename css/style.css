@@ -32,7 +32,104 @@ body {
 
 a {
     text-decoration: none;
-    color: white;
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+                                                LOGIN PAGE
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------ */
+
+.main-div {
+    width: fit-content;
+    margin: 0px auto;
+}
+
+.main-div img {
+    height: 25vh;
+    margin: 5px auto 0px auto;
+}
+
+.login-title {
+    display: flex;
+    font-family: "Edu NSW ACT Cursive", cursive;
+    font-size: 3em;
+    align-items: center;
+    justify-content: baseline;
+    font-weight: 500;
+    width: fit-content;
+    margin: 10vh auto 0px auto;
+}
+
+.login-div {
+    background-color: var(--purple-card-color);
+    padding: 20px 30px;
+    width: fit-content;
+    border-radius: var(--border-radius);
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+    box-shadow: var(--shadow);
+}
+
+.form-content {
+    width: fit-content;
+    margin: 15px auto;
+}
+
+.input-div {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px auto 0px auto;
+}
+
+input {
+    font-size: 1em;
+    padding: 0px 10px;
+    height: 8vh;
+    border: 0.5px white;
+    width: 26vw;
+    border-radius: 50px;
+    box-shadow: var(--shadow);
+}
+
+input:focus {
+    outline: none;
+    border-color: inherit;
+}
+
+input:focus::placeholder {
+    color: transparent;
+}
+
+.reg-link {
+    margin: 10px 15px 0px 15px;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--purple-ink);
+}
+
+
+.login-button {
+    background-color: var(--yellow-card-color);
+    box-shadow: var(--shadow);
+    color: var(--yellow-ink);
+    font-size: 1.5rem;
+    border: none;
+    transition: all 0.15s ease-in-out;
+}
+
+.login-button:hover {
+    cursor: pointer;
+    background-color: var(--nav-color);
+    color: var(--nav-ink);
+}
+
+.login-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
 }
 
 /* ---------------------------------------------------------------------------------------------------------------------------
@@ -249,7 +346,11 @@ a {
 }
 
 
-/* NAV BAR */
+/* ---------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+                                                NAV BAR
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------ */
 
 nav {
     background-color: var(--nav-color);
@@ -288,7 +389,7 @@ nav {
     transition: all 0.2s ease-in-out;
 }
 
-.nav-button:hover{
+.nav-button:hover {
     cursor: pointer;
 }
 
@@ -308,21 +409,66 @@ nav {
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------ */
 
-.map-box{
-    height: 60vh;
-    width: 45vw;
-    margin: 0px auto 10px auto;
-    border: 1px solid grey;
+.map-heading {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    margin: 10px auto;
+    width: 22vw;
+    text-align: right;
+}
+
+.map-box {
+    height: 55vh;
+    width: 40vw;
+    margin: 0px auto 0px auto;
+    border: 1px solid rgba(147, 139, 139, 0.384);
     border-radius: var(--border-radius);
 }
 
-.map-chr{
+.map-description-container {
     display: flex;
-    justify-content: space-between;
-    width: 45vw;
-    margin: 0px auto 0px auto;
+    justify-content: end;
+    flex-direction: column;
+    height: 20vh;
+    width: 40vw;
+    padding: 0;
+    margin: 0px auto;
 }
 
-.map-chr img{
-    margin: 0px 1.5vw;
+.map-description {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--pink-card-color);
+    height: 17vh;
+    width: 40vw;
+    margin: 0;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.map-img>img {
+    position: relative;
+    bottom: 19.5px;
+}
+
+.map-lecture {
+    /* background-color: red; */
+    width: 20vw;
+    padding: 0px 1vw;
+}
+
+.map-lecture>span {
+    margin: 6px 0px;
+    padding: 0px 5px;
+    display: flex;
+    justify-content: space-between;
+    text-align: right;
+    color: var(--pink-ink);
+}
+
+
+
+.map-lec-sub {
+    color: var(--yellow-ink);
 }
