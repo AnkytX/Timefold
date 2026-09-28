@@ -1,5 +1,29 @@
 // -----------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------
+//
+// test  mode func
+
+function autologin() {
+  const user_token = localStorage.getItem("usertokan");
+
+  if (user_token) {
+    showdashboard();
+  } else {
+    showlogin();
+  }
+}
+
+function showlogin() {
+  window.location.href = "/login.html";
+}
+// -----------------------------------------------------------------------------------------------------------------------------
+function showdashboard() {
+  window.location.href = "/index.html";
+}
+// -----------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------------
 //                                                       NAV BAR JAVASCRIPT
 // -----------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------
@@ -105,6 +129,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const hide_current = document.getElementById("delet-current-class");
     const hide_next = document.getElementById("delete-next-class");
 
+    // map elemants
+    const sub = document.getElementById("current-map-sub");
+    const sub_tec = document.getElementById("current-map-professor");
+    const start_map_time = document.getElementById("current-map-time");
+    const map_room = document.getElementById("current-map-room");
+    const delete_map_lec = document.getElementById("map-lec");
+
+
     // Helper: decode department from room code
     function getdep(roomcode) {
       if (!roomcode) return { department: "Unknown", floor: 0 };
@@ -142,16 +174,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       return toMinutes(lecture.start_time) > currentHour;
     });
 
-    console.log("current tokan", currenttokan);
-    console.log("upcoming tokan", upcoming_class);
-
     // before 10:30 what to show
     if (currentHour >= 570 && currentHour < 630) {
       const first_class = timetableData[0]; // din ka pehla lecture
 
       // Current Card hide kar do
-      if (hide_current) {
+      if (hide_current && delete_map_lec) {
         hide_current.style.display = "none";
+       
       }
 
       // Next Card me first class ka data inject karo
@@ -176,11 +206,60 @@ document.addEventListener("DOMContentLoaded", async () => {
     // LECTURE INSERTION
     // ========================================================
 
+    const dayName = new Date().toLocaleDateString("en-US", {
+      weekday: "long",
+      timeZone:  "Asia/Kolkata",
+    });
+
+    if (dayName === "Sunday" || dayName === "Saturday") {
+      const message = `<div class="bold-text">Today Class Over</div>`;
+
+      [hide_current, hide_next ,delete_map_lec].forEach((el) => {
+        if (el) {
+          el.style.display = "";
+          el.innerHTML = message;
+        }
+      });
+    }
+
     if (currenttokan !== -1) {
       const current_class = timetableData[currenttokan];
       const next_tokan = currenttokan + 1;
       const next_class = timetableData[next_tokan]; // agla lecture agar exist kare
 
+      // map ka data
+      if (delete_map_lec) {
+             delete_map_lec.style.display = "";
+           delete_map_lec.innerHTML = `<span>
+                                    <h1 id="current-map-sub">${current_class.subject_code} </h1>
+
+                                    <h1 id="current-map-professor">
+                                        ${current_class.faculty_code}
+                                    </h1>
+                                </span>
+
+                                <span
+                                    style="background-color: rgb(244, 210, 72); border-radius: 15px; padding: 10px 20px;">
+                                    <span class="map-lec-sub">
+                                        <p class="bold-text" id="current-map-time">
+                                           ${formatTime(current_class.start_time)}
+                                        </p>
+                                    </span>
+                                    <span class="map-lec-sub">
+                                        <p class="bold-text">
+                                            |
+                                        </p>
+                                    </span>
+                                    <span class="map-lec-sub">
+                                        <p class="bold-text" id="current-map-room">
+                                           ${current_class.room}
+                                        </p>
+
+                                    </span>
+                                </span>`
+
+      }
+    
       // 1. Current Class Card Update
       if (hide_current) {
         hide_current.style.display = "";
@@ -217,6 +296,8 @@ document.addEventListener("DOMContentLoaded", async () => {
               No More Classes Today
             </div>
           `;
+              
+
         }
       }
     } else {
@@ -230,6 +311,12 @@ document.addEventListener("DOMContentLoaded", async () => {
           hide_current.style.display = "";
           hide_current.innerHTML = `<div class="bold-text">Its Lunch Time 🍛</div>`;
         }
+        if (delete_map_lec) {
+          delete_map_lec.innerHTML = ` <div class="bold-text">
+              Its Lunch Time 🍛
+            </div>`
+        }
+         
 
         if (hide_next) {
           hide_next.style.display = "";
@@ -258,6 +345,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           hide_current.innerHTML = `<div class="bold-text">Break / Free Period</div>`;
         }
 
+
         if (hide_next) {
           hide_next.style.display = "";
           const next_class = timetableData[upcoming_class];
@@ -281,6 +369,13 @@ document.addEventListener("DOMContentLoaded", async () => {
           hide_next.style.display = "";
           hide_next.innerHTML = `<div class="bold-text">Today Class Over</div>`;
         }
+        if (delete_map_lec) {
+          delete_map_lec.innerHTML = ""
+          delete_map_lec.innerHTML = ` <div class="bold-text">
+              No More Classes Today
+            </div>`
+        }
+         
       }
     }
 
@@ -330,6 +425,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
 
+    
     // ========================================================
     // HEADER (Student greeting & Date)
     // ========================================================
@@ -356,21 +452,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       loadTimetable(timetableData);
     }
 
-    const dayName = new Date().toLocaleDateString("en-US", {
-      weekday: "long",
-      timeZone: "Asia/Kolkata",
-    });
-
-    if (dayName === "Sunday" || dayName === "Saturday") {
-      const message = `<div class="bold-text">Today Class Over</div>`;
-
-      [hide_current, hide_next].forEach((el) => {
-        if (el) {
-          el.style.display = "";
-          el.innerHTML = message;
-        }
-      });
-    }
+    
   } catch (error) {
     console.error("Error loading timetable:", error);
   }
@@ -416,21 +498,22 @@ function formatScheduleTime(time) {
 
 function showSchedule(schedule) {
   function getdep(roomcode) {
-      if (!roomcode) return { department: "Unknown", floor: 0 };
-      const code = String(roomcode).padStart(4, "0");
-      const departments = {
-        8: "Mining Department",
-        6: "Civil Department",
-        5: "Mechanical Department",
-        4: "Electrical Department",
-        2: "Library Department",
-      };
+    if (!roomcode) return { department: "Unknown", floor: 0 };
+    const code = String(roomcode).padStart(4, "0");
+    const departments = {
+      8: "Mining Department",
+      6: "Civil Department",
+      5: "Mechanical Department",
+      4: "Electrical Department",
+      2: "Library Department",
+    };
 
-      return {
-        department: departments[code[0]] || "Unknown",
-        floor: Number(code[1]),
-      };
-    }
+    return {
+      department: departments[code[0]] || "Unknown",
+      floor: Number(code[1]),
+    };
+  }
+
   const container = document.getElementById("lecture-container");
 
   if (!container) return;
@@ -448,15 +531,10 @@ function showSchedule(schedule) {
   container.innerHTML = schedule
     .map((lecture) => {
       const formattedStartTime = formatScheduleTime(lecture.start_time);
-
       const formattedEndTime = formatScheduleTime(lecture.end_time);
-
       const faculty = lecture.faculty_code || "Staff";
-
       const room = lecture.room || "TBA";
-
       const subject = lecture.subject_code || "Lecture";
-
       const department = getdep(room).department;
 
       return `
@@ -651,6 +729,3 @@ async function loadSchedule() {
 }
 
 loadSchedule();
-
-
-

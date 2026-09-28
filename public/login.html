@@ -77,34 +77,65 @@
 </body>
 <script>
 
+    
+           
+
+
 
     async function login() {
+    const enroll = document.getElementById("enroll").value.trim();
+    const password = document.getElementById("password").value;
+    const batch = document.getElementById("batch").value;
 
+    if (!enroll || !password || !batch) {
+        alert("Please enter all fields.");
+        return;
+    }
 
-        const enroll = await document.getElementById('enroll').value;
-        const password = await document.getElementById('password').value;
-        const batch = await document.getElementById('batch').value;
-        if (!enroll || !password || !batch) {
-            alert('Please enter all fields.');
-            return;
-        }
-        const response = await fetch('/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+    try {
+        const response = await fetch("/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
             credentials: "include",
-            body: JSON.stringify({ enroll, password, batch })
+            body: JSON.stringify({
+                enroll,
+                password,
+                batch
+            })
         });
 
         const data = await response.json();
-        if (response.ok) {
-            localStorage.setItem("student", JSON.stringify(data.student));
-            alert(data.message);
-            window.location.href = "/index.html";
-        } else {
-            alert(data.message);
-        }
-    }
 
+        if (response.ok) {
+
+
+            const fake_tplen =
+                "secure_token_" + Math.random().toString(36).substring(2, 11);
+
+            localStorage.setItem("usertokan", fake_tplen);
+
+           
+            localStorage.setItem(
+                "student",
+                JSON.stringify(data.student)
+            );
+
+            alert(data.message);
+
+           
+            window.location.href = "/index.html";
+
+        } else {
+            alert(data.message || "Login failed");
+        }
+
+    } catch (error) {
+        console.error("Login error:", error);
+        alert("Unable to connect to server.");
+    }
+}
 
 </script>
 

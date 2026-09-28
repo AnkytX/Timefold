@@ -548,15 +548,17 @@ nav {
     position: relative;
     bottom: 19.5px;
 }
-
 .map-lecture {
-    /* background-color: red; */
     width: 20vw;
-    padding: 0px 1vw;
+    display: flex;
+    /* background-color: red; */
+    flex-direction: column;
+    justify-content: center;
+    margin: 0px 2vw;
 }
 
 .map-lecture>span {
-    margin: 6px 0px;
+    margin: 1vh 0px;
     padding: 0px 5px;
     display: flex;
     justify-content: space-between;
