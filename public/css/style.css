@@ -1,38 +1,85 @@
 :root {
-    --background-colour: white;
-    --nav-color: rgb(47, 20, 64);
-    --nav-ink: rgb(211, 138, 245);
-    --purple-card-color: rgb(211, 138, 245);
-    --purple-ink: rgb(69, 13, 95);
-    --yellow-card-color: rgb(244, 210, 72);
-    --yellow-card-content-color: rgba(247, 215, 91, 0.884);
-    --yellow-ink: rgb(93, 78, 18);
-    --yellow-off-ink: rgba(93, 78, 18, 0.871);
-    --pink-card-color: rgb(244, 147, 171);
-    --pink-ink: rgb(104, 22, 43);
-    --other-card-color: rgb(234, 159, 172);
-    --shadow: 0 2px 16px rgba(0, 0, 0, 0.267);
-    --card-margin: 30px 0px 0px 0px;
-    --card-padding: 10px 15px;
-    --card-width: 27.5vw;
-    --border-radius: 18px;
-    --small-divs-border-radius: 10px;
+    --bg: #1b1c20;
+    --surface: #26272c;
+    --surface-2: #303136;
+    --surface-3: #394cad;
+
+    --text: #f7f7f8;
+    --muted: #a9abb2;
+    --line: rgba(255, 255, 255, 0.1);
+
+    --red: #ff4326;
+    --red-dark: #a83a2b;
+
+    --blue: #4d6ed8;
+    --blue-dark: #26396f;
+
+    --white-card: #f4f4f2;
+    --black: #111214;
+    --green: #58b97a;
+
+    --radius-xl: 26px;
+    --radius-lg: 20px;
+    --radius-md: 15px;
+
+    --nav: rgba(42, 43, 48, .96);
 }
 
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    justify-content: space-between;
-    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    margin-top: 13vh;
+    min-height: 100vh;
     width: 100%;
+
+    margin: 0;
+
+    background: var(--bg);
+    color: var(--text);
+
+    font-family:
+        'Inter',
+        'Manrope',
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        sans-serif;
+
+    overflow-x: hidden;
+}
+
+main {
+    width: min(100%, 920px);
+
+    margin: 0 auto;
+
+    padding-bottom: 105px;
 }
 
 a {
     text-decoration: none;
+    color: inherit;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    -webkit-tap-highlight-color: transparent;
 }
 
 .page-section {
@@ -43,791 +90,2196 @@ a {
     display: block;
 }
 
+section {
+    width: 100%;
+}
+
+.small-text {
+    color: var(--muted);
+
+    font-size: .78rem;
+    font-weight: 600;
+}
+
+.bold-text {
+    color: inherit;
+
+    font-size: 1rem;
+    font-weight: 750;
+}
 
 .seperation-line {
-    height: 0.45px;
-    width: 100%;
-    background-color: var(--nav-color);
-    border-radius: 100px;
-    margin: 20px auto 0px auto;
+    border: 0;
+
+    height: 1px;
+
+    background: var(--line);
+
+    margin: 18px 0;
 }
 
-/* ---------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------
-                                                LOGIN PAGE
-------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------- */
 
-.main-div {
-    width: fit-content;
-    margin: 0px auto;
-}
+/* =========================================================
+   HEADER
+   ========================================================= */
 
-.title-sub-div > img{
-    height: 10vh;
-}
+.main-head {
+    position: fixed;
 
-.login-img {
-    height: 25vh;
-    margin: 5px auto 0px auto;
-}
+    top: 0;
+    left: 50%;
 
-.login-title {
+    transform: translateX(-50%);
+
+    z-index: 1000;
+
+    width: min(calc(100% - 36px), 760px);
+
+    height: 76px;
+
     display: flex;
-    font-family: "Edu NSW ACT Cursive", cursive;
-    font-size: 3em;
     align-items: center;
-    /* justify-content: baseline; */
-    font-weight: 500;
-    width: fit-content;
-    margin: 10vh auto 0px auto;
+    justify-content: space-between;
+
+    padding: 12px 2px;
+
+    background: var(--bg);
 }
 
-.login-div {
-    background-color: var(--purple-card-color);
-    padding: 20px 30px;
-    width: fit-content;
-    border-radius: var(--border-radius);
+.profile-pic {
+    width: 48px;
+    height: 48px;
+
+    flex: 0 0 48px;
+
+    border-radius: 15px;
+
+    display: grid;
+    place-items: center;
+
+    background: var(--blue);
+
+    color: #fff;
+}
+
+#initial {
+    color: #fff;
+
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.title {
+    display: flex;
+
+    align-items: center;
+
+    margin-left: auto;
+}
+
+.title img {
+    height: 43px;
+
+    max-width: 150px;
+
+    object-fit: contain;
+
+    filter: brightness(0) invert(1);
+}
+
+
+/* =========================================================
+   HOME
+   ========================================================= */
+
+#home-page section {
+    padding-top: 82px;
+}
+
+.hero-section {
+    width: min(calc(100% - 36px), 700px);
+
+    margin: 0 auto;
+}
+
+.greeting {
+    padding: 0 2px 2px;
+}
+
+.greeting-text {
+    color: var(--text);
+
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+
+    line-height: 1.05;
+
+    font-weight: 760;
+
+    letter-spacing: -.045em;
+}
+
+#date {
+    margin-top: 5px;
+
+    color: var(--muted);
+
+    font-size: .82rem;
+
+    font-weight: 650;
+}
+
+
+/* =========================================================
+   CURRENT / NEXT CLASS
+   ========================================================= */
+
+.hero-first-div {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+
+    margin: 12px auto 0;
+}
+
+.current,
+.next {
+    width: 100%;
+
+    min-height: 185px;
+
+    margin: 0;
+
+    padding: 17px 18px;
+
+    border-radius: var(--radius-xl);
+
+    overflow: hidden;
+
+    position: relative;
+}
+
+.current {
+    background: var(--red);
+
+    color: #fff;
+}
+
+.next {
+    background: var(--blue);
+
+    color: #fff;
+}
+
+.layer-current {
+    height: 100%;
+}
+
+.current h2,
+.next h2 {
+    font-size: .9rem;
+
+    font-weight: 750;
+
+    letter-spacing: .01em;
+
+    margin-bottom: 11px;
+
+    opacity: .95;
+}
+
+.card-sub-div {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-end;
+
+    min-height: 132px;
+}
+
+.card-left-section {
+    width: min(65%, 390px);
+
+    position: relative;
+
+    z-index: 2;
+}
+
+.card-description {
+    width: 100%;
+
+    margin: 0 0 13px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+
+    align-items: flex-start;
+}
+
+.current .bold-text,
+.next .bold-text {
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+
+    letter-spacing: -.04em;
+}
+
+.current .small-text,
+.next .small-text {
+    color: rgba(255, 255, 255, .78);
+
+    font-size: .84rem;
+}
+
+.location-des {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    gap: 5px;
+
+    color: rgba(255, 255, 255, .8);
+
+    font-size: .76rem;
+
+    font-weight: 650;
+}
+
+.location-des svg {
+    filter: brightness(0) invert(1);
+}
+
+.card-right-section {
+    position: absolute;
+
+    right: 12px;
+    bottom: -3px;
+
+    width: 35%;
+    height: 82%;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: flex-end;
+
+    pointer-events: none;
+}
+
+.card-right-section img {
+    height: 175px;
+
+    max-width: 145px;
+
+    object-fit: contain;
+
+    object-position: bottom right;
+
+    position: relative;
+
+    bottom: -2px;
+
+    left: 0;
+}
+
+
+/* =========================================================
+   TODAY
+   ========================================================= */
+
+.today {
+    width: 100%;
+
+    margin: 12px 0 30px;
+
+    padding: 17px;
+
+    border-radius: var(--radius-xl);
+
+    background: var(--surface);
+
+    color: var(--text);
+
+    border: 1px solid var(--line);
+}
+
+.today h2 {
+    font-size: 1.05rem;
+
+    font-weight: 750;
+
+    letter-spacing: -.02em;
+}
+
+#currentDay {
+    color: var(--muted);
+
+    margin-left: 4px;
+
+    font-size: .78rem;
+
+    font-weight: 600;
+}
+
+.lectures {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-top: 12px;
+}
+
+.lecture-div {
+    width: 100%;
+
+    min-height: 68px;
+
+    padding: 12px 14px;
+
+    border-radius: var(--radius-md);
+
+    background: var(--surface-2);
+
+    border: 1px solid var(--line);
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+.lecture-div > div {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 3px;
+}
+
+.lecture-div > :last-child {
+    align-items: flex-end;
+
+    justify-content: center;
+
+    color: var(--text);
+
+    font-size: .78rem;
+
+    font-weight: 750;
+}
+
+.lecture-div .bold-text {
+    color: var(--text);
+}
+
+.lecture-div .small-text {
+    color: var(--muted);
+}
+
+/* =========================================================
+   MAP (OPTIMIZED & RESPONSIVE)
+   ========================================================= */
+
+#map-page section {
+    width: min(calc(100% - 36px), 700px);
+    margin: 0 auto;
+    padding-top: 82px;
+}
+
+.main-map-div {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+}
+
+/* Outer Border & Background Container */
+.map-box {
+    width: 100%;
+    height: min(52vh, 440px);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
+    background: #24262a;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Subtle architectural grid lines */
+.map-box::before,
+.map-box::after {
+    content: "";
+    position: absolute;
+    background: rgba(255, 255, 255, 0.04);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.map-box::before {
+    width: 140%;
+    height: 1px;
+    top: 50%;
+    left: -20%;
+    transform: rotate(-15deg);
+}
+
+.map-box::after {
+    width: 1px;
+    height: 140%;
+    top: -20%;
+    left: 50%;
+    transform: rotate(-15deg);
+}
+
+/* Interactive Viewport: takes touch input smoothly */
+.map-viewport {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
     align-items: center;
     justify-content: center;
-    height: fit-content;
-    box-shadow: var(--shadow);
+    touch-action: none;          /* Critical: stops browser page scrolling during pinch/pan */
+    user-select: none;           /* Stops text selection on hold */
+    -webkit-user-select: none;
+    overflow: hidden;
+    cursor: grab;
+    z-index: 2;
+}
+
+.map-viewport:active {
+    cursor: grabbing;
+}
+
+/* Map Image Canvas */
+#mapImage {
+    transform: rotate(3.699deg);
+    scale: 1.228;
+    max-width: 90%;
+    max-height: 90%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    transform-origin: center center;
+    will-change: transform;      /* GPU acceleration for butter-smooth panning/zooming */
+    pointer-events: none;        /* Ensures touch events pass straight to #mapViewport */
+   
+    -webkit-user-drag: none;
+}
+
+/* Map Info Card */
+.map-description-container {
+    width: 100%;
+}
+
+.map-description {
+    width: 100%;
+    min-height: 140px;
+    padding: 18px 20px;
+    border-radius: var(--radius-xl);
+    background: var(--blue);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+}
+
+.map-img {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.map-img img {
+    height: 110px;
+    max-width: 110px;
+    object-fit: contain;
+    display: block;
+}
+
+.map-lecture {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 18px;
+}
+
+.map-lecture > span {
+    margin: 4px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.map-lec-sub {
+    color: #fff;
+    font-weight: 750;
+}
+
+/* Responsive adjust for mobile */
+@media (max-width: 600px) {
+    .map-box {
+        height: 46vh;
+        border-radius: 22px;
+    }
+
+    #mapImage {
+        max-width: 92%;
+        max-height: 92%;
+        /* transform: rotate(4.9deg);
+        scale: 1.09; */
+    }
+
+    .map-description {
+        padding: 16px;
+        min-height: 125px;
+    }
+
+    .map-img img {
+        height: 90px;
+        max-width: 90px;
+        border-radius: 9px;
+    }
+
+    .map-lecture {
+        padding-left: 12px;
+    }
+
+    .map-lecture > span {
+        font-size: 0.78rem;
+    }
+}
+
+/* =========================================================
+   NOTICE
+   ========================================================= */
+
+.notice-title h1,
+.setting-title h1 {
+    color: var(--text);
+
+    font-size: 1.8rem;
+
+    letter-spacing: -.04em;
+}
+
+.notice-title .small-text {
+    margin-top: 5px;
+}
+
+#notice-page .seperation-line {
+    margin-top: 18px;
+}
+
+
+/* =========================================================
+   SCHEDULE
+   ========================================================= */
+
+#schedule-page section {
+    padding-bottom: 30px;
+}
+
+.schedule-container {
+    width: 100%;
+
+    margin: 0;
+
+    padding: 0;
+}
+
+.timetable {
+    width: 100%;
+
+    max-width: none;
+
+    margin: 0;
+}
+
+.day-selector {
+    display: grid;
+
+    grid-template-columns: repeat(5, 1fr);
+
+    gap: 7px;
+
+    margin: 0 0 12px;
+}
+
+.day {
+    min-height: 48px;
+
+    border: 1px solid var(--line);
+
+    border-radius: 14px;
+
+    background: var(--surface);
+
+    color: var(--muted);
+
+    padding: 7px 3px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-family: inherit;
+
+    cursor: pointer;
+}
+
+.day strong {
+    font-size: .76rem;
+
+    font-weight: 800;
+}
+
+.day.active {
+    background: var(--red);
+
+    color: #fff;
+
+    border-color: transparent;
+}
+
+.schedule-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.schedule-card {
+    min-height: 70px;
+
+    padding: 12px 14px;
+
+    background: var(--surface);
+
+    box-shadow: none;
+
+    border: 1px solid var(--line);
+
+    border-radius: var(--radius-md);
+
+    display: flex;
+
+    align-items: center;
+}
+
+.time {
+    width: 76px;
+
+    color: var(--muted);
+
+    font-size: .7rem;
+
+    font-weight: 800;
+
+    line-height: 1.35;
+}
+
+.divider {
+    width: 3px;
+
+    height: 35px;
+
+    border-radius: 99px;
+
+    background: var(--blue);
+
+    margin: 0 14px;
+}
+
+.subject {
+    color: var(--text);
+
+    display: flex;
+
+    flex-direction: column;
+
+    flex: 1;
+}
+
+.subject strong {
+    font-size: .95rem;
+}
+
+.subject span {
+    color: var(--muted);
+
+    font-size: .7rem;
+
+    font-weight: 700;
+
+    margin-top: 2px;
+}
+
+
+/* =========================================================
+   SETTINGS
+   ========================================================= */
+
+#setting-page section {
+    padding-bottom: 30px;
+}
+
+.setting-title {
+    width: 100%;
+
+    height: auto;
+
+    min-height: 76px;
+
+    margin: 0 0 12px;
+
+    padding: 16px 18px;
+
+    border-radius: var(--radius-xl);
+
+    background: var(--surface);
+
+    color: var(--text);
+
+    border: 1px solid var(--line);
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+.setting-title img {
+    height: 50px;
+
+    position: static;
+
+    opacity: .9;
+}
+
+.main-setting {
+    width: 100%;
+
+    margin: 0;
+
+    padding: 17px;
+
+    border-radius: var(--radius-xl);
+
+    background: var(--surface);
+
+    border: 1px solid var(--line);
+}
+
+.main-setting > div:first-child {
+    padding-bottom: 7px;
+}
+
+#setting-input {
+    width: 100%;
+
+    height: 48px;
+
+    margin: 8px 0 13px;
+
+    padding: 0 14px;
+
+    border: 1px solid var(--line);
+
+    border-radius: 14px;
+
+    background: var(--surface-2);
+
+    color: var(--text);
+
+    box-shadow: none;
+}
+
+#setting-input::placeholder {
+    color: #777a83;
+}
+
+#save-changes,
+#logout {
+    border: 0;
+
+    min-height: 44px;
+
+    padding: 10px 15px;
+
+    border-radius: 13px;
+
+    font-size: .84rem;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    margin-right: 7px;
+
+    box-shadow: none;
+}
+
+#save-changes {
+    background: var(--blue);
+
+    color: #fff;
+}
+
+#logout {
+    background: var(--red);
+
+    color: #fff;
+}
+
+.theme-setting {
+    margin-top: 16px;
+
+    padding: 14px;
+
+    border-radius: 15px;
+
+    background: var(--surface-2);
+
+    border: 1px solid var(--line);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.theme-setting-text .small-text {
+    margin-top: 2px;
+}
+
+.theme-toggle-wrap {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: var(--muted);
+
+    font-size: .72rem;
+
+    font-weight: 750;
+}
+
+#theme-toggle {
+    width: 48px;
+
+    height: 28px;
+
+    border: 0;
+
+    border-radius: 99px;
+
+    background: #555861;
+
+    position: relative;
+
+    cursor: pointer;
+}
+
+#theme-toggle::after {
+    content: "";
+
+    width: 22px;
+
+    height: 22px;
+
+    border-radius: 50%;
+
+    background: #fff;
+
+    position: absolute;
+
+    top: 3px;
+
+    left: 3px;
+
+    transition: transform .18s ease;
+}
+
+body.dark-theme #theme-toggle {
+    background: var(--blue);
+}
+
+body.dark-theme #theme-toggle::after {
+    transform: translateX(20px);
+}
+
+
+/* =========================================================
+   NAVIGATION — SLIDING ACTIVE INDICATOR
+   ========================================================= */
+
+nav {
+    position: fixed;
+    z-index: 1100;
+    left: 50%;
+    bottom: 14px;
+    transform: translateX(-50%);
+    width: min(calc(100% - 36px), 430px);
+    height: 62px;
+    padding: 7px 9px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
+    gap: 0;
+    background: var(--nav);
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 22px;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    overflow: hidden;
+}
+
+nav::before {
+    content: "";
+    position: absolute;
+    width: 54px;
+    height: 48px;
+    top: 7px;
+    left: var(--nav-slider-left, 9px);
+    border-radius: 15px;
+    background: var(--red);
+    z-index: 0;
+    pointer-events: none;
+    transition: left .35s cubic-bezier(.4, 0, .2, 1);
+}
+
+.nav-button-div {
+    width: 100%;
+    height: 48px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    background: transparent !important;
+}
+
+.nav-button {
+    width: 48px;
+    height: 44px;
+    border: 0;
+    background: transparent;
+    color: #aeb0b6;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    position: relative;
+    z-index: 3;
+}
+
+.nav-button svg {
+    width: 22px;
+    height: 22px;
+    opacity: .72;
+}
+
+.nav-button-div.current-page {
+    background: transparent !important;
+}
+
+.nav-button-div.current-page .nav-button svg {
+    opacity: 1;
+}
+
+.nav-button-div.current-page .nav-button path {
+    fill: #fff;
+    stroke: #fff;
+}
+
+nav:has(.nav-button-div:nth-child(1).current-page)::before {
+    left: calc(9px + ((100% - 18px) / 10) - 27px);
+}
+
+nav:has(.nav-button-div:nth-child(2).current-page)::before {
+    left: calc(9px + ((100% - 18px) / 10) - 27px + ((100% - 18px) / 5));
+}
+
+nav:has(.nav-button-div:nth-child(3).current-page)::before {
+    left: calc(9px + ((100% - 18px) / 10) - 27px + (((100% - 18px) / 5) * 2));
+}
+
+nav:has(.nav-button-div:nth-child(4).current-page)::before {
+    left: calc(9px + ((100% - 18px) / 10) - 27px + (((100% - 18px) / 5) * 3));
+}
+
+nav:has(.nav-button-div:nth-child(5).current-page)::before {
+    left: calc(9px + ((100% - 18px) / 10) - 27px + (((100% - 18px) / 5) * 4));
+}
+
+
+/* =========================================================
+   LOGIN / REGISTER
+   ========================================================= */
+
+.main-div {
+    width: min(100% - 36px, 430px);
+
+    margin: 0 auto;
+
+    padding-top: 25px;
+}
+
+
+/*
+   LOGO
+*/
+
+.title-sub-div > img {
+    height: 45px;
+
+    display: block;
+}
+
+
+/*
+   TITLE AREA
+
+   IMPORTANT:
+   The title container is used only as
+   the positioning area.
+
+   The CHARACTER is positioned separately.
+*/
+
+.login-title,
+.register-title {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    width: 100%;
+
+    height: 180px;
+
+    margin: 45px auto 0;
+
+    color: var(--text);
+
+    font-family: 'Inter', sans-serif;
+
+    font-size: 2rem;
+
+    font-weight: 800;
+
+    letter-spacing: -.05em;
+
+    box-sizing: border-box;
+}
+
+.register-title {
+    margin-top: 25px;
+}
+
+
+/*
+   CHARACTER
+
+   ONLY THIS IMAGE touches the card.
+
+   It is absolutely positioned at the
+   bottom-right of the title area.
+*/
+
+.login-img,
+.register-img {
+    position: absolute;
+
+    right: 0;
+
+    bottom: 0;
+
+    height: 180px;
+
+    width: auto;
+
+    max-width: 48%;
+
+    margin: 0;
+
+    display: block;
+
+    object-fit: contain;
+
+    object-position: bottom center;
+
+    z-index: 5;
+}
+
+
+/*
+   FORM CARD
+*/
+
+.login-div,
+.register-div {
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+
+    padding: 22px;
+
+    border-radius: var(--radius-xl);
+
+    background: var(--surface);
+
+    color: var(--text);
+
+    border: 1px solid var(--line);
+
+    box-sizing: border-box;
 }
 
 .form-content {
-    width: fit-content;
-    margin: 15px auto;
+    width: 100%;
+
+    margin: 5px auto;
 }
 
 .input-div {
     display: flex;
+
     justify-content: space-between;
-    margin: 15px auto 0px auto;
+
+    margin: 10px auto 0;
+
+    width: 100%;
+
+    box-sizing: border-box;
 }
+
+
+/*
+   ALL FORM INPUTS
+*/
 
 #name,
 #batch,
 #password,
-#enroll {
-    font-size: 1em;
-    padding: 0px 10px;
-    height: 8vh;
-    border: 0.5px white;
-    width: 26vw;
+#enroll,
+#confirm_password {
+    width: 100%;
+
+    height: 50px;
+
+    padding: 0 14px;
+
+    border: 1px solid var(--line);
+
     border-radius: 50px;
-    box-shadow: var(--shadow);
+
+    background: var(--surface-2);
+
+    color: var(--text);
+
+    box-shadow: none;
+
+    font-size: .9rem;
+
+    box-sizing: border-box;
+}
+
+#confirm_password {
+    margin-top: 10px;
 }
 
 input:focus {
-    outline: none;
-    border-color: inherit;
+    outline: 2px solid rgba(77, 110, 216, .35);
+
+    border-color: var(--blue);
 }
 
 input:focus::placeholder {
     color: transparent;
 }
 
-.reg-link {
-    margin: 10px 15px 0px 15px;
-    justify-content: center;
-    align-items: center;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--purple-ink);
-}
 
+/*
+   REGISTER FIRST TWO INPUTS
+*/
 
-.login-button {
-    background-color: var(--yellow-card-color);
-    box-shadow: var(--shadow);
-    color: var(--yellow-ink);
-    font-size: 1.5rem;
-    border: none;
-    transition: all 0.15s ease-in-out;
-}
-
-.login-button:hover {
-    cursor: pointer;
-    background-color: var(--nav-color);
-    color: var(--nav-ink);
-}
-
-.login-button:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
-}
-
-/* ---------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------
-                                                REGISTER PAGE
-------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------- */
-
-.title-sub-div > img{
-    height: 10vh;
-}
-
-.register-img {
-    height: 25vh;
-    margin: 5px auto 0px auto;
-}
-
-.register-title {
+.register-div form > .input-div:first-child {
     display: flex;
-    font-family: "Edu NSW ACT Cursive", cursive;
-    font-size: 3em;
-    align-items: center;
-    /* justify-content: baseline; */
-    font-weight: 500;
-    width: fit-content;
-    margin: 5vh auto 0px auto;
+
+    width: 100%;
+
+    gap: 8px;
+
+    box-sizing: border-box;
 }
 
-.register-div {
-    background-color: var(--purple-card-color);
-    padding: 20px 30px;
-    width: fit-content;
-    border-radius: var(--border-radius);
-    align-items: center;
-    justify-content: center;
-    height: fit-content;
-    box-shadow: var(--shadow);
+.register-div form > .input-div:first-child #name,
+.register-div form > .input-div:first-child #enroll {
+    width: calc((100% - 8px) / 2) !important;
+
+    flex: 0 0 calc((100% - 8px) / 2);
+
+    min-width: 0;
+
+    box-sizing: border-box;
 }
 
-#confirm_password {
-    font-size: 1em;
-    padding: 0px 10px;
-    height: 8vh;
-    border: 0.5px white;
-    box-shadow: var(--shadow);
+
+/*
+   LOGIN INPUTS
+*/
+
+.login-div .input-div,
+.login-div #batch,
+.login-div #password {
+    width: 100%;
+
+    box-sizing: border-box;
+}
+
+
+/*
+   REGISTER OTHER INPUTS
+*/
+
+.register-div #batch,
+.register-div #password,
+.register-div #confirm_password {
+    width: 100% !important;
+
+    box-sizing: border-box;
+}
+
+
+/*
+   REGISTER / LOGIN LINK
+*/
+
+.reg-link {
+    margin: 13px 0 0;
+
+    color: #bfc1c8;
+
+    font-size: .8rem;
+
+    font-weight: 600;
+}
+
+.reg-link a {
+    color: #7e9bff;
+}
+
+
+/*
+   BUTTONS
+
+   !important overrides the inline
+   27.5vw width from your HTML.
+*/
+
+.login-button,
+.register-button {
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    min-width: 0;
+
+    height: 50px !important;
+
+    min-height: 50px;
+
+    margin-top: 14px;
+
+    margin-left: 0 !important;
+
+    margin-right: 0 !important;
+
+    padding-left: 10px;
+
+    padding-right: 10px;
+
+    border: 0;
+
+    border-radius: 50px;
+
+    background: var(--red);
+
+    color: #fff;
+
+    font-size: 1rem;
+
+    font-weight: 800;
+
+    box-shadow: none;
+
+    display: block;
+
+    box-sizing: border-box;
+
+    transition: transform .15s ease;
+}
+
+.login-button:hover,
+.register-button:hover {
+    background: var(--red);
+
+    color: #fff;
+}
+
+.login-button:active,
+.register-button:active {
+    transform: scale(.985);
 }
 
 #passwordMessage {
-    display: flex;
-    font-size: 1rem;
-    font-weight: 500;
-    align-items: center;
-    height: 4vh;
-    width: 15vw;
-    margin: 10px 15px;
-    color: var(--purple-ink);
-}
+    color: var(--muted);
 
-.register-button {
-    background-color: var(--yellow-card-color);
-    color: var(--yellow-ink);
-    font-size: 1.5rem;
-    box-shadow: var(--shadow);
-    border: none;
-    transition: all 0.15s ease-in-out;
-}
-
-.register-button:hover {
-    cursor: pointer;
-    background-color: var(--nav-color);
-    color: var(--nav-ink);
-}
-
-.register-button:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
-}
-
-/* ---------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------
-                                                HEADER
-------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------- */
-
-.main-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0px auto;
-    height: 9vh;
-    padding: 10px 10px 0px 10px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-}
-
-.title img {
-    height: 9vh;
-}
-
-.main-title {
-    font-family: "Edu NSW ACT Cursive", cursive;
-    font-weight: 520;
-    font-size: 3rem;
-    text-align: end;
-}
-
-.profile-pic {
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    background-color: rgba(37, 6, 56, 0.247);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    box-shadow: 0px 2px 9px -1px rgba(0, 0, 0, 0.267);
-    ;
-}
-
-#initial {
-    font-size: 1.3rem;
-    font-weight: 650;
-    color: var(--nav-color);
-}
-
-
-/* ---------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------
-                                                NAV BAR
-------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------- */
-
-nav {
-    background-color: var(--nav-color);
-    margin: 10px auto;
-    border-radius: 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 50px;
-    width: 40vw;
-    height: 30px;
-    box-shadow: var(--shadow);
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-}
-
-.nav-button-div {
-    height: 5.5vh;
-    width: 2.5vw;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.nav-button {
-    background-color: transparent;
-    height: 5.5vh;
-    width: 2.5vw;
-    box-shadow: none;
-    border: none;
-    border-radius: 10px;
-    transition: all 0.2s ease-in-out;
-}
-
-.nav-button:hover {
-    cursor: pointer;
-}
-
-.current-page {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: rgba(125, 89, 146, 0.204);
-}
-
-
-/* ---------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------
-                                                HOME PAGE
-------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------- */
-
-/* HERO SECTION */
-.hero-first-div {
-    width: 53vw;
-    gap: 1vw;
-    display: flex;
-    justify-content: center;
-    margin: 1px auto;
-}
-
-.greeting {
-    width: 59vw;
-    margin: 0px auto 0px auto;
-    border-radius: 25px;
-}
-
-.greeting-text {
-    font-size: 3rem;
-    font-weight: 500;
-}
-
-#date {
-    font-size: 1.3rem;
-}
-
-
-.current {
-    height: 20vh;
-    width: var(--card-width);
-    margin: var(--card-margin);
-    padding: var(--card-padding);
-    border-radius: var(--border-radius);
-    background-color: var(--purple-card-color);
-    color: var(--purple-ink);
-    box-shadow: var(--shadow);
-}
-
-
-.next {
-    height: 20vh;
-    width: var(--card-width);
-    margin: var(--card-margin);
-    padding: var(--card-padding);
-    border-radius: var(--border-radius);
-    background-color: var(--pink-card-color);
-    color: var(--pink-ink);
-    box-shadow: var(--shadow);
-}
-
-.today {
-    height: fit-content;
-    width: 51vw;
-    margin: 13px auto 80px auto;
-    padding: var(--card-padding);
-    border-radius: var(--border-radius);
-    background-color: var(--yellow-card-color);
-    color: var(--yellow-ink);
-    box-shadow: var(--shadow);
-}
-
-/* Styling of the content which are inside the cards */
-
-.card-sub-div {
-    display: flex;
-    justify-content: space-between;
-
-}
-
-.bold-text {
-    font-size: 1.2em;
-    font-weight: 700;
-}
-
-.small-text {
-    font-size: 0.9em;
-    font-weight: 580;
-
-}
-
-.card-description {
-    display: flex;
-    justify-content: space-between;
-    width: 17vw;
-    margin: 10px 0px;
-    align-items: baseline;
-}
-
-.location-des {
-    font-size: 0.8em;
-    font-weight: 600;
-    margin: 15px 0px 0px 0px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 5px;
-}
-
-.location-des-today-card {
-    font-size: 0.8em;
-    font-weight: 600;
-    display: flex;
-    align-items: baseline;
-    justify-content: flex-start;
-    gap: 5px;
-}
-
-.card-right-section img {
-    height: 25vh;
-    position: relative;
-    bottom: 58px;
-    left: 15px;
-}
-
-/* Styling of the content inside the Today Card */
-
-#currentDay {
-    margin: 0px 5px;
-    font-weight: 500;
-    font-size: 1.1em;
-}
-
-.lectures {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin: 10px auto;
-}
-
-.lecture-div {
-    display: flex;
-    justify-content: space-between;
-    background-color: var(--yellow-card-content-color);
-    border-radius: var(--small-divs-border-radius);
-    padding: var(--card-padding);
-    height: 7vh;
-    width: inherit;
-}
-
-.lecture-div>div {
-    display: flex;
-    flex-direction: column;
-    align-items: baseline;
-}
-
-.lecture-div> :last-child {
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1em;
-    font-weight: 700;
-}
-
-
-
-
-/* ---------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------
-                                                MAP PAGE
-------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------- */
-
-.map-heading {
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    margin: 10px auto;
-    width: 22vw;
-    text-align: right;
-}
-
-.map-box {
-    height: 55vh;
-    width: 40vw;
-    margin: 0px auto 0px auto;
-    border: 1px solid rgba(147, 139, 139, 0.384);
-    border-radius: var(--border-radius);
-}
-
-.map-description-container {
-    display: flex;
-    justify-content: end;
-    flex-direction: column;
-    height: 20vh;
-    width: 40vw;
-    padding: 0;
-    margin: 0px auto;
-}
-
-.map-description {
-    display: flex;
-    justify-content: space-between;
-    background-color: var(--pink-card-color);
-    height: 17vh;
-    width: 40vw;
-    margin: 0;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-}
-
-.map-img>img {
-    position: relative;
-    bottom: 19.5px;
-}
-.map-lecture {
-    width: 20vw;
-    display: flex;
-    /* background-color: red; */
-    flex-direction: column;
-    justify-content: center;
-    margin: 0px 2vw;
-}
-
-.map-lecture>span {
-    margin: 1vh 0px;
-    padding: 0px 5px;
-    display: flex;
-    justify-content: space-between;
-    text-align: right;
-    color: var(--pink-ink);
-}
-
-
-
-.map-lec-sub {
-    color: var(--yellow-ink);
-}
-
-/* ---------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------
-                                                NOTICE PAGE
-------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------- */
-
-#notice-page section {
-    /* background-color: red; */
-    width: 48vw;
-    margin: 0px auto;
-}
-
-.notice-title h1,
-p {
-    color: var(--purple-ink);
-}
-
-/* ---------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------
-                                                SCHEDULE PAGE
-------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------- */
-
-#schedule-page section {
-    margin: 0px auto;
-    width: fit-content;
-    padding: 0px 10px;
-}
-
-.schedule-title {
-    margin: 0px auto;
-    color: var(--purple-ink);
-
-}
-
-.schedule-container {
-    gap: 1vw;
-    padding: 10px;
-    border-radius: var(--border-radius);
-    width: 40vw;
-    margin: 0px auto;
-}
-
-
-/* =========================
-   TIMETABLE
-========================= */
-
-.timetable {
     width: 100%;
-    max-width: 800px;
-    margin: 25px auto;
+
+    height: auto;
+
+    margin: 8px 0;
+
+    font-size: .72rem;
+
+    box-sizing: border-box;
 }
 
 
-/* DAYS */
+/* =========================================================
+   DESKTOP
+   ========================================================= */
 
-.day-selector {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    margin-bottom: 16px;
-}
+@media (min-width: 800px) {
 
-.day {
-    border: none;
-    border-radius: 10px;
-    background: #eeeaf1;
-    /* color: var(--yellow-ink); */
-    color: var(--purple-ink);
-    padding: 10px 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    font-family: inherit;
-    cursor: pointer;
-}
+    .hero-first-div {
+        max-width: 760px;
+    }
 
-.day span {
-    font-size: 14px;
-    font-weight: 600;
-}
+    .current,
+    .next {
+        min-height: 205px;
+    }
 
-.day strong {
-    font-size: 20px;
-    font-weight: 700;
+    .today {
+        max-width: 760px;
+    }
+
+    .card-right-section img {
+        height: 195px;
+
+        max-width: 170px;
+    }
 }
 
 
-/* ACTIVE DAY */
+/* =========================================================
+   MOBILE MAIN APP
+   ========================================================= */
 
-.day.active {
-    background: var(--yellow-card-color);
-    color: var(--yellow-ink);
-    box-shadow: var(--shadow);
+@media (max-width: 600px) {
+
+    main {
+        padding-bottom: 94px;
+    }
+
+    .main-head {
+        width: calc(100% - 28px);
+
+        height: 70px;
+    }
+
+    .profile-pic {
+        width: 44px;
+
+        height: 44px;
+
+        flex-basis: 44px;
+
+        border-radius: 14px;
+    }
+
+    .title img {
+        height: 38px;
+
+        max-width: 132px;
+    }
+
+    #home-page section,
+    #map-page section,
+    #notice-page section,
+    #schedule-page section,
+    #setting-page section {
+        padding-top: 76px;
+    }
+
+    .hero-section,
+    #map-page section,
+    #notice-page section,
+    #schedule-page section,
+    #setting-page section {
+        width: calc(100% - 28px);
+    }
+
+    .current,
+    .next {
+        min-height: 175px;
+
+        padding: 15px;
+
+        border-radius: 23px;
+    }
+
+    .card-left-section {
+        width: 68%;
+    }
+
+    .card-right-section {
+        width: 35%;
+    }
+
+    .card-right-section img {
+        height: 160px;
+
+        max-width: 130px;
+    }
+
+    .today,
+    .setting-title,
+    .main-setting,
+    .map-description,
+    .map-box {
+        border-radius: 23px;
+    }
+
+    .map-box {
+        height: 48vh;
+    }
+
+    .map-img > img {
+        height: 112px !important;
+    }
+
+    nav {
+        width: calc(100% - 28px);
+
+        bottom: 10px;
+
+        height: 60px;
+
+        border-radius: 20px;
+    }
+
+
+    /* =====================================================
+       MOBILE LOGIN / REGISTER
+       ===================================================== */
+
+    .main-div {
+        width: calc(100% - 28px);
+
+        max-width: 430px;
+
+        margin: 0 auto;
+
+        padding-top: 18px;
+    }
+
+
+    /*
+       TITLE AREA
+
+       The logo stays here.
+
+       The character is absolutely positioned
+       inside this area.
+    */
+
+    .login-title,
+    .register-title {
+        width: 100%;
+
+        height: 150px;
+
+        min-height: 150px;
+
+        max-height: 150px;
+
+        margin: 20px 0 0 !important;
+
+        padding: 0;
+
+        position: relative;
+
+        display: flex;
+
+        align-items: center;
+
+        box-sizing: border-box;
+    }
+
+
+    /*
+       LOGO
+
+       The logo does NOT touch the card.
+    */
+
+    .title-sub-div {
+        flex: 1;
+
+        min-width: 0;
+
+        display: flex;
+
+        align-items: center;
+
+        position: relative;
+
+        z-index: 2;
+    }
+
+    .title-sub-div > img {
+        height: 42px;
+
+        max-width: 100%;
+
+        object-fit: contain;
+
+        object-position: left center;
+    }
+
+
+    /*
+       CHARACTER
+
+       ONLY THE CHARACTER touches the card.
+
+       bottom: 0 means the bottom of the
+       character is exactly at the bottom
+       of the title area.
+
+       The card comes immediately after
+       the title area.
+    */
+
+    .login-img,
+    .register-img {
+        position: absolute;
+
+        right: 0;
+
+        bottom: 0;
+
+        height: 150px;
+
+        max-height: 150px;
+
+        width: auto;
+
+        max-width: 43%;
+
+        margin: 0 !important;
+
+        display: block;
+
+        object-fit: contain;
+
+        object-position: bottom center;
+
+        z-index: 5;
+    }
+
+
+    /*
+       CARD
+
+       No negative margin.
+       No transform.
+
+       It begins exactly after the
+       character's containing area.
+    */
+
+    .login-div,
+    .register-div {
+        width: 100%;
+
+        margin: 0 !important;
+
+        padding: 18px;
+
+        box-sizing: border-box;
+
+        position: relative;
+
+        z-index: 2;
+    }
+
+
+    /*
+       LOGIN INPUTS
+    */
+
+    .login-div .input-div {
+        width: 100%;
+
+        display: flex;
+
+        gap: 0;
+
+        margin: 10px 0 0;
+
+        box-sizing: border-box;
+    }
+
+    .login-div .input-div input {
+        width: 100% !important;
+
+        max-width: 100% !important;
+
+        flex: 1 1 100%;
+
+        height: 50px;
+
+        box-sizing: border-box;
+
+        border-radius: 50px !important;
+    }
+
+    .login-div #batch,
+    .login-div #password {
+        width: 100% !important;
+
+        max-width: 100% !important;
+
+        height: 50px;
+
+        box-sizing: border-box;
+
+        border-radius: 50px !important;
+    }
+
+
+    /*
+       REGISTER FIRST TWO INPUTS
+    */
+
+    .register-div form > .input-div:first-child {
+        width: 100% !important;
+
+        display: flex;
+
+        gap: 8px;
+
+        margin-left: 0;
+
+        margin-right: 0;
+
+        box-sizing: border-box;
+    }
+
+    .register-div form > .input-div:first-child #name,
+    .register-div form > .input-div:first-child #enroll {
+        width: calc((100% - 8px) / 2) !important;
+
+        max-width: none !important;
+
+        min-width: 0 !important;
+
+        flex: 0 0 calc((100% - 8px) / 2);
+
+        height: 50px;
+
+        box-sizing: border-box;
+
+        border-radius: 50px !important;
+    }
+
+
+    /*
+       REGISTER OTHER INPUTS
+    */
+
+    .register-div #batch,
+    .register-div #password,
+    .register-div #confirm_password {
+        width: 100% !important;
+
+        max-width: 100% !important;
+
+        height: 50px;
+
+        box-sizing: border-box;
+
+        border-radius: 50px !important;
+    }
+
+
+    /*
+       PASSWORD MESSAGE
+    */
+
+    #passwordMessage {
+        width: 100%;
+
+        box-sizing: border-box;
+
+        margin: 8px 0;
+    }
+
+
+    /*
+       BUTTONS
+    */
+
+    .login-div .login-button,
+    .register-div .register-button {
+        width: 100% !important;
+
+        max-width: 100% !important;
+
+        height: 50px !important;
+
+        min-height: 50px !important;
+
+        margin-left: 0 !important;
+
+        margin-right: 0 !important;
+
+        padding-left: 10px;
+
+        padding-right: 10px;
+
+        box-sizing: border-box !important;
+
+        display: block;
+    }
+
+
+    /*
+       NAV
+    */
+
+    nav {
+        width: calc(100% - 28px);
+        bottom: 10px;
+        height: 60px;
+        padding: 9px;
+        border-radius: 20px;
+    }
+
+    nav::before {
+        width: 42px;
+        height: 42px;
+        top: 9px;
+        border-radius: 14px;
+    }
+
+    .nav-button-div {
+        width: 100%;
+        height: 42px;
+        border-radius: 14px;
+    }
+
+    .nav-button {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+    }
+
+    .nav-button svg {
+        width: 1.7em;
+        height: 1.7em;
+    }
+
+    nav:has(.nav-button-div:nth-child(1).current-page)::before {
+        left: calc(9px + ((100% - 18px) / 10) - 21px);
+    }
+
+    nav:has(.nav-button-div:nth-child(2).current-page)::before {
+        left: calc(9px + ((100% - 18px) / 10) - 21px + ((100% - 18px) / 5));
+    }
+
+    nav:has(.nav-button-div:nth-child(3).current-page)::before {
+        left: calc(9px + ((100% - 18px) / 10) - 21px + (((100% - 18px) / 5) * 2));
+    }
+
+    nav:has(.nav-button-div:nth-child(4).current-page)::before {
+        left: calc(9px + ((100% - 18px) / 10) - 21px + (((100% - 18px) / 5) * 3));
+    }
+
+    nav:has(.nav-button-div:nth-child(5).current-page)::before {
+        left: calc(9px + ((100% - 18px) / 10) - 21px + (((100% - 18px) / 5) * 4));
+    }
 }
 
 
-/* SCHEDULE LIST */
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
 
-.schedule-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+@media (max-width: 390px) {
+
+    .greeting-text {
+        font-size: 1.6rem;
+    }
+
+    .current,
+    .next {
+        min-height: 160px;
+    }
+
+    .card-right-section img {
+        height: 145px;
+
+        max-width: 116px;
+    }
+
+    .current .bold-text,
+    .next .bold-text {
+        font-size: 1.5rem;
+    }
+
+    .location-des {
+        font-size: .68rem;
+    }
+
+    .nav-button-div {
+        width: 100%;
+    }
+
+    .nav-button {
+        width: 42px;
+    }
+
+    .day {
+        min-height: 44px;
+    }
+
+    .day strong {
+        font-size: .68rem;
+    }
+
+
+    /* =====================================================
+       SMALL PHONE LOGIN / REGISTER
+       ===================================================== */
+
+    .main-div {
+        width: calc(100% - 24px);
+    }
+
+    .login-title,
+    .register-title {
+        width: 100%;
+
+        height: 130px;
+
+        min-height: 130px;
+
+        max-height: 130px;
+
+        margin-top: 15px !important;
+
+        margin-bottom: 0 !important;
+    }
+
+
+    /*
+       SMALL PHONE LOGO
+    */
+
+    .title-sub-div > img {
+        height: 36px;
+
+        max-width: 100%;
+    }
+
+
+    /*
+       SMALL PHONE CHARACTER
+
+       Again, ONLY the character touches
+       the card.
+    */
+
+    .login-img,
+    .register-img {
+        right: 0;
+
+        bottom: 0;
+
+        height: 130px;
+
+        max-height: 130px;
+
+        max-width: 44%;
+
+        margin: 0 !important;
+
+        object-fit: contain;
+
+        object-position: bottom center;
+    }
+
+
+    /*
+       CARD
+    */
+
+    .login-div,
+    .register-div {
+        width: 100%;
+
+        padding: 17px;
+
+        margin: 0 !important;
+
+        box-sizing: border-box;
+    }
+
+
+    /*
+       REGISTER TWO INPUTS
+    */
+
+    .register-div form > .input-div:first-child {
+        gap: 6px;
+    }
+
+    .register-div form > .input-div:first-child #name,
+    .register-div form > .input-div:first-child #enroll {
+        width: calc((100% - 6px) / 2) !important;
+
+        flex-basis: calc((100% - 6px) / 2);
+
+        min-width: 0;
+    }
+
+
+    /*
+       SMALL PHONE BUTTON
+    */
+
+    .login-div .login-button,
+    .register-div .register-button {
+        width: 100% !important;
+
+        max-width: 100% !important;
+
+        height: 50px !important;
+
+        min-height: 50px !important;
+
+        box-sizing: border-box !important;
+    }
 }
 
 
-/* SCHEDULE CARD */
+/* =========================================================
+   TOUCH DEVICES
+   ========================================================= */
 
-.schedule-card {
-    min-height: 62px;
-    padding: 12px 14px;
-    background: var(--yellow-card-content-color);
-    box-shadow: var(--shadow);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
+@media (hover: none) and (pointer: coarse) {
+
+    .nav-button:hover,
+    #save-changes:hover,
+    #logout:hover,
+    .login-button:hover,
+    .register-button:hover {
+        transform: none;
+    }
 }
 
 
-/* TIME */
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
 
-.time {
-    width: 85px;
-    display: flex;
-    flex-direction: column;
-    font-size: 13px;
-    font-weight: 800;
-    line-height: 1.35;
-    color: var(--yellow-ink);
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+
+        transition: none !important;
+
+        animation: none !important;
+    }
 }
 
 
-/* DIVIDER */
+/* =========================================================
+   LIGHT MODE
+   ========================================================= */
 
-.divider {
-    width: 1px;
-    height: 30px;
-    background: var(--yellow-ink);
-    margin: 0 18px;
+body:not(.dark-theme) {
+    --bg: #f2f2f0;
+
+    --surface: #ffffff;
+
+    --surface-2: #ececee;
+
+    --surface-3: #e2e3e6;
+
+    --text: #16171a;
+
+    --muted: #70727a;
+
+    --line: rgba(20, 21, 24, .09);
+
+    --nav: rgba(255, 255, 255, .94);
+}
+
+body:not(.dark-theme)::before {
+    background: none;
+}
+
+body:not(.dark-theme) .main-head {
+    background: var(--bg);
+}
+
+body:not(.dark-theme) .title img {
+    filter: none;
+}
+
+body:not(.dark-theme) .nav-button {
+    color: #4f5158;
+}
+
+body:not(.dark-theme) .nav-button path {
+    fill: #4f5158;
+
+    stroke: #4f5158;
+}
+
+body:not(.dark-theme) .setting-title img {
+    filter: none;
+}
+
+body:not(.dark-theme) .map-box {
+    background: #e9eaec;
+}
+
+body:not(.dark-theme) .schedule-card {
+    background: #fff;
+}
+
+body:not(.dark-theme) #name,
+body:not(.dark-theme) #batch,
+body:not(.dark-theme) #password,
+body:not(.dark-theme) #enroll,
+body:not(.dark-theme) #confirm_password {
+    background: #f0f0f2;
+
+    color: #16171a;
 }
 
 
-/* SUBJECT */
+/* =========================================================
+   DARK MODE CARD CLEANUP
+   ========================================================= */
 
-.subject {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    color: var(--yellow-ink);
+body.dark-theme .today,
+body.dark-theme .map-box,
+body.dark-theme .map-description,
+body.dark-theme .schedule-card,
+body.dark-theme .setting-title,
+body.dark-theme .main-setting,
+body.dark-theme .theme-setting,
+body.dark-theme .login-div,
+body.dark-theme .register-div {
+    border-color: transparent;
 }
 
-.subject strong {
-    font-size: 16px;
+
+/* =========================================================
+   FINAL CLASS CARD TYPOGRAPHY
+   ========================================================= */
+
+.current h2,
+.next h2 {
+    font-size: .9rem;
 }
 
-.subject span {
-    font-size: 13px;
-    font-weight: 800;
-    margin-top: 2px;
+.current .bold-text,
+.next .bold-text {
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
 }
 
-/* ---------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------
-                                                SETTING PAGE
-------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------- */
-
-#setting-page {
-    width: 48vw;
-    margin: 0px auto;
+.current .small-text,
+.next .small-text {
+    font-size: .84rem;
 }
 
-.setting-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--yellow-card-content-color);
-    border-radius: var(--small-divs-border-radius);
-    color: var(--yellow-ink);
-    height: 5vh;
-    width: 40vw;
-    margin: 20vh auto 0vh auto;
-    padding: 20px;
-    box-shadow: var(--shadow);
+.current .location-des,
+.next .location-des {
+    font-size: .76rem;
 }
 
-.setting-title h1 {
-    font-size: 2em;
-}
 
-.setting-title img {
-    height: 20vh;
-    position: relative;
-    bottom: 31.5px;
-}
+/* =========================================================
+   VERY SMALL CLASS CARD TYPOGRAPHY
+   ========================================================= */
 
-.main-setting {
-    width: 40vw;
-    margin: 30px auto;
-}
+@media (max-width: 390px) {
 
-#setting-input {
-    font-size: 1em;
-    padding: 0px 10px;
-    margin: 15px 0px;
-    height: 5vh;
-    width: 37vw;
-    border: 1px solid rgb(204, 191, 191);
-    border-radius: var(--small-divs-border-radius);
-}
+    .current .bold-text,
+    .next .bold-text {
+        font-size: 1.5rem;
+    }
 
-#save-changes {
-    border: none;
-    background-color: var(--yellow-card-color);
-    padding: 10px 15px;
-    border-radius: var(--small-divs-border-radius);
-    font-size: 1em;
-    color: var(--yellow-ink);
-    font-weight: 550;
-    cursor: pointer;
-    transition: all 0.15s ease-in-out;
-}
+    .current h2,
+    .next h2 {
+        font-size: .86rem;
+    }
 
-#save-changes:hover {
-    cursor: pointer;
-    background-color: var(--nav-color);
-    color: var(--nav-ink);
-}
+    .current .small-text,
+    .next .small-text {
+        font-size: .8rem;
+    }
 
-#save-changes:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
-}
-
-#logout {
-    border: none;
-    background-color: var(--yellow-card-color);
-    padding: 10px 15px;
-    border-radius: var(--small-divs-border-radius);
-    font-size: 1em;
-    color: var(--yellow-ink);
-    font-weight: 550;
-    cursor: pointer;
-    transition: all 0.15s ease-in-out;
-}
-
-#logout:hover {
-    cursor: pointer;
-    background-color: var(--nav-color);
-    color: var(--nav-ink);
-}
-
-#logout:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+    .current .location-des,
+    .next .location-des {
+        font-size: .68rem;
+    }
 }

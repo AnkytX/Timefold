@@ -30,7 +30,7 @@
         <div class="main-div">
             <div class="login-title">
                 <div class="title-sub-div">
-                    <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/TimeFold-header-logo.svg">
+                    <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold-text-logo.svg">
                 </div>
                 <img class="login-img" src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/studying.svg">
             </div>
@@ -77,11 +77,6 @@
 </body>
 <script>
 
-    
-           
-
-
-
     async function login() {
     const enroll = document.getElementById("enroll").value.trim();
     const password = document.getElementById("password").value;
@@ -111,10 +106,10 @@
         if (response.ok) {
 
 
-            const fake_tplen =
-                "secure_token_" + Math.random().toString(36).substring(2, 11);
+            // const fake_tplen =
+            //     "secure_token_" + Math.random().toString(36).substring(2, 11);
 
-            localStorage.setItem("usertokan", fake_tplen);
+            // localStorage.setItem("usertokan", fake_tplen);
 
            
             localStorage.setItem(
@@ -122,7 +117,7 @@
                 JSON.stringify(data.student)
             );
 
-            alert(data.message);
+           
 
            
             window.location.href = "/index.html";

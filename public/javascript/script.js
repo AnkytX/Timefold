@@ -16,17 +16,61 @@ function autologin() {
 function showlogin() {
   window.location.href = "/login.html";
 }
-// -----------------------------------------------------------------------------------------------------------------------------
+
 function showdashboard() {
   window.location.href = "/index.html";
 }
-// -----------------------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------------
+
 // -----------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------
 //                                                       NAV BAR JAVASCRIPT
 // -----------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------
+
+// ============================================================
+// DARK / LIGHT THEME
+// ============================================================
+
+function applyTheme(theme) {
+  const isDark = theme === "dark";
+
+  document.body.classList.toggle("dark-theme", isDark);
+
+  localStorage.setItem("timefold-theme", isDark ? "dark" : "light");
+
+  const label = document.getElementById("theme-label");
+
+  if (label) {
+    label.textContent = isDark ? "Dark" : "Light";
+  }
+
+  const toggle = document.getElementById("theme-toggle");
+
+  if (toggle) {
+    toggle.setAttribute(
+      "aria-label",
+      isDark ? "Switch to light mode" : "Switch to dark mode",
+    );
+  }
+}
+
+function toggleTheme() {
+  const currentTheme = document.body.classList.contains("dark-theme")
+    ? "dark"
+    : "light";
+
+  applyTheme(currentTheme === "dark" ? "light" : "dark");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("timefold-theme");
+
+  if (savedTheme === "dark" || savedTheme === "light") {
+    applyTheme(savedTheme);
+  } else {
+    applyTheme("light");
+  }
+});
 
 function showPage(pageId) {
   document.querySelectorAll(".page-section").forEach((page) => {
@@ -136,7 +180,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const map_room = document.getElementById("current-map-room");
     const delete_map_lec = document.getElementById("map-lec");
 
-
     // Helper: decode department from room code
     function getdep(roomcode) {
       if (!roomcode) return { department: "Unknown", floor: 0 };
@@ -171,7 +214,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // upcoming lecture
     const upcoming_class = timetableData.findIndex((lecture) => {
-      return toMinutes(lecture.start_time) > currentHour;
+      const start = formatTime(lecture.start_time);
+      return start > currentHour && start - currentHour <= 30;
     });
 
     // before 10:30 what to show
@@ -181,7 +225,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Current Card hide kar do
       if (hide_current && delete_map_lec) {
         hide_current.style.display = "none";
-       
       }
 
       // Next Card me first class ka data inject karo
@@ -208,13 +251,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const dayName = new Date().toLocaleDateString("en-US", {
       weekday: "long",
-      timeZone:  "Asia/Kolkata",
+      timeZone: "Asia/Kolkata",
     });
 
     if (dayName === "Sunday" || dayName === "Saturday") {
-      const message = `<div class="bold-text">Today Class Over</div>`;
+      const message = `<div class="bold-text">No Class Right Now</div>`;
 
-      [hide_current, hide_next ,delete_map_lec].forEach((el) => {
+      [hide_current, hide_next, delete_map_lec].forEach((el) => {
         if (el) {
           el.style.display = "";
           el.innerHTML = message;
@@ -229,8 +272,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // map ka data
       if (delete_map_lec) {
-             delete_map_lec.style.display = "";
-           delete_map_lec.innerHTML = `<span>
+        delete_map_lec.style.display = "";
+        delete_map_lec.innerHTML = `<span>
                                     <h1 id="current-map-sub">${current_class.subject_code} </h1>
 
                                     <h1 id="current-map-professor">
@@ -256,10 +299,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                                         </p>
 
                                     </span>
-                                </span>`
-
+                                </span>`;
       }
-    
+
       // 1. Current Class Card Update
       if (hide_current) {
         hide_current.style.display = "";
@@ -293,11 +335,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
           hide_next.innerHTML = `
             <div class="bold-text">
-              No More Classes Today
+             No Class Right Now
             </div>
           `;
-              
-
         }
       }
     } else {
@@ -314,9 +354,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (delete_map_lec) {
           delete_map_lec.innerHTML = ` <div class="bold-text">
               Its Lunch Time 🍛
-            </div>`
+            </div>`;
         }
-         
 
         if (hide_next) {
           hide_next.style.display = "";
@@ -345,7 +384,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           hide_current.innerHTML = `<div class="bold-text">Break / Free Period</div>`;
         }
 
-
         if (hide_next) {
           hide_next.style.display = "";
           const next_class = timetableData[upcoming_class];
@@ -363,19 +401,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else {
         if (hide_current) {
           hide_current.style.display = "";
-          hide_current.innerHTML = `<div class="bold-text">Today Class Over</div>`;
+          hide_current.innerHTML = `<div class="bold-text">No Class Right Now</div>`;
         }
         if (hide_next) {
           hide_next.style.display = "";
-          hide_next.innerHTML = `<div class="bold-text">Today Class Over</div>`;
+          hide_next.innerHTML = `<div class="bold-text">No Class Right Now</div>`;
         }
         if (delete_map_lec) {
-          delete_map_lec.innerHTML = ""
+          delete_map_lec.innerHTML = "";
           delete_map_lec.innerHTML = ` <div class="bold-text">
-              No More Classes Today
-            </div>`
+             No Class Right Now
+            </div>`;
         }
-         
       }
     }
 
@@ -425,7 +462,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
 
-    
     // ========================================================
     // HEADER (Student greeting & Date)
     // ========================================================
@@ -451,8 +487,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (typeof loadTimetable === "function") {
       loadTimetable(timetableData);
     }
-
-    
   } catch (error) {
     console.error("Error loading timetable:", error);
   }
@@ -729,3 +763,176 @@ async function loadSchedule() {
 }
 
 loadSchedule();
+
+async function logout() {
+  try {
+    const response = await fetch("/logout", {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      window.location.href = "/login.html";
+    } else {
+      alert(result.message);
+    }
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
+}
+const mapViewport = document.getElementById("mapViewport");
+const mapImage = document.getElementById("mapImage");
+
+let scale = 0.9;
+let posX = 0;
+let posY = 0;
+
+const pointers = new Map();
+
+// Gestures & state tracking
+let startDistance = 0;
+let startScale = 1;
+let prevMidpoint = { x: 0, y: 0 };
+let singlePointerId = null;
+let lastX = 0;
+let lastY = 0;
+
+// Double-tap tracking
+let lastTapTime = 0;
+const DOUBLE_TAP_DELAY = 300; // ms
+
+function updateMap() {
+  mapImage.style.transform = `translate(${posX}px, ${posY}px)  scale(${scale})`;
+}
+
+function getDistance(p1, p2) {
+  return Math.hypot(p1.x - p2.x, p1.y - p2.y);
+}
+
+function getMidpoint(p1, p2) {
+  return {
+    x: (p1.x + p2.x) / 2,
+    y: (p1.y + p2.y) / 2,
+  };
+}
+
+// -------------------------------------------------------------
+// DOUBLE-TAP / CLICK: FIRST ZOOM IN (2.5x), NEXT ZOOM OUT (1x)
+// -------------------------------------------------------------
+mapViewport.addEventListener("pointerup", (e) => {
+  const currentTime = new Date().getTime();
+  const tapLength = currentTime - lastTapTime;
+
+  if (tapLength < DOUBLE_TAP_DELAY && tapLength > 0) {
+    // Double tap triggered
+    if (scale === 1) {
+      // Step 1: Zoom In
+      scale = 2.5;
+    } else {
+      // Step 2: Zoom Out & Reset Position
+      scale = 1;
+      posX = 0;
+      posY = 0;
+    }
+    updateMap();
+    lastTapTime = 0;
+    return;
+  }
+
+  lastTapTime = currentTime;
+});
+
+// -------------------------------------------------------------
+// POINTER DOWN
+// -------------------------------------------------------------
+mapViewport.addEventListener("pointerdown", (e) => {
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  mapViewport.setPointerCapture(e.pointerId);
+
+  if (pointers.size === 1) {
+    singlePointerId = e.pointerId;
+    lastX = e.clientX;
+    lastY = e.clientY;
+  } else if (pointers.size === 2) {
+    const [p1, p2] = [...pointers.values()];
+    startDistance = getDistance(p1, p2);
+    startScale = scale;
+    prevMidpoint = getMidpoint(p1, p2);
+  }
+});
+
+// -------------------------------------------------------------
+// POINTER MOVE (MOVEABLE ONLY AFTER ZOOM IN)
+// -------------------------------------------------------------
+mapViewport.addEventListener("pointermove", (e) => {
+  if (!pointers.has(e.pointerId)) return;
+
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+  // 1. One finger drag -> ONLY moveable if scale > 1
+  if (pointers.size === 1 && scale > 1 && e.pointerId === singlePointerId) {
+    const dx = e.clientX - lastX;
+    const dy = e.clientY - lastY;
+
+    posX += dx;
+    posY += dy;
+
+    lastX = e.clientX;
+    lastY = e.clientY;
+
+    updateMap();
+  }
+
+  // 2. Two fingers -> Pinch zoom
+  if (pointers.size === 2) {
+    const [p1, p2] = [...pointers.values()];
+    const currentDistance = getDistance(p1, p2);
+    const currentMidpoint = getMidpoint(p1, p2);
+
+    if (startDistance > 0) {
+      // Zoom limits: min 1x, max 4x
+      scale = Math.min(
+        Math.max(1, startScale * (currentDistance / startDistance)),
+        4,
+      );
+
+      // Pan with pinch center
+      if (scale > 1) {
+        posX += currentMidpoint.x - prevMidpoint.x;
+        posY += currentMidpoint.y - prevMidpoint.y;
+      } else {
+        posX = 0;
+        posY = 0;
+      }
+
+      prevMidpoint = currentMidpoint;
+      updateMap();
+    }
+  }
+});
+
+// -------------------------------------------------------------
+// POINTER RELEASE
+// -------------------------------------------------------------
+function removePointer(e) {
+  if (mapViewport.hasPointerCapture(e.pointerId)) {
+    mapViewport.releasePointerCapture(e.pointerId);
+  }
+  pointers.delete(e.pointerId);
+
+  // If one finger is lifted during pinch, keep dragging with the other smoothly
+  if (pointers.size === 1) {
+    const [id, remaining] = [...pointers.entries()][0];
+    singlePointerId = id;
+    lastX = remaining.x;
+    lastY = remaining.y;
+  } else {
+    singlePointerId = null;
+    startDistance = 0;
+  }
+}
+
+mapViewport.addEventListener("pointerup", removePointer);
+mapViewport.addEventListener("pointercancel", removePointer);

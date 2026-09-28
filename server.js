@@ -3,9 +3,10 @@ const sql = require("mssql");
 const session = require("express-session");
 require("dotenv").config();
 
-
 const app = express();
 const port = 3000;
+
+
 
 
 app.use(express.json());
@@ -21,8 +22,11 @@ app.use(
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days (persists across reloads)
       sameSite: "lax",
     },
-  })
+  }),
 );
+// TEST LOGOUT
+
+app.use(express.static("public"))
 
 // SQL Server configuration
 const dbConfig = {
@@ -55,13 +59,12 @@ connectDatabase();
 
 // Agar user logged in nahi hai to login.html pe bhejo
 app.get("/", (req, res) => {
-  if (req.session && req.session.enroll_no) {
-    res.sendFile(__dirname + "/public/index.html");
-  } else {
-    res.redirect("/login.html");
+  if (req.session.enroll_no) {
+    return res.redirect("./index.html");
   }
+  return res.redirect("/login.html");
 });
-app.use(express.static("public"));
+;
 // LOGIN
 app.post("/login", async (req, res) => {
   const { enroll, password, batch } = req.body;
@@ -81,15 +84,18 @@ app.post("/login", async (req, res) => {
                 AND batch = @batch
             `);
 
-   if (result.recordset.length > 0) {
+    if (result.recordset.length > 0) {
       const student = result.recordset[0];
-      req.session.enroll_no = student.Enroll_no;
+      req.session.enroll_no = student.Enroll_no; // for login redirect loop
 
+      console.log("LOGIN SESSION:", req.session.enroll_no);
       // Ensure session is saved before sending the response
       req.session.save((err) => {
         if (err) {
           console.error("Session save error:", err);
-          return res.status(500).json({ success: false, message: "Session failed" });
+          return res
+            .status(500)
+            .json({ success: false, message: "Session failed" });
         }
 
         res.json({
@@ -102,7 +108,7 @@ app.post("/login", async (req, res) => {
           },
         });
       });
-    } else  {
+    } else {
       res.status(401).json({
         success: false,
         message: "Invalid enrollment number, password, or batch",
@@ -182,7 +188,6 @@ app.post("/register", async (req, res) => {
 });
 
 app.get("/fetch", async (req, res) => {
-  
   try {
     const enroll_no = req.session.enroll_no;
 
@@ -205,13 +210,11 @@ app.get("/fetch", async (req, res) => {
     let currentDay;
 
     const dayName = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    timeZone: "Asia/Kolkata",
-  });
-    
-  currentDay = dayName;
+      weekday: "long",
+      timeZone: "Asia/Kolkata",
+    });
 
-    
+    currentDay = dayName;
 
     const pool = await sql.connect(dbConfig);
 
@@ -262,13 +265,13 @@ app.get("/fetch", async (req, res) => {
     console.log("FETCHED DAY:", currentDay);
     console.log("NUMBER OF CLASSES:", result.recordset.length);
 
-   res.json({
-            success: true,
-            day: currentDay,
-            actualDay: actualDay,
-            count: result.recordset.length,
-            data: result.recordset,
-        });
+    res.json({
+      success: true,
+      day: currentDay,
+      actualDay: actualDay,
+      count: result.recordset.length,
+      data: result.recordset,
+    });
   } catch (error) {
     console.error("Fetch error:", error);
 
@@ -283,14 +286,15 @@ app.get("/fetch-schedule", async (req, res) => {
   try {
     const enroll_no = req.session.enroll_no;
     if (!enroll_no) {
-      return res.status(401).json({ success: false, message: "Please login first" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Please login first" });
     }
 
     const pool = await sql.connect(dbConfig);
     const result = await pool
       .request()
-      .input("Enroll_no", sql.VarChar(12), enroll_no)
-      .query(`
+      .input("Enroll_no", sql.VarChar(12), enroll_no).query(`
         SELECT
             l.enroll_no,
             l.name,
@@ -333,11 +337,44 @@ app.get("/fetch-schedule", async (req, res) => {
     });
   } catch (error) {
     console.error("Fetch schedule error:", error);
-    res.status(500).json({ success: false, message: "Failed to fetch full schedule" });
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to fetch full schedule" });
   }
+});
+// logout things
+
+// LOGOUT
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.log("Error while logging out:", err);
+
+      return res.status(500).json({
+        success: false,
+        message: "Logout failed",
+      });
+    }
+
+    res.clearCookie("connect.sid");
+
+    res.json({
+      success: true,
+      message: "Logout successful",
+    });
+  });
+});
+
+app.get("/logout", (req, res) => {
+    console.log("🔥 LOGOUT ROUTE HIT");
+
+    res.json({
+        success: true,
+        message: "Logout route is working"
+    });
 });
 
 // START SERVER
-app.listen(port,"0.0.0.0", () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on http://0.0.0.0:${port}`);
 });

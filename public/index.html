@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="title">
-                    <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/TimeFold-header-logo.svg">
+                    <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold-text-logo.svg">
                 </div>
 
                 <!-- <div class="notification">
@@ -230,7 +230,15 @@
             <section>
                 <div class="main-map-div">
 
-                    <div class="map-box">
+                    <div class="map-box" id="mapBox">
+
+                        <div class="map-viewport" id="mapViewport">
+
+                            <img id="mapImage"
+                                src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/no-lecture.svg"
+                                alt="College Building Map">
+
+                        </div>
 
                     </div>
 
@@ -242,14 +250,14 @@
                                     style="height: 20vh;">
                             </div>
 
-                            <div class="map-lecture" >
+                            <div class="map-lecture">
                                 <span id="map-lec">
-                                    
+
                                 </span>
-                                     
-                    
-                                
-                            
+
+
+
+
                             </div>
 
                         </div>
@@ -297,7 +305,7 @@
                         <div class="day-selector">
 
                             <button class="day active" data-day="monday" onclick="mon()">
-                                <strong id="mon" >MON</strong>
+                                <strong id="mon">MON</strong>
                             </button>
 
                             <button class="day" data-day="tuesday" onclick="tue()">
@@ -322,7 +330,7 @@
                         <!-- Timetable -->
                         <div class="schedule-list" id="lecture-container">
 
-                            
+
 
                         </div>
 
@@ -333,6 +341,31 @@
 
         </div>
 
+        <!-- -------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+                                                Custom aleart
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------  -->
+        <div id="customAlert" class="custom-alert">
+            <div class="alert-box">
+                <div class="alert-icon"></div>
+                <div id="customAlertMessage"></div>
+            </div>
+        </div>
+
+        <script>
+            window.alert = function (message) {
+                const alertBox = document.getElementById("customAlert");
+                const alertMessage = document.getElementById("customAlertMessage");
+
+                alertMessage.textContent = message;
+                alertBox.style.display = "flex";
+
+                setTimeout(() => {
+                    alertBox.style.display = "none";
+                }, 3000);
+            };
+        </script>
         <!-- -------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
                                                 SETTING PAGE
@@ -365,9 +398,22 @@
                         Save
                     </button>
 
-                    <button id="logout">
+                    <button id="logout" onclick="logout()">
                         Log Out
                     </button>
+                    <div class="theme-setting">
+                        <div class="theme-setting-text">
+                            <p class="bold-text">Theme</p>
+                            <p class="small-text">Switch between light and dark mode</p>
+                        </div>
+
+                        <div class="theme-toggle-wrap">
+                            <span id="theme-label">Light</span>
+                            <button id="theme-toggle" type="button" aria-label="Switch between light and dark mode"
+                                onclick="toggleTheme()"></button>
+                        </div>
+
+                    </div>
                 </div>
 
             </section>
