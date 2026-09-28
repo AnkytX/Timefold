@@ -245,8 +245,6 @@ input:focus::placeholder {
     align-items: center;
     margin: 0px auto;
     height: 9vh;
-    width: 60vw;
-    background-color: rgb(255, 255, 255);
     padding: 10px 10px 0px 10px;
     position: fixed;
     top: 0;
@@ -256,7 +254,7 @@ input:focus::placeholder {
 }
 
 .title img {
-    height: 13vh;
+    height: 9vh;
 }
 
 .main-title {
@@ -351,7 +349,7 @@ nav {
 
 /* HERO SECTION */
 .hero-first-div {
-    width: 50vw;
+    width: 53vw;
     gap: 1vw;
     display: flex;
     justify-content: center;
@@ -399,7 +397,7 @@ nav {
 
 .today {
     height: fit-content;
-    width: 51.5vw;
+    width: 51vw;
     margin: 13px auto 80px auto;
     padding: var(--card-padding);
     border-radius: var(--border-radius);
@@ -457,8 +455,8 @@ nav {
 .card-right-section img {
     height: 25vh;
     position: relative;
-    bottom: 60px;
-    left: 30px;
+    bottom: 58px;
+    left: 15px;
 }
 
 /* Styling of the content inside the Today Card */
@@ -784,6 +782,29 @@ p {
     width: 37vw;
     border: 1px solid rgb(204, 191, 191);
     border-radius: var(--small-divs-border-radius);
+}
+
+#save-changes {
+    border: none;
+    background-color: var(--yellow-card-color);
+    padding: 10px 15px;
+    border-radius: var(--small-divs-border-radius);
+    font-size: 1em;
+    color: var(--yellow-ink);
+    font-weight: 550;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+#save-changes:hover {
+    cursor: pointer;
+    background-color: var(--nav-color);
+    color: var(--nav-ink);
+}
+
+#save-changes:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
 }
 
 #logout {

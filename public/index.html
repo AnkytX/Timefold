@@ -316,76 +316,33 @@
                         <!-- Days -->
                         <div class="day-selector">
 
-                            <button class="day active" data-day="monday">
-                                <strong>MON</strong>
+                            <button class="day active" data-day="monday" onclick="mon()">
+                                <strong id="mon" >MON</strong>
                             </button>
 
-                            <button class="day" data-day="tuesday">
-                                <strong>TUE</strong>
+                            <button class="day" data-day="tuesday" onclick="tue()">
+                                <strong id="tue">TUE</strong>
                             </button>
 
-                            <button class="day" data-day="wednesday">
-                                <strong>WED</strong>
+                            <button class="day" data-day="wednesday" onclick="wed()">
+                                <strong id="wed">WED</strong>
                             </button>
 
-                            <button class="day" data-day="thursday">
-                                <strong>THUR</strong>
+                            <button class="day" data-day="thursday" onclick="thur()">
+                                <strong id="thur">THUR</strong>
                             </button>
 
-                            <button class="day" data-day="friday">
-                                <strong>FRI</strong>
+                            <button class="day" data-day="friday" onclick="fri()">
+                                <strong id="fri">FRI</strong>
                             </button>
 
                         </div>
 
 
                         <!-- Timetable -->
-                        <div class="schedule-list">
+                        <div class="schedule-list" id="lecture-container">
 
-                            <div class="schedule-card">
-
-                                <div class="time">
-
-                                    <span>
-                                        10:30 AM
-                                    </span>
-
-                                    <span>
-                                        12:30 PM
-                                    </span>
-
-                                </div>
-
-
-                                <div class="divider"></div>
-
-
-                                <div class="subject">
-
-                                    <strong>
-                                        DBMS
-                                    </strong>
-
-                                    <span>
-                                        4111
-                                    </span>
-
-                                </div>
-
-
-                                <div class="subject">
-
-                                    <strong>
-                                        RS
-                                    </strong>
-
-                                    <span>
-                                        Electrical Department
-                                    </span>
-
-                                </div>
-
-                            </div>
+                            
 
                         </div>
 
@@ -423,6 +380,10 @@
 
                         <input type="text" id="setting-input" placeholder="Piyush Dubey">
                     </div>
+
+                    <button id="save-changes">
+                        Save
+                    </button>
 
                     <button id="logout">
                         Log Out

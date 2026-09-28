@@ -204,15 +204,14 @@ app.get("/fetch", async (req, res) => {
 
     let currentDay;
 
-    // Saturday or Sunday → Monday
-    if (actualDay === "saturday" || actualDay === "sunday") {
-      currentDay = "monday";
-    } else {
-      currentDay = actualDay;
-    }
+    const dayName = new Date().toLocaleDateString("en-US", {
+    weekday: "long",
+    timeZone: "Asia/Kolkata",
+  });
+    
+  currentDay = dayName;
 
-    console.log("ACTUAL DAY:", actualDay);
-    console.log("FETCHING DAY:", currentDay);
+    
 
     const pool = await sql.connect(dbConfig);
 
@@ -225,19 +224,15 @@ app.get("/fetch", async (req, res) => {
                     l.name,
                     l.batch,
                     t.day,
-
                     CONVERT(VARCHAR(5), t.start_time, 108)
                     AS start_time,
-
                     CONVERT(VARCHAR(5), t.end_time, 108)
                     AS end_time,
-
                     s.subject_code,
                     s.subject_name,
                     f.faculty_code,
                     t.room,
                     t.type
-
                 FROM dbo.login l
 
                 JOIN dbo.timetable_batch tb
@@ -281,6 +276,64 @@ app.get("/fetch", async (req, res) => {
       success: false,
       message: "Failed to fetch timetable",
     });
+  }
+});
+
+app.get("/fetch-schedule", async (req, res) => {
+  try {
+    const enroll_no = req.session.enroll_no;
+    if (!enroll_no) {
+      return res.status(401).json({ success: false, message: "Please login first" });
+    }
+
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input("Enroll_no", sql.VarChar(12), enroll_no)
+      .query(`
+        SELECT
+            l.enroll_no,
+            l.name,
+            l.batch,
+            t.day,
+            CONVERT(VARCHAR(5), t.start_time, 108) AS start_time,
+            CONVERT(VARCHAR(5), t.end_time, 108) AS end_time,
+            s.subject_code,
+            s.subject_name,
+            f.faculty_code,
+            t.room,
+            t.type
+        FROM dbo.login l
+        JOIN dbo.timetable_batch tb ON l.batch = tb.batch
+        JOIN dbo.timetable t ON tb.timetable_id = t.timetable_id
+        JOIN dbo.subject s ON t.subject_id = s.subject_id
+        JOIN dbo.faculty f ON t.faculty_id = f.faculty_id
+        WHERE l.enroll_no = @Enroll_no
+          AND t.sem = CASE
+              WHEN LEFT(l.enroll_no, 2) = '25' THEN 3
+              WHEN LEFT(l.enroll_no, 2) = '26' THEN 1
+          END
+        ORDER BY 
+            CASE LOWER(t.day)
+                WHEN 'monday'    THEN 1
+                WHEN 'tuesday'   THEN 2
+                WHEN 'wednesday' THEN 3
+                WHEN 'thursday'  THEN 4
+                WHEN 'friday'    THEN 5
+                WHEN 'saturday'  THEN 6
+                WHEN 'sunday'    THEN 7
+                ELSE 8
+            END,
+            t.start_time;
+      `);
+
+    res.json({
+      success: true,
+      data: result.recordset,
+    });
+  } catch (error) {
+    console.error("Fetch schedule error:", error);
+    res.status(500).json({ success: false, message: "Failed to fetch full schedule" });
   }
 });
 

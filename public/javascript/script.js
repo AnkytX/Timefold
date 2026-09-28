@@ -5,58 +5,58 @@
 // -----------------------------------------------------------------------------------------------------------------------------
 
 function showPage(pageId) {
+  document.querySelectorAll(".page-section").forEach((page) => {
+    page.classList.remove("active");
+  });
 
-    document.querySelectorAll(".page-section").forEach(page => {
-        page.classList.remove("active");
-    });
+  document.getElementById(pageId).classList.add("active");
 
-    document.getElementById(pageId).classList.add("active");
+  document.querySelectorAll(".nav-button-div").forEach((button) => {
+    button.classList.remove("current-page");
+  });
 
-    document.querySelectorAll(".nav-button-div").forEach(button => {
-        button.classList.remove("current-page");
-    });
+  const pageOrder = {
+    "home-page": 0,
+    "map-page": 1,
+    "schedule-page": 2,
+    "notice-page": 3,
+    "setting-page": 4,
+  };
 
-    const pageOrder = {
-        "home-page": 0,
-        "map-page": 1,
-        "schedule-page": 2,
-        "notice-page": 3,
-        "setting-page": 4
-    };
+  document
+    .querySelectorAll(".nav-button-div")
+    [pageOrder[pageId]].classList.add("current-page");
 
-    document.querySelectorAll(".nav-button-div")[pageOrder[pageId]]
-        .classList.add("current-page");
-
-    // Remember current page in URL
-    window.location.hash = pageId;
+  // Remember current page in URL
+  window.location.hash = pageId;
 }
-
 
 // Open the page stored in URL when the website loads
 window.addEventListener("DOMContentLoaded", () => {
+  const pageId = window.location.hash.substring(1);
 
-    const pageId = window.location.hash.substring(1);
-
-    if (
-        pageId === "home-page" ||
-        pageId === "map-page" ||
-        pageId === "schedule-page" ||
-        pageId === "notice-page" ||
-        pageId === "setting-page"
-    ) {
-        showPage(pageId);
-    } else {
-        showPage("home-page");
-    }
-
+  if (
+    pageId === "home-page" ||
+    pageId === "map-page" ||
+    pageId === "schedule-page" ||
+    pageId === "notice-page" ||
+    pageId === "setting-page"
+  ) {
+    showPage(pageId);
+  } else {
+    showPage("home-page");
+  }
 });
-
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     // 1. Fetch data from server
     const response = await fetch("/fetch", {
       credentials: "include",
     });
+    if (response.status === 401) {
+      window.location.href = "/login.html";
+      return;
+    }
 
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
@@ -111,7 +111,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       const code = String(roomcode).padStart(4, "0");
       const departments = {
         8: "Mining Department",
-        6: "Civil Department",
+        6: "Workshop",
+        7: "Civil Department",
         5: "Mechanical Department",
         4: "Electrical Department",
         2: "Library Department",
@@ -219,24 +220,69 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }
     } else {
-      if (hide_current) {
-        hide_current.style.display = "";
-        hide_current.innerHTML = `
-          <div class="bold-text">
-            Today Class Over
-          </div>
-        `;
+      // 1. Check Lunch Window (12:30 PM - 1:00 PM)
+      const lunchstart = toMinutes("12:30");
+      const lunchend = toMinutes("13:00");
+      const islunchtime = currentHour >= lunchstart && currentHour < lunchend;
+
+      if (islunchtime) {
+        if (hide_current) {
+          hide_current.style.display = "";
+          hide_current.innerHTML = `<div class="bold-text">Its Lunch Time 🍛</div>`;
+        }
+
+        if (hide_next) {
+          hide_next.style.display = "";
+          // During lunch, next class is the first afternoon class from upcoming_class
+          if (upcoming_class !== -1) {
+            const next_class = timetableData[upcoming_class];
+            if (nextSubEl) nextSubEl.innerText = next_class.subject_code;
+            if (nextStartTimeEl)
+              nextStartTimeEl.innerText = formatTime(next_class.start_time);
+            if (nextEndTimeEl)
+              nextEndTimeEl.innerText = formatTime(next_class.end_time);
+            if (nextProfessorEl)
+              nextProfessorEl.innerText = next_class.faculty_code;
+            if (nextRoomEl) nextRoomEl.innerText = next_class.room;
+            if (nextDepartmentEl)
+              nextDepartmentEl.innerText = getdep(next_class.room).department;
+          } else {
+            hide_next.innerHTML = `<div class="bold-text">No More Classes Today</div>`;
+          }
+        }
       }
-      if (hide_next) {
-        hide_next.style.display = "";
-        hide_next.innerHTML = `
-          <div class="bold-text">
-            Today Class Over
-          </div>
-        `;
+      // 2. Free Period / Gap Between Classes
+      else if (upcoming_class !== -1) {
+        if (hide_current) {
+          hide_current.style.display = "";
+          hide_current.innerHTML = `<div class="bold-text">Break / Free Period</div>`;
+        }
+
+        if (hide_next) {
+          hide_next.style.display = "";
+          const next_class = timetableData[upcoming_class];
+          if (nextSubEl) nextSubEl.innerText = next_class.subject_code;
+          if (nextStartTimeEl)
+            nextStartTimeEl.innerText = formatTime(next_class.start_time);
+          if (nextEndTimeEl)
+            nextEndTimeEl.innerText = formatTime(next_class.end_time);
+          if (nextProfessorEl)
+            nextProfessorEl.innerText = next_class.faculty_code;
+          if (nextRoomEl) nextRoomEl.innerText = next_class.room;
+          if (nextDepartmentEl)
+            nextDepartmentEl.innerText = getdep(next_class.room).department;
+        }
+      } else {
+        if (hide_current) {
+          hide_current.style.display = "";
+          hide_current.innerHTML = `<div class="bold-text">Today Class Over</div>`;
+        }
+        if (hide_next) {
+          hide_next.style.display = "";
+          hide_next.innerHTML = `<div class="bold-text">Today Class Over</div>`;
+        }
       }
     }
-    // 5 PM  se lekar subah 9:30 AM tak
 
     const todayLecturesContainer = document.getElementById("today-lectures");
 
@@ -309,283 +355,302 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (typeof loadTimetable === "function") {
       loadTimetable(timetableData);
     }
+
+    const dayName = new Date().toLocaleDateString("en-US", {
+      weekday: "long",
+      timeZone: "Asia/Kolkata",
+    });
+
+    if (dayName === "Sunday" || dayName === "Saturday") {
+      const message = `<div class="bold-text">Today Class Over</div>`;
+
+      [hide_current, hide_next].forEach((el) => {
+        if (el) {
+          el.style.display = "";
+          el.innerHTML = message;
+        }
+      });
+    }
   } catch (error) {
     console.error("Error loading timetable:", error);
   }
+
+  // Check if it's the saturday or sunday
 });
 
+// ========================================================
+// SCHEDULE JAVASCRIPT
+// ========================================================
 
+let weeklySchedule = [];
+let mondaySchedule = [];
+let tuesdaySchedule = [];
+let wednesdaySchedule = [];
+let thursdaySchedule = [];
+let fridaySchedule = [];
 
-// -----------------------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------------
-//                                                       SCHEDULE JAVASCRIPT
-// -----------------------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------------
-
-// const timetable = {
-
-//     monday: [
-//         {
-//             start: "10:30 AM",
-//             end: "12:30 PM",
-//             subject: "DS",
-//             room: "4111",
-//             professor: "PGV",
-//             department: "Electrical Department"
-//         },
-
-//         {
-//             start: "01:00 PM",
-//             end: "02:00 PM",
-//             subject: "DS",
-//             room: "8113",
-//             professor: "SDJ",
-//             department: "Mining Department"
-//         }, 
-
-//         {
-//             start: "02:00 AM",
-//             end: "03:00 PM",
-//             subject: "DBMS",
-//             room: "8113",
-//             professor: "RS",
-//             department: "Mining Department"
-//         },
-
-//         {
-//             start: "03:10 AM",
-//             end: "05:10 PM",
-//             subject: "DF",
-//             room: "8114",
-//             professor: "KMG",
-//             department: "Mining Department"
-//         }
-//     ],
-
-
-//     tuesday: [
-//         {
-//             start: "10:30 AM",
-//             end: "12:30 PM",
-//             subject: "SL",
-//             room: "Library",
-//             professor: "-",
-//             department: "Library"
-//         },
-
-//         {
-//             start: "01:00 PM",
-//             end: "02:00 PM",
-//             subject: "DBMS",
-//             room: "8113",
-//             professor: "SDJ",
-//             department: "Mining Department"
-//         }, 
-
-//         {
-//             start: "02:00 AM",
-//             end: "03:00 PM",
-//             subject: "DBMS",
-//             room: "8113",
-//             professor: "RS",
-//             department: "Mining Department"
-//         },
-
-//         {
-//             start: "03:10 AM",
-//             end: "05:10 PM",
-//             subject: "DF",
-//             room: "8114",
-//             professor: "KMG",
-//             department: "Mining Department"
-//         }
-//     ],
-
-
-//     wednesday: [
-//         {
-//             start: "10:30 AM",
-//             end: "12:30 PM",
-//             subject: "DBMS",
-//             room: "4111",
-//             professor: "RS",
-//             department: "Computer Department"
-//         }
-//     ],
-
-
-//     thursday: [
-//         {
-//             start: "09:30 AM",
-//             end: "11:30 AM",
-//             subject: "Java",
-//             room: "4103",
-//             professor: "VP",
-//             department: "Computer Department"
-//         },
+// --------------------------------------------------------
+// FORMAT TIME
+// --------------------------------------------------------
 
-//         {
-//             start: "01:30 PM",
-//             end: "02:30 PM",
-//             subject: "OS",
-//             room: "4102",
-//             professor: "AK",
-//             department: "Computer Department"
-//         }
-//     ],
+function formatScheduleTime(time) {
+  if (!time || typeof time !== "string" || !time.includes(":")) {
+    return "--:--";
+  }
 
+  const [hours, minutes] = time.split(":");
 
-//     friday: [
-//         {
-//             start: "10:30 AM",
-//             end: "12:30 PM",
-//             subject: "DS",
-//             room: "4201",
-//             professor: "PK",
-//             department: "Computer Department"
-//         }
-//     ]
+  const date = new Date();
+  date.setHours(Number(hours), Number(minutes), 0, 0);
 
-// };
+  return date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
 
+// --------------------------------------------------------
+// SHOW SCHEDULE CARDS
+// --------------------------------------------------------
 
-// // Get all day buttons
-// const dayButtons = document.querySelectorAll(
-//     "#schedule-page .day"
-// );
+function showSchedule(schedule) {
+  function getdep(roomcode) {
+      if (!roomcode) return { department: "Unknown", floor: 0 };
+      const code = String(roomcode).padStart(4, "0");
+      const departments = {
+        8: "Mining Department",
+        6: "Civil Department",
+        5: "Mechanical Department",
+        4: "Electrical Department",
+        2: "Library Department",
+      };
 
+      return {
+        department: departments[code[0]] || "Unknown",
+        floor: Number(code[1]),
+      };
+    }
+  const container = document.getElementById("lecture-container");
 
-// // Get schedule list
-// const scheduleList = document.querySelector(
-//     "#schedule-page .schedule-list"
-// );
+  if (!container) return;
 
+  if (!schedule || schedule.length === 0) {
+    container.innerHTML = `
+      <div class="schedule-empty">
+        No classes scheduled
+      </div>
+    `;
 
-// // Function to show schedule
-// function showSchedule(day) {
+    return;
+  }
 
-//     // Remove active from all buttons
-//     dayButtons.forEach(button => {
-//         button.classList.remove("active");
-//     });
+  container.innerHTML = schedule
+    .map((lecture) => {
+      const formattedStartTime = formatScheduleTime(lecture.start_time);
 
+      const formattedEndTime = formatScheduleTime(lecture.end_time);
 
-//     // Add active to selected button
-//     const selectedButton = document.querySelector(
-//         `#schedule-page .day[data-day="${day}"]`
-//     );
+      const faculty = lecture.faculty_code || "Staff";
 
-//     if (selectedButton) {
-//         selectedButton.classList.add("active");
-//     }
+      const room = lecture.room || "TBA";
 
+      const subject = lecture.subject_code || "Lecture";
 
-//     // Clear old schedule
-//     scheduleList.innerHTML = "";
+      const department = getdep(room).department;
 
+      return `
+        <div class="schedule-card">
 
-//     // Get selected day's schedule
-//     const schedule = timetable[day] || [];
+          <div class="time">
 
+            <span>
+              ${formattedStartTime}
+            </span>
 
-//     // If there are no classes
-//     if (schedule.length === 0) {
+            <span>
+              ${formattedEndTime}
+            </span>
 
-//         scheduleList.innerHTML = `
-//             <div class="schedule-card">
+          </div>
 
-//                 <div class="subject">
 
-//                     <strong>No classes</strong>
+          <div class="divider"></div>
 
-//                     <span>
-//                         Nothing scheduled for today
-//                     </span>
 
-//                 </div>
+          <div class="subject">
 
-//             </div>
-//         `;
+            <strong>
+              ${subject}
+            </strong>
 
-//         return;
-//     }
+            <span>
+              ${room}
+            </span>
 
+          </div>
 
-//     // Create schedule cards
-//     schedule.forEach(classInfo => {
 
-//         const card = document.createElement("div");
+          <div class="subject">
 
-//         card.className = "schedule-card";
+            <strong>
+              ${faculty}
+            </strong>
 
+            <span>
+              ${department}
+            </span>
 
-//         card.innerHTML = `
+          </div>
 
-//             <div class="time">
+        </div>
+      `;
+    })
+    .join("");
+}
 
-//                 <span>
-//                     ${classInfo.start}
-//                 </span>
+// --------------------------------------------------------
+// ACTIVE DAY BUTTON
+// --------------------------------------------------------
 
-//                 <span>
-//                     ${classInfo.end}
-//                 </span>
+function setActiveDay(day) {
+  document.querySelectorAll(".day").forEach((button) => {
+    button.classList.remove("active");
+  });
 
-//             </div>
+  const button = document.querySelector(`.day[data-day="${day}"]`);
 
+  if (button) {
+    button.classList.add("active");
+  }
+}
 
-//             <div class="divider"></div>
+// --------------------------------------------------------
+// DAY BUTTON FUNCTIONS
+// --------------------------------------------------------
 
+function mon() {
+  setActiveDay("monday");
 
-//             <div class="subject">
+  showSchedule(mondaySchedule);
+}
 
-//                 <strong>
-//                     ${classInfo.subject}
-//                 </strong>
+function tue() {
+  setActiveDay("tuesday");
 
-//                 <span>
-//                     ${classInfo.room}
-//                 </span>
+  showSchedule(tuesdaySchedule);
+}
 
-//             </div>
+function wed() {
+  setActiveDay("wednesday");
 
+  showSchedule(wednesdaySchedule);
+}
 
-//             <div class="subject">
+function thur() {
+  setActiveDay("thursday");
 
-//                 <strong>
-//                     ${classInfo.professor}
-//                 </strong>
+  showSchedule(thursdaySchedule);
+}
 
-//                 <span>
-//                     ${classInfo.department}
-//                 </span>
+function fri() {
+  setActiveDay("friday");
 
-//             </div>
+  showSchedule(fridaySchedule);
+}
 
-//         `;
+// --------------------------------------------------------
+// LOAD WEEKLY SCHEDULE
+// --------------------------------------------------------
 
-
-//         scheduleList.appendChild(card);
-
-//     });
-
-// }
-
-
-// Add click event to every day button
-dayButtons.forEach(button => {
-
-    button.addEventListener("click", () => {
-
-        const day = button.dataset.day;
-
-        showSchedule(day);
-
+async function loadSchedule() {
+  try {
+    const response_schedule = await fetch("/fetch-schedule", {
+      credentials: "include",
     });
 
-});
+    if (response_schedule.status === 401) {
+      window.location.href = "/login.html";
+
+      return;
+    }
+
+    if (!response_schedule.ok) {
+      throw new Error(`HTTP error! status: ${response_schedule.status}`);
+    }
+
+    const dataSchedule = await response_schedule.json();
+
+    console.log("SCHEDULE RESPONSE:", dataSchedule);
+
+    weeklySchedule = dataSchedule.data || [];
+
+    // ----------------------------------------------------
+    // FILTER DAYS
+    // ----------------------------------------------------
+
+    mondaySchedule = weeklySchedule.filter(
+      (item) => item.day?.trim().toLowerCase() === "monday",
+    );
+
+    tuesdaySchedule = weeklySchedule.filter(
+      (item) => item.day?.trim().toLowerCase() === "tuesday",
+    );
+
+    wednesdaySchedule = weeklySchedule.filter(
+      (item) => item.day?.trim().toLowerCase() === "wednesday",
+    );
+
+    thursdaySchedule = weeklySchedule.filter(
+      (item) => item.day?.trim().toLowerCase() === "thursday",
+    );
+
+    fridaySchedule = weeklySchedule.filter(
+      (item) => item.day?.trim().toLowerCase() === "friday",
+    );
+
+    console.log("Monday:", mondaySchedule);
+    console.log("Tuesday:", tuesdaySchedule);
+    console.log("Wednesday:", wednesdaySchedule);
+    console.log("Thursday:", thursdaySchedule);
+    console.log("Friday:", fridaySchedule);
+
+    // ----------------------------------------------------
+    // AUTOMATICALLY SHOW TODAY
+    // ----------------------------------------------------
+
+    const today = new Date().toLocaleDateString("en-US", {
+      weekday: "long",
+      timeZone: "Asia/Kolkata",
+    });
+
+    if (today === "Monday") {
+      mon();
+    } else if (today === "Tuesday") {
+      tue();
+    } else if (today === "Wednesday") {
+      wed();
+    } else if (today === "Thursday") {
+      thur();
+    } else if (today === "Friday") {
+      fri();
+    } else {
+      const container = document.getElementById("lecture-container");
+
+      if (container) {
+        container.innerHTML = `
+          <div class="schedule-empty">
+            No classes today
+          </div>
+        `;
+      }
+    }
+  } catch (err) {
+    console.error("Error fetching weekly schedule:", err);
+  }
+}
+
+loadSchedule();
 
 
-// Show Monday by default
-showSchedule("monday");
 
