@@ -17,6 +17,8 @@
         href="https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&family=Noto+Sans+Balinese:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Varela+Round&display=swap"
         rel="stylesheet">
 
+    <link rel="shortcut icon"
+        href="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/TimeFold-favicon-clock.svg">
 
     <link rel="stylesheet" href="css\style.css">
 </head>
@@ -40,22 +42,17 @@
                 </div>
 
                 <div class="title">
-                    <p class="main-title">
-                        TimeFold
-                    </p>
-
+                    <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/TimeFold-header-logo.svg">
                 </div>
 
-                <div class="notification">
-                    <a style="color: black;" href="notice.html">
+                <!-- <div class="notification">
                         <svg xmlns="http://www.w3.org/2000/svg" width="2.5em" height="2.5em" viewBox="0 0 24 24">
                             <title>bell</title>
                             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                 stroke-width="1.7"
                                 d="M12 3C14.7614 3 17 5.23858 17 8C17 13 19 14 19 15C19 15.5523 18.5523 16 18 16H6C5.44772 16 5 15.5523 5 15C5 14 7 13 7 8C7 5.23858 9.23858 3 12 3ZM10.2679 20C10.6252 20.6188 11.2855 21 12 21C12.7145 21 13.3748 20.6188 13.7321 20" />
                         </svg>
-                    </a>
-                </div>
+                </div> -->
             </div>
 
         </header>
@@ -170,8 +167,8 @@
                                             <title>location</title>
                                             <path fill="#450D5F"
                                                 d="M8 1a6 6 0 0 1 6 6c0 2.874-3.097 6.016-4.84 7.558c-.67.59-1.65.59-2.32 0C5.098 13.016 2 9.874 2 7a6 6 0 0 1 6-6m0 1a5 5 0 0 0-5 5c0 1.108.614 2.395 1.57 3.683c.933 1.258 2.087 2.377 2.934 3.126c.29.256.702.256.992 0c.847-.749 2-1.867 2.935-3.126C12.386 9.395 13 8.108 13 7a5 5 0 0 0-5-5m0 2.75a2.25 2.25 0 1 1 0 4.5a2.25 2.25 0 0 1 0-4.5m0 1a1.25 1.25 0 1 0 0 2.5a1.25 1.25 0 0 0 0-2.5" />
-                                        </svg> 
-                                        <span id="next-room">8010</span> 
+                                        </svg>
+                                        <span id="next-room">8010</span>
                                         <span id="next-depa">Minning Department</span>
                                     </div>
                                 </div>
@@ -313,13 +310,6 @@
 
             <section>
 
-                <div class="schedule-title">
-                    <h1>
-                        SCHEDULE
-                    </h1>
-                    <hr class="seperation-line">
-                </div>
-
                 <div class="schedule-container">
                     <div class="timetable">
 
@@ -414,6 +404,31 @@
 
         <div id="setting-page" class="page-section">
             <section>
+                <div class="setting-title">
+
+                    <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/setting.svg">
+
+                    <span>
+                        <h1>
+                            SETTINGS
+                        </h1>
+                    </span>
+                </div>
+
+                <div class="main-setting">
+                    <div>
+                        <p class="bold-text">
+                            Name
+                        </p>
+
+                        <input type="text" id="setting-input" placeholder="Piyush Dubey">
+                    </div>
+
+                    <button id="logout">
+                        Log Out
+                    </button>
+                </div>
+
             </section>
         </div>
 
@@ -472,7 +487,7 @@
 
             <div class="nav-button-div">
                 <button class="nav-button" onclick="showPage('setting-page')">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1.9em" height="1.9em" viewBox="0 0 24 24"
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.8em" height="1.8em" viewBox="0 0 24 24"
                         fill="#ffffff">
                         <title fill="#ffffff">settings-outline</title>
                         <g fill="#ffffff" fill-rule="evenodd" clip-rule="evenodd">
@@ -492,7 +507,7 @@
 
     </main>
 
-    <script src="/javascript/script.js"></script>
+    <script src="javascript/script.js"></script>
 
 </body>
 

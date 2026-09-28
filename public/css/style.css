@@ -1,10 +1,11 @@
 :root {
     --background-colour: white;
     --nav-color: rgb(47, 20, 64);
+    --nav-ink: rgb(211, 138, 245);
     --purple-card-color: rgb(211, 138, 245);
     --purple-ink: rgb(69, 13, 95);
     --yellow-card-color: rgb(244, 210, 72);
-    --yellow-card-content-color: rgb(248, 225, 136);
+    --yellow-card-content-color: rgba(247, 215, 91, 0.884);
     --yellow-ink: rgb(93, 78, 18);
     --yellow-off-ink: rgba(93, 78, 18, 0.871);
     --pink-card-color: rgb(244, 147, 171);
@@ -62,7 +63,11 @@ a {
     margin: 0px auto;
 }
 
-.main-div img {
+.title-sub-div > img{
+    height: 10vh;
+}
+
+.login-img {
     height: 25vh;
     margin: 5px auto 0px auto;
 }
@@ -72,7 +77,7 @@ a {
     font-family: "Edu NSW ACT Cursive", cursive;
     font-size: 3em;
     align-items: center;
-    justify-content: baseline;
+    /* justify-content: baseline; */
     font-weight: 500;
     width: fit-content;
     margin: 10vh auto 0px auto;
@@ -100,7 +105,10 @@ a {
     margin: 15px auto 0px auto;
 }
 
-input {
+#name,
+#batch,
+#password,
+#enroll {
     font-size: 1em;
     padding: 0px 10px;
     height: 8vh;
@@ -151,6 +159,82 @@ input:focus::placeholder {
 
 /* ---------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
+                                                REGISTER PAGE
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------ */
+
+.title-sub-div > img{
+    height: 10vh;
+}
+
+.register-img {
+    height: 25vh;
+    margin: 5px auto 0px auto;
+}
+
+.register-title {
+    display: flex;
+    font-family: "Edu NSW ACT Cursive", cursive;
+    font-size: 3em;
+    align-items: center;
+    /* justify-content: baseline; */
+    font-weight: 500;
+    width: fit-content;
+    margin: 5vh auto 0px auto;
+}
+
+.register-div {
+    background-color: var(--purple-card-color);
+    padding: 20px 30px;
+    width: fit-content;
+    border-radius: var(--border-radius);
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+    box-shadow: var(--shadow);
+}
+
+#confirm_password {
+    font-size: 1em;
+    padding: 0px 10px;
+    height: 8vh;
+    border: 0.5px white;
+    box-shadow: var(--shadow);
+}
+
+#passwordMessage {
+    display: flex;
+    font-size: 1rem;
+    font-weight: 500;
+    align-items: center;
+    height: 4vh;
+    width: 15vw;
+    margin: 10px 15px;
+    color: var(--purple-ink);
+}
+
+.register-button {
+    background-color: var(--yellow-card-color);
+    color: var(--yellow-ink);
+    font-size: 1.5rem;
+    box-shadow: var(--shadow);
+    border: none;
+    transition: all 0.15s ease-in-out;
+}
+
+.register-button:hover {
+    cursor: pointer;
+    background-color: var(--nav-color);
+    color: var(--nav-ink);
+}
+
+.register-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
                                                 HEADER
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------ */
@@ -159,32 +243,32 @@ input:focus::placeholder {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0px auto 10px auto;
-    height: 50px;
-    width: 63vw;
+    margin: 0px auto;
+    height: 9vh;
+    width: 60vw;
     background-color: rgb(255, 255, 255);
-    padding: 8px 10px;
+    padding: 10px 10px 0px 10px;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-
 }
 
-.title {
-    text-align: center;
+.title img {
+    height: 13vh;
 }
 
 .main-title {
     font-family: "Edu NSW ACT Cursive", cursive;
     font-weight: 520;
-    font-size: 1.8rem;
+    font-size: 3rem;
+    text-align: end;
 }
 
 .profile-pic {
-    height: 45px;
-    width: 45px;
+    height: 50px;
+    width: 50px;
     border-radius: 50%;
     background-color: rgba(37, 6, 56, 0.247);
     display: flex;
@@ -267,8 +351,8 @@ nav {
 
 /* HERO SECTION */
 .hero-first-div {
-    width: 60vw;
-    gap: 15px;
+    width: 50vw;
+    gap: 1vw;
     display: flex;
     justify-content: center;
     margin: 1px auto;
@@ -315,7 +399,7 @@ nav {
 
 .today {
     height: fit-content;
-    width: 58vw;
+    width: 51.5vw;
     margin: 13px auto 80px auto;
     padding: var(--card-padding);
     border-radius: var(--border-radius);
@@ -496,7 +580,7 @@ nav {
 
 #notice-page section {
     /* background-color: red; */
-    width: 58vw;
+    width: 48vw;
     margin: 0px auto;
 }
 
@@ -515,7 +599,6 @@ p {
     margin: 0px auto;
     width: fit-content;
     padding: 0px 10px;
-    height: 105vh;
 }
 
 .schedule-title {
@@ -556,20 +639,15 @@ p {
 .day {
     border: none;
     border-radius: 10px;
-
     background: #eeeaf1;
     /* color: var(--yellow-ink); */
     color: var(--purple-ink);
-
     padding: 10px 5px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     gap: 2px;
-
     font-family: inherit;
     cursor: pointer;
 }
@@ -590,6 +668,7 @@ p {
 .day.active {
     background: var(--yellow-card-color);
     color: var(--yellow-ink);
+    box-shadow: var(--shadow);
 }
 
 
@@ -608,6 +687,7 @@ p {
     min-height: 62px;
     padding: 12px 14px;
     background: var(--yellow-card-content-color);
+    box-shadow: var(--shadow);
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -630,8 +710,8 @@ p {
 /* DIVIDER */
 
 .divider {
-    width: 2px;
-    height: 45px;
+    width: 1px;
+    height: 30px;
     background: var(--yellow-ink);
     margin: 0 18px;
 }
@@ -654,4 +734,77 @@ p {
     font-size: 13px;
     font-weight: 800;
     margin-top: 2px;
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+                                                SETTING PAGE
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------ */
+
+#setting-page {
+    width: 48vw;
+    margin: 0px auto;
+}
+
+.setting-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--yellow-card-content-color);
+    border-radius: var(--small-divs-border-radius);
+    color: var(--yellow-ink);
+    height: 5vh;
+    width: 40vw;
+    margin: 20vh auto 0vh auto;
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+.setting-title h1 {
+    font-size: 2em;
+}
+
+.setting-title img {
+    height: 20vh;
+    position: relative;
+    bottom: 31.5px;
+}
+
+.main-setting {
+    width: 40vw;
+    margin: 30px auto;
+}
+
+#setting-input {
+    font-size: 1em;
+    padding: 0px 10px;
+    margin: 15px 0px;
+    height: 5vh;
+    width: 37vw;
+    border: 1px solid rgb(204, 191, 191);
+    border-radius: var(--small-divs-border-radius);
+}
+
+#logout {
+    border: none;
+    background-color: var(--yellow-card-color);
+    padding: 10px 15px;
+    border-radius: var(--small-divs-border-radius);
+    font-size: 1em;
+    color: var(--yellow-ink);
+    font-weight: 550;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+#logout:hover {
+    cursor: pointer;
+    background-color: var(--nav-color);
+    color: var(--nav-ink);
+}
+
+#logout:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
 }
