@@ -214,14 +214,14 @@ app.get("/fetch", async (req, res) => {
       timeZone: "Asia/Kolkata",
     });
 
-    currentDay = dayName;
+    currentDay = actualDay;
 
     const pool = await sql.connect(dbConfig);
 
     const result = await pool
       .request()
       .input("Enroll_no", sql.VarChar(12), enroll_no)
-      .input("currentDay", sql.VarChar(15), currentDay).query(`
+      .input("currentDay", sql.VarChar(15), actualDay).query(`
                 SELECT
                     l.enroll_no,
                     l.name,
@@ -252,7 +252,7 @@ app.get("/fetch", async (req, res) => {
 
                 WHERE l.enroll_no = @Enroll_no
 
-                 AND LOWER(t.day) = @currentDay
+                 AND LOWER(t.day) = LOWER(@currentDay)
 
                   AND t.sem = CASE
                       WHEN LEFT(l.enroll_no, 2) = '25' THEN 3
@@ -429,50 +429,54 @@ app.post("/password", async (req, res) => {
   }
 });
  // mname update
-app.get("/name", async (req,res)=>{
-  try{
-  const enroll_no = req.session.enroll_no;
-  if(!enroll_no)
-  {
-    return res(401).json({
-      success : false,
-      message : "Unautharized ,log in first"
-    })
-
-  }
-
-  const {Name} = req.body
-  if(Name || Name.trim() == ""){
-    alert("NAme can't be empty")
-  }
-  const pool = await sql.connect(dbConfig);
-  const reult = await pool.request().input("Name",sql.VarChar(8),Name.trim())
-  .input("Enroll_no", sql.VarChar(12), enroll_no).query(`
-    UPDATE dbo.login
-SET name = @name
-WHERE Enroll_no = @Enroll_no
-    `)
-  
-    if(result.rowsAffected[0] === 0){
+app.post("/name", async (req, res) => {
+  try {
+    const enroll_no = req.session.enroll_no;
+    if (!enroll_no) {
       return res.status(401).json({
-        success : false,
-        message: "User not found"
-
-      })
+        success: false,
+        message: "Unauthorized. Please log in first.",
+      });
     }
+
+    const { Name } = req.body;
+    if (!Name || Name.trim() === "") {
+      return res.status(400).json({
+        success: false,
+        message: "Name cannot be empty.",
+      });
+    }
+
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input("name", sql.VarChar(50), Name.trim())
+      .input("Enroll_no", sql.VarChar(12), enroll_no)
+      .query(`
+        UPDATE dbo.login
+        SET name = @name
+        WHERE Enroll_no = @Enroll_no
+      `);
+
+    if (result.rowsAffected[0] === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
     res.json({
-      success:true,
-      message:"Name update successfully "
-    })
-  }catch(err){
-    console.log("Name update error",error);
+      success: true,
+      message: "Name updated successfully",
+    });
+  } catch (err) {
+    console.error("Name update error:", err);
     res.status(500).json({
-      success:false,
-      message:"failed to update name"
-    })
-    
-  }  
-})
+      success: false,
+      message: "Failed to update name",
+    });
+  }
+});
 
 // START SERVER
 app.listen(port, "0.0.0.0", () => {

@@ -21,11 +21,63 @@ function showdashboard() {
   window.location.href = "/index.html";
 }
 
+
+
+
+let timetableData = []
+// -----------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------------
+//                                                    helper function
+// -----------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------------
+// Helper: decode department from room code
+    function getdep(roomcode) {
+      if (!roomcode) return { department: "Unknown", floor: 0 };
+      const code = String(roomcode).padStart(4, "0");
+      const departments = {
+        8: "Mining Department",
+        6: "Workshop",
+        7: "Civil Department",
+        5: "Mechanical Department",
+        4: "Electrical Department",
+        2: "Library Department",
+      };
+
+      return {
+        department: departments[code[0]] || "Unknown",
+        floor: Number(code[1]),
+      };
+    }
+    
+  // Helper: format time string to AM/PM
+    function formatTime(time) {
+      if (!time || typeof time !== "string" || !time.includes(":"))
+        return "--:--";
+      const [hours, minutes] = time.split(":");
+      const date = new Date();
+      date.setHours(Number(hours), Number(minutes), 0, 0);
+
+      return date.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+    }
+
+     // minut converter
+    function toMinutes(timeStr) {
+      const [h, m] = timeStr.split(":").map(Number);
+      return h * 60 + m;
+    }
+
+
+
 // -----------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------
 //                                                       NAV BAR JAVASCRIPT
 // -----------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------
+
 
 // ============================================================
 // DARK / LIGHT THEME
@@ -139,7 +191,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.warn("No timetable records found.");
       return;
     }
-    const timetableData = result.data;
+     timetableData = result.data;
 const now = new Date();
     const currentHour = now.getHours() * 60 + now.getMinutes();
     // Current class elements
@@ -180,30 +232,9 @@ const now = new Date();
     const map_room = document.getElementById("current-map-room");
     const delete_map_lec = document.getElementById("map-lec");
 
-    // Helper: decode department from room code
-    function getdep(roomcode) {
-      if (!roomcode) return { department: "Unknown", floor: 0 };
-      const code = String(roomcode).padStart(4, "0");
-      const departments = {
-        8: "Mining Department",
-        6: "Workshop",
-        7: "Civil Department",
-        5: "Mechanical Department",
-        4: "Electrical Department",
-        2: "Library Department",
-      };
-
-      return {
-        department: departments[code[0]] || "Unknown",
-        floor: Number(code[1]),
-      };
-    }
+    
     /////////////////////////////////////////////////
-    // minut converter
-    function toMinutes(timeStr) {
-      const [h, m] = timeStr.split(":").map(Number);
-      return h * 60 + m;
-    }
+   
     // tokan geneartion
     const currenttokan = timetableData.findIndex((lecture) => {
       const start = toMinutes(lecture.start_time);
@@ -445,20 +476,7 @@ const now = new Date();
         })
         .join("");
     }
-    // Helper: format time string to AM/PM
-    function formatTime(time) {
-      if (!time || typeof time !== "string" || !time.includes(":"))
-        return "--:--";
-      const [hours, minutes] = time.split(":");
-      const date = new Date();
-      date.setHours(Number(hours), Number(minutes), 0, 0);
-
-      return date.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      });
-    }
+  
 
     // ========================================================
     // HEADER (Student greeting & Date)
@@ -525,25 +543,8 @@ function formatScheduleTime(time) {
 // SHOW SCHEDULE CARDS
 // --------------------------------------------------------
 
-function showSchedule(schedule) {
-  function getdep(roomcode) {
-    if (!roomcode) return { department: "Unknown", floor: 0 };
-    const code = String(roomcode).padStart(4, "0");
-    const departments = {
-      8: "Mining Department",
-      6: "Civil Department",
-      5: "Mechanical Department",
-      4: "Electrical Department",
-      2: "Library Department",
-    };
-
-    return {
-      department: departments[code[0]] || "Unknown",
-      floor: Number(code[1]),
-    };
-  }
   ///// lecture of  doday logic
-
+   function showSchedule(schedule) { 
   const container = document.getElementById("lecture-container");
 
   if (!container) return;
@@ -615,8 +616,8 @@ function showSchedule(schedule) {
       `;
     })
     .join("");
-}
 
+  }
 // --------------------------------------------------------
 // ACTIVE DAY BUTTON
 // --------------------------------------------------------
@@ -653,7 +654,7 @@ function wed() {
   setActiveDay("wednesday");
 
   showSchedule(wednesdaySchedule);
-}
+} 
 
 function thur() {
   setActiveDay("thursday");
@@ -1126,23 +1127,7 @@ async function logout() {
 
 // map behaviar
 
-function getdep(roomcode) {
-  if (!roomcode) return { department: "Unknown", floor: 0 };
-  const code = String(roomcode).padStart(4, "0");
-  const departments = {
-    8: "Mining Department",
-    6: "Workshop",
-    7: "Civil Department",
-    5: "Mechanical Department",
-    4: "Electrical Department",
-    2: "Library Department",
-  };
 
-  return {
-    department: departments[code[0]] || "Unknown",
-    floor: Number(code[1]),
-  };
-}
 
 
 const MAP_URLS = {
@@ -1166,6 +1151,9 @@ const defoult_map = "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/ti
   const depart = getdep(roomCode).department;
   mapImage.src = MAP_URLS[depart] || defoult_map;
   }
+
+
+
   // save pasward 
   async function savepassward() {
   const passwordInputEl = document.getElementById("password-input");
@@ -1240,7 +1228,7 @@ const defoult_map = "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/ti
 
     if (response.ok && data.success) {
       alert("Name updated successfully!");
-      passwordInputEl.value = ""; // Clear input after successful update
+    nameunput.value = ""; // Clear input after successful update
     } else {
       alert(data.message || "Failed to update Name");
     }
@@ -1249,3 +1237,57 @@ const defoult_map = "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/ti
     alert("Server error, please try again later.");
   }
 }
+
+
+
+// -----------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------------
+//                                                       Notification
+// -----------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------------
+  const notifiedLectures = new Set()
+  
+          async function reqnotification() {
+ 
+                    if (!("Notification" in window)) {
+                      console.log("Browser does not support notification");
+                      return
+                    }
+                    if(Notification.permission ==="default"){
+                            await Notification.requestPermission();
+                    }
+            
+          }
+
+          
+          function sendnotification(lecture){
+                  
+                if(Notification.permission !== "granted"){
+                  return
+                }     
+                new Notification ("🔔 TimeFold — Upcoming Class",{
+                  body:`Next Lecture ${lecture.subject_code} will be start in 10 minuts \nRoom: ${lecture.room} \nDepartmrnt  ${getdep(lecture.room).department}`
+                  ,icon : "./icon.png"
+                })   
+          
+          }
+
+          function chekupcominglecture() {
+            if (!Array.isArray(timetableData) || timetableData.length === 0) return;
+             const current = new Date()
+             const getcurrentmin = current.getHours()*60 + current.getMinutes();
+             const todayDate = current.toDateString();
+             timetableData.forEach(lecture => {
+               const start = toMinutes(lecture.start_time)
+              const diff = start - getcurrentmin ;
+              const lectureKey = `${todayDate}_${lecture.subject_code}_${lecture.start_time}`;
+             if (diff > 0 && diff <= 10 && !notifiedLectures.has(lectureKey)) {
+      sendnotification(lecture);
+      notifiedLectures.add(lectureKey); // Mark as sent so it NEVER sends again
+    }
+               
+             });
+               
+          }
+          // Add an interval to periodically check every minute:
+setInterval(chekupcominglecture, 60000);
