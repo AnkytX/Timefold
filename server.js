@@ -2,7 +2,7 @@ const express = require("express");
 const sql = require("mssql");
 const session = require("express-session");
 require("dotenv").config();
-
+const bcrypt = require("bcrypt");
 const app = express();
 const port = 3000;
 
@@ -365,14 +365,114 @@ app.get("/logout", (req, res) => {
   });
 });
 
-app.get("/logout", (req, res) => {
-    console.log("🔥 LOGOUT ROUTE HIT");
+
+
+// UPDATE PASSWORD
+app.post("/password", async (req, res) => {
+  try {
+    // 1. Verify user session
+    const enroll_no = req.session.enroll_no;
+    if (!enroll_no) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized. Please log in first.",
+      });
+    }
+
+    const { password } = req.body;
+
+    // 2. Validate input
+    if (!password || password.trim() === "") {
+      return res.status(400).json({
+        success: false,
+        message: "Password cannot be empty.",
+      });
+    }
+
+   
+    if (password.length > 8) {
+      return res.status(400).json({
+        success: false,
+        message: "Password cannot exceed 8 characters.",
+      });
+    }
+
+    
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input("passwd", sql.VarChar(8), password.trim())
+      .input("Enroll_no", sql.VarChar(12), enroll_no)
+      .query(`
+        UPDATE dbo.login
+        SET passwd = @passwd
+        WHERE Enroll_no = @Enroll_no
+      `);
+
+    if (result.rowsAffected[0] === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User record not found.",
+      });
+    }
 
     res.json({
-        success: true,
-        message: "Logout route is working"
+      success: true,
+      message: "Password updated successfully!",
     });
+  } catch (error) {
+    console.error("Password update error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update password. Please try again.",
+    });
+  }
 });
+ // mname update
+app.get("/name", async (req,res)=>{
+  try{
+  const enroll_no = req.session.enroll_no;
+  if(!enroll_no)
+  {
+    return res(401).json({
+      success : false,
+      message : "Unautharized ,log in first"
+    })
+
+  }
+
+  const {Name} = req.body
+  if(Name || Name.trim() == ""){
+    alert("NAme can't be empty")
+  }
+  const pool = await sql.connect(dbConfig);
+  const reult = await pool.request().input("Name",sql.VarChar(8),Name.trim())
+  .input("Enroll_no", sql.VarChar(12), enroll_no).query(`
+    UPDATE dbo.login
+SET name = @name
+WHERE Enroll_no = @Enroll_no
+    `)
+  
+    if(result.rowsAffected[0] === 0){
+      return res.status(401).json({
+        success : false,
+        message: "User not found"
+
+      })
+    }
+    res.json({
+      success:true,
+      message:"Name update successfully "
+    })
+  }catch(err){
+    console.log("Name update error",error);
+    res.status(500).json({
+      success:false,
+      message:"failed to update name"
+    })
+    
+  }  
+})
 
 // START SERVER
 app.listen(port, "0.0.0.0", () => {

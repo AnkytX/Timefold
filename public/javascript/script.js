@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
     const result = await response.json();
-    console.log("FETCH RESPONSE:", result);
+   
 
     if (
       !result.success ||
@@ -140,7 +140,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
     const timetableData = result.data;
-
+const now = new Date();
+    const currentHour = now.getHours() * 60 + now.getMinutes();
     // Current class elements
     const currentClassNameEl = document.getElementById("current-class-sub");
     const currentStartTimeEl = document.getElementById(
@@ -167,9 +168,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const nextDepartmentEl = document.getElementById("next-depa");
     const next_location = document.getElementById("next-location");
 
-    const now = new Date();
-    const currentHour = now.getHours() * 60 + now.getMinutes();
-    console.log(currentHour);
+    
+ 
     const hide_current = document.getElementById("delet-current-class");
     const hide_next = document.getElementById("delete-next-class");
 
@@ -267,6 +267,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const current_class = timetableData[currenttokan];
       const next_tokan = currenttokan + 1;
       const next_class = timetableData[next_tokan]; // agla lecture agar exist kare
+      updateMapImage(current_class.room);
 
       // map ka data
       if (delete_map_lec) {
@@ -488,7 +489,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Error loading timetable:", error);
   }
 });
-
 // ========================================================
 // SCHEDULE JAVASCRIPT
 // ========================================================
@@ -689,7 +689,7 @@ async function loadSchedule() {
 
     const dataSchedule = await response_schedule.json();
 
-    console.log("SCHEDULE RESPONSE:", dataSchedule);
+   
 
     weeklySchedule = dataSchedule.data || [];
 
@@ -717,11 +717,7 @@ async function loadSchedule() {
       (item) => item.day?.trim().toLowerCase() === "friday",
     );
 
-    console.log("Monday:", mondaySchedule);
-    console.log("Tuesday:", tuesdaySchedule);
-    console.log("Wednesday:", wednesdaySchedule);
-    console.log("Thursday:", thursdaySchedule);
-    console.log("Friday:", fridaySchedule);
+    
 
     // ----------------------------------------------------
     // AUTOMATICALLY SHOW TODAY
@@ -1127,3 +1123,129 @@ async function logout() {
   img.addEventListener("load", apply);
   apply();
 })();
+
+// map behaviar
+
+function getdep(roomcode) {
+  if (!roomcode) return { department: "Unknown", floor: 0 };
+  const code = String(roomcode).padStart(4, "0");
+  const departments = {
+    8: "Mining Department",
+    6: "Workshop",
+    7: "Civil Department",
+    5: "Mechanical Department",
+    4: "Electrical Department",
+    2: "Library Department",
+  };
+
+  return {
+    department: departments[code[0]] || "Unknown",
+    floor: Number(code[1]),
+  };
+}
+
+
+const MAP_URLS = {
+  "Mining Department": "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/minning.svg",
+  "Civil Department": "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/civil.svg",
+  "Workshop": "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/workshop.svg",
+  "Library Department": "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/library.svg",
+  "Electrical Department": "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/electrical.svg",
+  "Mechanical Department": "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/mechanical.svg"
+};
+const defoult_map = "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/no-lecture.svg"
+
+
+  
+  function updateMapImage(roomCode){
+  const mapImage = document.getElementById('mapImage');
+  if (!roomCode) {
+    mapImage.src = defoult_map;
+    return;
+  }
+  const depart = getdep(roomCode).department;
+  mapImage.src = MAP_URLS[depart] || defoult_map;
+  }
+  // save pasward 
+  async function savepassward() {
+  const passwordInputEl = document.getElementById("password-input");
+  
+  if (!passwordInputEl) {
+    console.error("Input element #pasward-input not found in DOM");
+    return;
+  }
+
+  const password = passwordInputEl.value.trim();
+
+  if (!password) {
+    alert("Please enter password first");
+    return; // Stop execution here
+  }
+
+  try {
+    const response = await fetch("/password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        password: password, // Sending the plain text value
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      alert("Password updated successfully!");
+      passwordInputEl.value = ""; // Clear input after successful update
+    } else {
+      alert(data.message || "Failed to update password");
+    }
+  } catch (error) {
+    console.error("Error updating password:", error);
+    alert("Server error, please try again later.");
+  }
+}
+
+// for  name 
+  async function savename() {
+  const nameunput = document.getElementById("Name");
+  
+  if (!nameunput) {
+    console.error("Input element #Name not found in DOM");
+    return;
+  }
+
+  const Name = nameunput.value.trim();
+
+  if (!Name) {
+    alert("Please enter Name first");
+    return; // Stop execution here
+  }
+
+  try {
+    const response = await fetch("/name", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+       Name : Name, // Sending the plain text value
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      alert("Name updated successfully!");
+      passwordInputEl.value = ""; // Clear input after successful update
+    } else {
+      alert(data.message || "Failed to update Name");
+    }
+  } catch (error) {
+    console.error("Error updating Name:", error);
+    alert("Server error, please try again later.");
+  }
+}

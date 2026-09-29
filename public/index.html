@@ -17,8 +17,7 @@
         href="https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&family=Noto+Sans+Balinese:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Varela+Round&display=swap"
         rel="stylesheet">
 
-    <link rel="shortcut icon"
-        href="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/Timefold-logo.svg">
+    <link rel="shortcut icon" href="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/Timefold-logo.svg">
 
     <link rel="stylesheet" href="css\style.css">
 </head>
@@ -346,26 +345,7 @@
                                                 Custom aleart
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------  -->
-        <div id="customAlert" class="custom-alert">
-            <div class="alert-box">
-                <div class="alert-icon"></div>
-                <div id="customAlertMessage"></div>
-            </div>
-        </div>
-
-        <script>
-            window.alert = function (message) {
-                const alertBox = document.getElementById("customAlert");
-                const alertMessage = document.getElementById("customAlertMessage");
-
-                alertMessage.textContent = message;
-                alertBox.style.display = "flex";
-
-                setTimeout(() => {
-                    alertBox.style.display = "none";
-                }, 3000);
-            };
-        </script>
+        
         <!-- -------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
                                                 SETTING PAGE
@@ -391,11 +371,23 @@
                             Name
                         </p>
 
-                        <input type="text" id="setting-input" placeholder="Piyush Dubey">
+                        <input type="text" id="Name" placeholder="Enter your Name">
                     </div>
 
-                    <button id="save-changes">
-                        Save
+                     <button id="save-changes" onclick="savename()">
+                        Change Name
+                    </button>
+
+                    <div>
+                        <p class="bold-text">
+                            Password
+                        </p>
+
+                        <input type="text" id="password-input" placeholder="Change Password">
+                    </div>
+
+                    <button id="save-changes" onclick="savepassward()">
+                        Change Password
                     </button>
 
                     <button id="logout" onclick="logout()">

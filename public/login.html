@@ -86,6 +86,15 @@
         alert("Please enter all fields.");
         return;
     }
+    if (enroll.length !== 12) {
+            alert("Enrollment number must be exactly 12 digits");
+            return;
+        }
+
+        if (name.length > 20) {
+            alert("Name cannot be more than 20 characters");
+            return;
+        }
 
     try {
         const response = await fetch("/login", {
