@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // upcoming lecture
     const upcoming_class = timetableData.findIndex((lecture) => {
-      const start = formatTime(lecture.start_time);
+      const start = toMinutes(lecture.start_time);
       return start > currentHour && start - currentHour <= 30;
     });
 
@@ -243,10 +243,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
 
-    // lecture insert dynamicly
-
     // ========================================================
-    // LECTURE INSERTION
+    // LECTURE INSERTION // lecture insert dynamicly
     // ========================================================
 
     const dayName = new Date().toLocaleDateString("en-US", {
@@ -273,7 +271,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       // map ka data
       if (delete_map_lec) {
         delete_map_lec.style.display = "";
-        delete_map_lec.innerHTML = `<span>
+        delete_map_lec.innerHTML = `<span class="map-lec-subprof">
                                     <h1 id="current-map-sub">${current_class.subject_code} </h1>
 
                                     <h1 id="current-map-professor">
@@ -281,8 +279,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                                     </h1>
                                 </span>
 
-                                <span
-                                    style="background-color: rgb(244, 210, 72); border-radius: 15px; padding: 10px 20px;">
+                                <span class="map-lec-timeroom">
                                     <span class="map-lec-sub">
                                         <p class="bold-text" id="current-map-time">
                                            ${formatTime(current_class.start_time)}
@@ -349,10 +346,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (islunchtime) {
         if (hide_current) {
           hide_current.style.display = "";
-          hide_current.innerHTML = `<div class="bold-text">Its Lunch Time 🍛</div>`;
+          hide_current.innerHTML = `<div class="map-lunchbreak">Its Lunch Time 🍛</div>`;
         }
         if (delete_map_lec) {
-          delete_map_lec.innerHTML = ` <div class="bold-text">
+          delete_map_lec.innerHTML = ` <div class="map-lunchbreak">
               Its Lunch Time 🍛
             </div>`;
         }
@@ -490,8 +487,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   } catch (error) {
     console.error("Error loading timetable:", error);
   }
-
-  // Check if it's the saturday or sunday
 });
 
 // ========================================================
@@ -547,6 +542,7 @@ function showSchedule(schedule) {
       floor: Number(code[1]),
     };
   }
+  ///// lecture of  doday logic
 
   const container = document.getElementById("lecture-container");
 
@@ -782,157 +778,352 @@ async function logout() {
     console.error("Logout error:", error);
   }
 }
-const mapViewport = document.getElementById("mapViewport");
-const mapImage = document.getElementById("mapImage");
 
-let scale = 0.9;
-let posX = 0;
-let posY = 0;
+//map double event
 
-const pointers = new Map();
+/*
+  Smooth pan / zoom map (Google-Maps-like)
+  Required CSS (see bottom of reply):
+    #mapViewport { overflow:hidden; touch-action:none; user-select:none; position:relative; }
+    #mapImage    { width:100%; height:100%; transform-origin:0 0; will-change:transform;
+                   -webkit-user-drag:none; user-select:none; }
+  Optional buttons: #zoomIn  #zoomOut  #resetView
+*/
+(() => {
+  const viewport = document.getElementById("mapViewport");
+  const img = document.getElementById("mapImage");
+  img.draggable = false;
+  if (!viewport.hasAttribute("tabindex")) viewport.tabIndex = 0; // keyboard support
 
-// Gestures & state tracking
-let startDistance = 0;
-let startScale = 1;
-let prevMidpoint = { x: 0, y: 0 };
-let singlePointerId = null;
-let lastX = 0;
-let lastY = 0;
+  // ---------- Settings ----------
+  const MIN_SCALE = 1;
+  const MAX_SCALE = 6;
+  const DOUBLE_TAP_SCALE = 2.5;
+  const DOUBLE_TAP_DELAY = 300; // ms
+  const DOUBLE_TAP_DIST = 30; // px
+  const TAP_SLOP = 8; // px movement allowed for a "tap"
+  const TAP_MAX_TIME = 250; // ms
+  const DRAG_ZOOM_DIV = 150; // one-finger zoom sensitivity (lower = faster)
+  const FRICTION_MS = 325; // inertia decay time constant
+  const ANIM_MS = 300;
 
-// Double-tap tracking
-let lastTapTime = 0;
-const DOUBLE_TAP_DELAY = 300; // ms
+  // ---------- State ----------
+  let scale = 1,
+    x = 0,
+    y = 0;
+  const pointers = new Map();
+  let gesture = null; // info about the current touch/click sequence
+  let pinch = null;
+  let samples = []; // recent pan samples for inertia
+  let lastTap = { time: -Infinity, x: 0, y: 0 };
+  let rafRender = 0,
+    rafMotion = 0;
 
-function updateMap() {
-  mapImage.style.transform = `translate(${posX}px, ${posY}px)  scale(${scale})`;
-}
+  // ---------- Helpers ----------
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+  const mid = (a, b) => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
 
-function getDistance(p1, p2) {
-  return Math.hypot(p1.x - p2.x, p1.y - p2.y);
-}
+  function local(e) {
+    const r = viewport.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  }
 
-function getMidpoint(p1, p2) {
-  return {
-    x: (p1.x + p2.x) / 2,
-    y: (p1.y + p2.y) / 2,
-  };
-}
+  function clampAxis(p, view, content) {
+    if (content <= view) return (view - content) / 2; // centre if smaller
+    return clamp(p, view - content, 0);
+  }
 
-// -------------------------------------------------------------
-// DOUBLE-TAP / CLICK: FIRST ZOOM IN (2.5x), NEXT ZOOM OUT (1x)
-// -------------------------------------------------------------
-mapViewport.addEventListener("pointerup", (e) => {
-  const currentTime = new Date().getTime();
-  const tapLength = currentTime - lastTapTime;
+  function clampPos(s, px, py) {
+    return {
+      x: clampAxis(px, viewport.clientWidth, img.offsetWidth * s),
+      y: clampAxis(py, viewport.clientHeight, img.offsetHeight * s),
+    };
+  }
 
-  if (tapLength < DOUBLE_TAP_DELAY && tapLength > 0) {
-    // Double tap triggered
-    if (scale === 1) {
-      // Step 1: Zoom In
-      scale = 2.5;
-    } else {
-      // Step 2: Zoom Out & Reset Position
-      scale = 1;
-      posX = 0;
-      posY = 0;
+  function render() {
+    if (rafRender) return;
+    rafRender = requestAnimationFrame(() => {
+      rafRender = 0;
+      img.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
+    });
+  }
+
+  function apply() {
+    const c = clampPos(scale, x, y);
+    x = c.x;
+    y = c.y;
+    render();
+  }
+
+  // Zoom keeping the point (cx, cy) fixed on screen
+  function zoomAt(cx, cy, newScale) {
+    newScale = clamp(newScale, MIN_SCALE, MAX_SCALE);
+    const k = newScale / scale;
+    x = cx - (cx - x) * k;
+    y = cy - (cy - y) * k;
+    scale = newScale;
+    apply();
+  }
+
+  // ---------- Motion (animation + inertia) ----------
+  function stopMotion() {
+    cancelAnimationFrame(rafMotion);
+    rafMotion = 0;
+  }
+
+  const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+  function animateTo(tScale, tx, ty, duration = ANIM_MS) {
+    stopMotion();
+    tScale = clamp(tScale, MIN_SCALE, MAX_SCALE);
+    const c = clampPos(tScale, tx, ty);
+    const s0 = scale,
+      x0 = x,
+      y0 = y;
+    const t0 = performance.now();
+    const step = (now) => {
+      const t = Math.min(1, (now - t0) / duration);
+      const e = easeOutCubic(t);
+      scale = s0 + (tScale - s0) * e;
+      x = x0 + (c.x - x0) * e;
+      y = y0 + (c.y - y0) * e;
+      render();
+      rafMotion = t < 1 ? requestAnimationFrame(step) : 0;
+    };
+    rafMotion = requestAnimationFrame(step);
+  }
+
+  function zoomToAnimated(cx, cy, newScale) {
+    newScale = clamp(newScale, MIN_SCALE, MAX_SCALE);
+    const k = newScale / scale;
+    animateTo(newScale, cx - (cx - x) * k, cy - (cy - y) * k);
+  }
+
+  function startInertia() {
+    if (samples.length < 2) return;
+    const last = samples[samples.length - 1];
+    if (performance.now() - last.t > 80) return; // finger rested before release
+    const first = samples.find((s) => last.t - s.t <= 100) || samples[0];
+    const dt = last.t - first.t;
+    if (dt <= 0) return;
+    let vx = (last.x - first.x) / dt;
+    let vy = (last.y - first.y) / dt;
+    if (Math.hypot(vx, vy) < 0.1) return;
+
+    stopMotion();
+    let prev = performance.now();
+    const step = (now) => {
+      const d = Math.min(now - prev, 50);
+      prev = now;
+      const decay = Math.exp(-d / FRICTION_MS);
+      vx *= decay;
+      vy *= decay;
+      const nx = x + vx * d,
+        ny = y + vy * d;
+      const c = clampPos(scale, nx, ny);
+      if (c.x !== nx) vx = 0; // hit an edge -> stop that axis
+      if (c.y !== ny) vy = 0;
+      x = c.x;
+      y = c.y;
+      render();
+      rafMotion = Math.hypot(vx, vy) > 0.02 ? requestAnimationFrame(step) : 0;
+    };
+    rafMotion = requestAnimationFrame(step);
+  }
+
+  // ---------- Pointer events ----------
+  function startPinch() {
+    const [a, b] = [...pointers.values()];
+    const m = mid(a, b);
+    pinch = {
+      dist: Math.max(dist(a, b), 1),
+      scale,
+      anchor: { x: (m.x - x) / scale, y: (m.y - y) / scale }, // content point under fingers
+    };
+  }
+
+  viewport.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    if (pointers.size >= 2) return;
+    stopMotion();
+    viewport.setPointerCapture(e.pointerId);
+    const p = local(e);
+    pointers.set(e.pointerId, p);
+
+    if (pointers.size === 1) {
+      gesture = {
+        startX: p.x,
+        startY: p.y,
+        startTime: e.timeStamp,
+        startScale: scale,
+        moved: false,
+        multi: false,
+        dragZoom: false,
+        second:
+          e.timeStamp - lastTap.time < DOUBLE_TAP_DELAY &&
+          dist(p, lastTap) < DOUBLE_TAP_DIST,
+      };
+      samples = [{ t: performance.now(), x: p.x, y: p.y }];
+    } else if (gesture) {
+      gesture.multi = true;
+      startPinch();
     }
-    updateMap();
-    lastTapTime = 0;
-    return;
-  }
+  });
 
-  lastTapTime = currentTime;
-});
+  viewport.addEventListener("pointermove", (e) => {
+    const prev = pointers.get(e.pointerId);
+    if (!prev || !gesture) return;
+    const p = local(e);
+    pointers.set(e.pointerId, p);
 
-// -------------------------------------------------------------
-// POINTER DOWN
-// -------------------------------------------------------------
-mapViewport.addEventListener("pointerdown", (e) => {
-  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-  mapViewport.setPointerCapture(e.pointerId);
-
-  if (pointers.size === 1) {
-    singlePointerId = e.pointerId;
-    lastX = e.clientX;
-    lastY = e.clientY;
-  } else if (pointers.size === 2) {
-    const [p1, p2] = [...pointers.values()];
-    startDistance = getDistance(p1, p2);
-    startScale = scale;
-    prevMidpoint = getMidpoint(p1, p2);
-  }
-});
-
-// -------------------------------------------------------------
-// POINTER MOVE (MOVEABLE ONLY AFTER ZOOM IN)
-// -------------------------------------------------------------
-mapViewport.addEventListener("pointermove", (e) => {
-  if (!pointers.has(e.pointerId)) return;
-
-  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-
-  // 1. One finger drag -> ONLY moveable if scale > 1
-  if (pointers.size === 1 && scale > 1 && e.pointerId === singlePointerId) {
-    const dx = e.clientX - lastX;
-    const dy = e.clientY - lastY;
-
-    posX += dx;
-    posY += dy;
-
-    lastX = e.clientX;
-    lastY = e.clientY;
-
-    updateMap();
-  }
-
-  // 2. Two fingers -> Pinch zoom
-  if (pointers.size === 2) {
-    const [p1, p2] = [...pointers.values()];
-    const currentDistance = getDistance(p1, p2);
-    const currentMidpoint = getMidpoint(p1, p2);
-
-    if (startDistance > 0) {
-      // Zoom limits: min 1x, max 4x
-      scale = Math.min(
-        Math.max(1, startScale * (currentDistance / startDistance)),
-        4,
+    // Two fingers: pinch + pan around the midpoint
+    if (pointers.size === 2 && pinch) {
+      const [a, b] = [...pointers.values()];
+      const m = mid(a, b);
+      scale = clamp(
+        pinch.scale * (dist(a, b) / pinch.dist),
+        MIN_SCALE,
+        MAX_SCALE,
       );
+      x = m.x - pinch.anchor.x * scale;
+      y = m.y - pinch.anchor.y * scale;
+      apply();
+      return;
+    }
 
-      // Pan with pinch center
-      if (scale > 1) {
-        posX += currentMidpoint.x - prevMidpoint.x;
-        posY += currentMidpoint.y - prevMidpoint.y;
+    if (pointers.size !== 1) return;
+
+    if (!gesture.moved) {
+      if (Math.hypot(p.x - gesture.startX, p.y - gesture.startY) < TAP_SLOP)
+        return;
+      gesture.moved = true;
+    }
+
+    // Double-tap + drag = one-finger zoom (touch only, like Google Maps)
+    if (gesture.second && e.pointerType !== "mouse") {
+      gesture.dragZoom = true;
+      const s =
+        gesture.startScale * Math.exp((p.y - gesture.startY) / DRAG_ZOOM_DIV);
+      zoomAt(gesture.startX, gesture.startY, s);
+      return;
+    }
+
+    // One finger / mouse drag pan
+    x += p.x - prev.x;
+    y += p.y - prev.y;
+    apply();
+    const t = performance.now();
+    samples.push({ t, x: p.x, y: p.y });
+    while (samples.length > 2 && t - samples[0].t > 150) samples.shift();
+  });
+
+  function endPointer(e, cancelled) {
+    if (!pointers.has(e.pointerId)) return;
+    const p = local(e);
+    pointers.delete(e.pointerId);
+    if (viewport.hasPointerCapture(e.pointerId))
+      viewport.releasePointerCapture(e.pointerId);
+
+    if (pointers.size === 1) {
+      // Pinch -> single finger: continue panning smoothly with the remaining finger
+      pinch = null;
+      gesture.moved = true;
+      gesture.second = false;
+      samples = [];
+      return;
+    }
+    if (pointers.size > 0 || !gesture) return;
+
+    const g = gesture;
+    gesture = null;
+    pinch = null;
+    if (cancelled) return;
+
+    const isTap =
+      !g.moved && !g.multi && e.timeStamp - g.startTime < TAP_MAX_TIME;
+    if (isTap) {
+      if (g.second) {
+        lastTap.time = -Infinity;
+        if (scale > 1.05) animateTo(1, 0, 0);
+        else zoomToAnimated(p.x, p.y, DOUBLE_TAP_SCALE);
       } else {
-        posX = 0;
-        posY = 0;
+        lastTap = { time: e.timeStamp, x: p.x, y: p.y };
       }
-
-      prevMidpoint = currentMidpoint;
-      updateMap();
+    } else if (g.moved && !g.multi && !g.dragZoom) {
+      startInertia();
     }
   }
-});
 
-// -------------------------------------------------------------
-// POINTER RELEASE
-// -------------------------------------------------------------
-function removePointer(e) {
-  if (mapViewport.hasPointerCapture(e.pointerId)) {
-    mapViewport.releasePointerCapture(e.pointerId);
-  }
-  pointers.delete(e.pointerId);
+  viewport.addEventListener("pointerup", (e) => endPointer(e, false));
+  viewport.addEventListener("pointercancel", (e) => endPointer(e, true));
 
-  // If one finger is lifted during pinch, keep dragging with the other smoothly
-  if (pointers.size === 1) {
-    const [id, remaining] = [...pointers.entries()][0];
-    singlePointerId = id;
-    lastX = remaining.x;
-    lastY = remaining.y;
-  } else {
-    singlePointerId = null;
-    startDistance = 0;
-  }
-}
+  // ---------- Mouse wheel / trackpad pinch ----------
+  viewport.addEventListener(
+    "wheel",
+    (e) => {
+      e.preventDefault();
+      stopMotion();
+      const p = local(e);
+      let delta = e.deltaY;
+      if (e.deltaMode === 1)
+        delta *= 16; // lines -> px
+      else if (e.deltaMode === 2) delta *= 100; // pages -> px
+      const speed = e.ctrlKey ? 0.01 : 0.0018; // ctrlKey = trackpad pinch
+      zoomAt(p.x, p.y, scale * Math.exp(-delta * speed));
+    },
+    { passive: false },
+  );
 
-mapViewport.addEventListener("pointerup", removePointer);
-mapViewport.addEventListener("pointercancel", removePointer);
+  // ---------- Buttons & keyboard ----------
+  const cx = () => viewport.clientWidth / 2;
+  const cy = () => viewport.clientHeight / 2;
+  const zoomBy = (f) => zoomToAnimated(cx(), cy(), scale * f);
+  const reset = () => animateTo(1, 0, 0);
+
+  document
+    .getElementById("zoomIn")
+    ?.addEventListener("click", () => zoomBy(1.6));
+  document
+    .getElementById("zoomOut")
+    ?.addEventListener("click", () => zoomBy(1 / 1.6));
+  document.getElementById("resetView")?.addEventListener("click", reset);
+
+  viewport.addEventListener("keydown", (e) => {
+    const step = 80;
+    const pan = (dx, dy) => animateTo(scale, x + dx, y + dy, 150);
+    switch (e.key) {
+      case "+":
+      case "=":
+        zoomBy(1.6);
+        break;
+      case "-":
+      case "_":
+        zoomBy(1 / 1.6);
+        break;
+      case "0":
+        reset();
+        break;
+      case "ArrowLeft":
+        pan(step, 0);
+        break;
+      case "ArrowRight":
+        pan(-step, 0);
+        break;
+      case "ArrowUp":
+        pan(0, step);
+        break;
+      case "ArrowDown":
+        pan(0, -step);
+        break;
+      default:
+        return;
+    }
+    e.preventDefault();
+  });
+
+  // ---------- Keep things valid on resize ----------
+  new ResizeObserver(apply).observe(viewport);
+  img.addEventListener("load", apply);
+  apply();
+})();
