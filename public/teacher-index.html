@@ -22,6 +22,28 @@
     <link rel="stylesheet" href="css\style.css">
 </head>
 
+<style>
+    nav {
+        position: fixed;
+        z-index: 1100;
+        left: 50%;
+        bottom: 14px;
+        transform: translateX(-50%);
+        width: min(calc(100% - 36px), 430px);
+        height: 62px;
+        padding: 7px 9px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        align-items: center;
+        background: var(--nav);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 22px;
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        overflow: hidden;
+    }
+</style>
+
 <body>
     <main>
 
@@ -43,7 +65,6 @@
                 <div class="title">
                     <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold-text-logo.svg">
                 </div>
-
             </div>
 
         </header>
@@ -82,7 +103,7 @@
                                     <div class="card-left-section" id="delet-current-class">
                                         <div class="card-description" id="current-class-sub-div">
                                             <div class="bold-text" id="current-class-sub">
-                                                DBMS
+                                                Subject
                                             </div>
 
                                             <div class="small-text" id="current-class-time">
@@ -94,11 +115,11 @@
 
                                         <div class="card-description">
                                             <div class="bold-text" id="current-class-professor-label">
-                                                Proffesor
+                                                Semester
                                             </div>
 
                                             <div class="small-text" id="current-class-professor-name">
-                                                RS
+                                                Batch
                                             </div>
                                         </div>
 
@@ -115,7 +136,7 @@
                                     </div>
 
                                     <div class="card-right-section">
-                                        <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/current.svg">
+                                        <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/current-class-tr.svg">
                                     </div>
                                 </div>
                             </div>
@@ -132,7 +153,7 @@
                                 <div class="card-left-section" id="delete-next-class">
                                     <div class="card-description">
                                         <div class="bold-text" id="next-sub">
-                                            PCE
+                                            Subject
                                         </div>
 
                                         <div class="small-text">
@@ -144,11 +165,11 @@
 
                                     <div class="card-description">
                                         <div class="bold-text" id="next-class-professor-label">
-                                            Proffesor
+                                            Semester
                                         </div>
 
                                         <div class="small-text" id="next-class-professor">
-                                            SLM
+                                            Batch
                                         </div>
                                     </div>
 
@@ -165,7 +186,7 @@
                                 </div>
 
                                 <div class="card-right-section">
-                                    <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/next.svg">
+                                    <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/next-class-tr.svg">
                                 </div>
                             </div>
                         </div>
@@ -211,51 +232,6 @@
             </section>
         </div>
 
-        <!-- -------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------
-                                                MAP PAGE
-------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------  -->
-
-        <div id="map-page" class="page-section">
-            <section>
-                <div class="main-map-div">
-
-                    <div class="map-box" id="mapBox">
-
-                        <div class="map-viewport" id="mapViewport">
-
-                            <img id="mapImage"
-                                src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/no-lecture.svg"
-                                alt="College Building Map">
-
-                        </div>
-
-                    </div>
-
-                    <div class="map-description-container">
-                        <div class="map-description">
-
-                            <div class="map-img">
-                                <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/map-img.svg"
-                                    style="height: 20vh;">
-                            </div>
-
-                            <div class="map-lecture">
-                                <span id="map-lec">
-
-                                </span>
-
-
-
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
 
         <!-- -------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
@@ -271,75 +247,30 @@
                     </h1>
 
                     <p class="small-text">
-                        Updates from Professors and the Department
+                        Updates for the Students
                     </p>
                 </div>
-
                 <hr class="seperation-line">
 
                 <div class="notice-container">
-                    <span>
-                        <h2>ATTENTION</h2> <p style="color: var(--muted); font-size: 0.9rem; font-weight: 600;">Proffesor Name</p>
-                    </span>
-                    <p style="margin: 10px 0px;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam suscipit ipsa recusandae quas est
-                        voluptates ullam molestiae accusantium omnis quo quasi aut dolor rerum, minus velit
-                        exercitationem quae dolore illo consectetur delectus autem soluta nostrum aperiam error! Velit
-                        vero nihil aliquid, quasi aperiam, odit, tempora dicta alias quis dolore vitae.</p>
-                </div>
-            </section>
-        </div>
-
-        <!-- -------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------
-                                                SCHEDULE PAGE
-------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------  -->
-
-        <div id="schedule-page" class="page-section">
-
-            <section>
-
-                <div class="schedule-container">
-                    <div class="timetable">
-
-                        <!-- Days -->
-                        <div class="day-selector">
-
-                            <button class="day active" data-day="monday" onclick="mon()">
-                                <strong id="mon">MON</strong>
-                            </button>
-
-                            <button class="day" data-day="tuesday" onclick="tue()">
-                                <strong id="tue">TUE</strong>
-                            </button>
-
-                            <button class="day" data-day="wednesday" onclick="wed()">
-                                <strong id="wed">WED</strong>
-                            </button>
-
-                            <button class="day" data-day="thursday" onclick="thur()">
-                                <strong id="thur">THUR</strong>
-                            </button>
-
-                            <button class="day" data-day="friday" onclick="fri()">
-                                <strong id="fri">FRI</strong>
-                            </button>
-
+                    <div class="sem-batch">
+                        <p class="bold-text">Semester & Batch</p>
+                        <div>
+                            <input type="text" class="sem" placeholder="Semester">
+                            <input type="text" class="batch" placeholder="Batch">
                         </div>
+                    </div>
 
-
-                        <!-- Timetable -->
-                        <div class="schedule-list" id="lecture-container">
-
-
-
-                        </div>
-
+                    <div class="message" style="margin-top: 10px;">
+                        <p class="bold-text">Message</p>
+                        <input style="margin-top: 8px;" type="text" placeholder="Write Your Message....">
+                    </div>
+                    <div class="post-button">
+                        <button class="post">Post</button>
                     </div>
                 </div>
 
             </section>
-
         </div>
 
         <!-- -------------------------------------------------------------------------------------------------------------------------
@@ -352,7 +283,7 @@
             <section>
                 <div class="setting-title">
 
-                    <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/setting.svg">
+                    <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/setting-teacher.svg">
 
                     <span>
                         <h1>
@@ -364,14 +295,14 @@
                 <div class="main-setting">
                     <div>
                         <p class="bold-text">
-                            Name
+                            Semester
                         </p>
 
-                        <input type="text" id="Name" placeholder="Enter your Name">
+                        <input type="text" id="Name" placeholder="Enter Semester Number">
                     </div>
 
                     <button id="save-changes" onclick="savename()">
-                        Change Name
+                        Change Semester
                     </button>
 
                     <div style="margin-top: 2vh;">
@@ -413,7 +344,7 @@
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------  -->
 
-        <nav>
+        <nav class="teacher-nav">
 
             <div class="nav-button-div current-page">
                 <button class="nav-button" onclick="showPage('home-page')">
@@ -421,30 +352,6 @@
                         <title fill="#ffffff">home-outline-rounded</title>
                         <path fill="#ffffff"
                             d="M6 19h3.692v-5.077q0-.343.233-.575q.232-.233.575-.233h3q.343 0 .576.233q.232.232.232.575V19H18v-8.692q0-.154-.067-.28t-.183-.22L12.366 5.75q-.154-.134-.366-.134t-.365.134L6.25 9.808q-.115.096-.183.22t-.067.28zm-1 0v-8.692q0-.384.172-.727t.474-.565l5.385-4.078q.423-.323.966-.323t.972.323l5.385 4.077q.303.222.474.566q.172.343.172.727V19q0 .402-.299.701T18 20h-3.884q-.344 0-.576-.232q-.232-.233-.232-.576v-5.076h-2.616v5.076q0 .344-.232.576T9.885 20H6q-.402 0-.701-.299T5 19m7-6.711" />
-                    </svg>
-                </button>
-            </div>
-
-            <div class="nav-button-div">
-                <button class="nav-button" onclick="showPage('map-page')">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1.8em" height="1.8em" viewBox="0 0 24 24"
-                        fill="#ffffff">
-                        <title fill="#ffffff">location-outlined</title>
-                        <path fill="#ffffff" fill-rule="evenodd"
-                            d="m12.065 21.243l-.006-.005zm.182-.274a29 29 0 0 0 3.183-3.392c2.04-2.563 3.281-5.09 3.365-7.337a6.8 6.8 0 1 0-13.591 0c.085 2.247 1.327 4.774 3.366 7.337a29 29 0 0 0 3.183 3.392q.166.15.247.218zm-.985 1.165S4 16.018 4 10a8 8 0 1 1 16 0c0 6.018-7.262 12.134-7.262 12.134c-.404.372-1.069.368-1.476 0M12 12.8a2.8 2.8 0 1 0 0-5.6a2.8 2.8 0 0 0 0 5.6m0 1.2a4 4 0 1 1 0-8a4 4 0 0 1 0 8" />
-                    </svg>
-                </button>
-            </div>
-
-            <div class="nav-button-div">
-                <button class="nav-button" onclick="showPage('schedule-page')">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1.8em" height="1.8em" viewBox="0 0 32 32"
-                        fill="#ffffff">
-                        <title fill="#ffffff">event-schedule</title>
-                        <path fill="#ffffff" d="M21 30a8 8 0 1 1 8-8a8 8 0 0 1-8 8m0-14a6 6 0 1 0 6 6a6 6 0 0 0-6-6" />
-                        <path fill="#ffffff" d="M22.59 25L20 22.41V18h2v3.59l2 2z" />
-                        <path fill="#ffffff"
-                            d="M28 6a2 2 0 0 0-2-2h-4V2h-2v2h-8V2h-2v2H6a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h4v-2H6V6h4v2h2V6h8v2h2V6h4v6h2Z" />
                     </svg>
                 </button>
             </div>
@@ -476,7 +383,6 @@
                     </svg>
                 </button>
             </div>
-
 
         </nav>
 

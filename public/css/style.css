@@ -560,6 +560,80 @@ section {
   margin-top: 5px;
 }
 
+.notice-container {
+  padding: 17px;
+  background-color: var(--surface);
+  width: 100%;
+  height: fit-content;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+}
+
+.notice-container>span {
+  display: flex;
+  text-align: end;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.sem,
+.batch{
+  margin-top: 10px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 510;
+  border: 1px solid var(--line);
+  background-color: var(--surface-2);
+  padding: 12px 18px;
+  color: var(--muted);
+  width: 100%;
+}
+
+.message input {
+  width: 100%;
+  height: 7vh;
+  margin: 5px auto;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.post {
+  background: var(--red);
+  color: #fff;
+  border: 0;
+  min-height: 10px;
+  padding: 15px 30px;
+  border-radius: 13px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 5px 0px;
+}
+
+.post-button {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.teacher-nav {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.teacher-nav:has(.nav-button-div:nth-child(1).current-page)::before {
+  left: calc(9px + ((100% - 18px) / 6) - 27px);
+}
+
+.teacher-nav:has(.nav-button-div:nth-child(2).current-page)::before {
+  left: calc(9px + ((100% - 18px) / 6) - 27px + ((100% - 18px) / 3));
+}
+
+.teacher-nav:has(.nav-button-div:nth-child(3).current-page)::before {
+  left: calc(9px + ((100% - 18px) / 6) - 27px + (((100% - 18px) / 3) * 2));
+}
+
 /* =========================================================
    SCHEDULE TAB
    ========================================================= */
@@ -1219,8 +1293,34 @@ input:focus::placeholder {
     height: 1.7em;
   }
 
-  nav:has(.nav-button-div:nth-child(1).current-page)::before {
-    left: calc(9px + ((100% - 18px) / 10) - 21px);
+  /* =========================================================
+   TEACHER NAV - MOBILE
+   ========================================================= */
+
+  .teacher-nav {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .teacher-nav::before {
+    width: 42px;
+    height: 42px;
+    top: 9px;
+    border-radius: 14px;
+  }
+
+  /* HOME */
+  .teacher-nav:has(.nav-button-div:nth-child(1).current-page)::before {
+    left: calc(9px + (100% - 18px) / 6 - 21px);
+  }
+
+  /* NOTICE */
+  .teacher-nav:has(.nav-button-div:nth-child(2).current-page)::before {
+    left: calc(9px + (100% - 18px) / 6 - 21px + (100% - 18px) / 3);
+  }
+
+  /* SETTINGS */
+  .teacher-nav:has(.nav-button-div:nth-child(3).current-page)::before {
+    left: calc(9px + (100% - 18px) / 6 - 21px + ((100% - 18px) / 3) * 2);
   }
 
   nav:has(.nav-button-div:nth-child(2).current-page)::before {
