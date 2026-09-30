@@ -994,13 +994,12 @@ input:focus::placeholder {
 
 .reg-link {
   margin: 13px 0 0;
-  color: #bfc1c8;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 600;
 }
 
-.reg-link a {
-  color: #7e9bff;
+.reg-link > a {
+  color: var(--red) !important; 
 }
 
 .login-button,
