@@ -477,7 +477,103 @@ app.post("/name", async (req, res) => {
     });
   }
 });
+  // data from teacher fro sql inject
+// data from teacher for SQL insert
 
+app.post("/notice", async (req, res) => {
+    try {
+        const { batch, Sem, notice } = req.body;
+
+        if (!batch || !Sem || !notice) {
+            return res.status(400).json({
+                success: false,
+                message: "Please enter batch, sem and notice"
+            });
+        }
+
+        const pool = await sql.connect(dbConfig);
+
+        await pool.request()
+            .input("sem", sql.Int, Sem)
+            .input("batch", sql.VarChar, batch)
+            .input("notice", sql.VarChar, notice)
+            .query(`
+                INSERT INTO notice (sem, batch, notice)
+                VALUES (@sem, @batch, @notice)
+            `);
+
+        res.json({
+            success: true,
+            message: "Notice saved successfully"
+        });
+
+    } catch (err) {
+        console.log("Teacher notice error:", err);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to send notice"
+        });
+    }
+});
+
+//notification fetch from database
+
+app.get("/student/notices", async (req, res) => {
+    try {
+        if (!req.session.enroll_no) {
+            return res.status(401).json({
+                success: false,
+                message: "Please login first"
+            });
+        }
+
+        const enrollNo = req.session.enroll_no;
+
+        const pool = await sql.connect(dbConfig);
+
+        const result = await pool.request()
+            .input("enroll_no", sql.VarChar, enrollNo)
+            .query(`
+                SELECT
+                    l.enroll_no,
+                    l.batch,
+                    n.sem,
+                    n.notice,
+                    n.notice_time,
+                    nf.faculty_id,
+                    nf.faculty_code
+                FROM login l
+
+                JOIN notice n
+                    ON n.batch = l.batch
+                    AND n.sem = CASE
+                        WHEN LEFT(l.enroll_no, 2) = '25' THEN 3
+                        WHEN LEFT(l.enroll_no, 2) = '26' THEN 1
+                    END
+
+                JOIN faculty nf
+                    ON n.faculty_id = nf.faculty_id
+
+                WHERE l.enroll_no = @enroll_no
+
+                ORDER BY n.notice_time DESC;
+            `);
+
+                 res.json({
+                success: true,
+                 notices: result.recordset
+        });
+
+    } catch (err) {
+        console.error("Student notice error:", err);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch notices"
+        });
+    }
+});
 // START SERVER
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on http://0.0.0.0:${port}`);
