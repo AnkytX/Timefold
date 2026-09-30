@@ -124,6 +124,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+
+
+
 function showPage(pageId) {
   document.querySelectorAll(".page-section").forEach((page) => {
     page.classList.remove("active");
@@ -167,6 +170,11 @@ window.addEventListener("DOMContentLoaded", () => {
     showPage("home-page");
   }
 });
+
+
+
+// Fetching Data
+
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     // 1. Fetch data from server

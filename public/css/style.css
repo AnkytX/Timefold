@@ -358,14 +358,14 @@ section {
   align-items: center;
 }
 
-.lecture-div > div {
+.lecture-div>div {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 3px;
 }
 
-.lecture-div > :last-child {
+.lecture-div> :last-child {
   align-items: flex-end;
   justify-content: center;
   color: var(--text);
@@ -503,7 +503,7 @@ section {
   /* background-color: red; */
 }
 
-.map-lecture > span {
+.map-lecture>span {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -679,7 +679,7 @@ section {
   border: 1px solid var(--line);
 }
 
-.main-setting > div:first-child {
+.main-setting>div:first-child {
   padding-bottom: 7px;
 }
 
@@ -693,7 +693,8 @@ section {
   background: var(--surface-2);
   color: var(--text);
 }
-  #password-input {
+
+#password-input {
   width: 100%;
   height: 48px;
   margin: 8px 0 13px;
@@ -867,15 +868,19 @@ nav::before {
 nav:has(.nav-button-div:nth-child(1).current-page)::before {
   left: calc(9px + ((100% - 18px) / 10) - 27px);
 }
+
 nav:has(.nav-button-div:nth-child(2).current-page)::before {
   left: calc(9px + ((100% - 18px) / 10) - 27px + ((100% - 18px) / 5));
 }
+
 nav:has(.nav-button-div:nth-child(3).current-page)::before {
   left: calc(9px + ((100% - 18px) / 10) - 27px + (((100% - 18px) / 5) * 2));
 }
+
 nav:has(.nav-button-div:nth-child(4).current-page)::before {
   left: calc(9px + ((100% - 18px) / 10) - 27px + (((100% - 18px) / 5) * 3));
 }
+
 nav:has(.nav-button-div:nth-child(5).current-page)::before {
   left: calc(9px + ((100% - 18px) / 10) - 27px + (((100% - 18px) / 5) * 4));
 }
@@ -890,7 +895,7 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
   padding-top: 25px;
 }
 
-.title-sub-div > img {
+.title-sub-div>img {
   height: 45px;
   display: block;
 }
@@ -939,6 +944,43 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
   border: 1px solid var(--line);
 }
 
+.student-teacher-toggle {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 50px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+
+.student-teacher-toggle-button.active-login-btn {
+  background: #ff4326 !important;
+  color: #fff;
+}
+
+.student-teacher-toggle-button {
+  width: 49% !important;
+  max-width: 49% !important;
+  min-width: 0;
+  height: 50px !important;
+  min-height: 50px;
+  padding: 0 10px;
+  color: var(--text);
+  border: none;
+  /* border: 0.5px solid var(--line); */
+  border-radius: 50px;
+  font-size: 1rem;
+  display: block;
+  transition: 0.2s ease;
+  cursor: pointer;
+}
+
+
+
 .form-content {
   width: 100%;
   margin: 5px auto;
@@ -980,13 +1022,13 @@ input:focus::placeholder {
   color: transparent;
 }
 
-.register-div form > .input-div:first-child {
+.register-div form>.input-div:first-child {
   display: flex;
   gap: 8px;
 }
 
-.register-div form > .input-div:first-child #name,
-.register-div form > .input-div:first-child #enroll {
+.register-div form>.input-div:first-child #name,
+.register-div form>.input-div:first-child #enroll {
   width: calc((100% - 8px) / 2) !important;
   flex: 0 0 calc((100% - 8px) / 2);
   min-width: 0;
@@ -998,8 +1040,8 @@ input:focus::placeholder {
   font-weight: 600;
 }
 
-.reg-link > a {
-  color: var(--red) !important; 
+.reg-link>a {
+  color: var(--red) !important;
 }
 
 .login-button,
@@ -1035,10 +1077,16 @@ input:focus::placeholder {
 }
 
 /* =========================================================
+   TEACHER LOG IN
+   ========================================================= */
+
+
+/* =========================================================
    MEDIA QUERIES: DESKTOP (800px+)
    ========================================================= */
 
 @media (min-width: 800px) {
+
   .hero-first-div,
   .today {
     max-width: 760px;
@@ -1137,7 +1185,7 @@ input:focus::placeholder {
     padding-left: 12px;
   }
 
-  .map-lecture > span {
+  .map-lecture>span {
     font-size: 0.78rem;
   }
 
@@ -1174,15 +1222,19 @@ input:focus::placeholder {
   nav:has(.nav-button-div:nth-child(1).current-page)::before {
     left: calc(9px + ((100% - 18px) / 10) - 21px);
   }
+
   nav:has(.nav-button-div:nth-child(2).current-page)::before {
     left: calc(9px + ((100% - 18px) / 10) - 21px + ((100% - 18px) / 5));
   }
+
   nav:has(.nav-button-div:nth-child(3).current-page)::before {
     left: calc(9px + ((100% - 18px) / 10) - 21px + (((100% - 18px) / 5) * 2));
   }
+
   nav:has(.nav-button-div:nth-child(4).current-page)::before {
     left: calc(9px + ((100% - 18px) / 10) - 21px + (((100% - 18px) / 5) * 3));
   }
+
   nav:has(.nav-button-div:nth-child(5).current-page)::before {
     left: calc(9px + ((100% - 18px) / 10) - 21px + (((100% - 18px) / 5) * 4));
   }
@@ -1210,7 +1262,7 @@ input:focus::placeholder {
     z-index: 2;
   }
 
-  .title-sub-div > img {
+  .title-sub-div>img {
     height: 42px;
     max-width: 100%;
     object-fit: contain;
@@ -1289,7 +1341,7 @@ input:focus::placeholder {
     margin-top: 15px !important;
   }
 
-  .title-sub-div > img {
+  .title-sub-div>img {
     height: 36px;
   }
 
@@ -1305,12 +1357,12 @@ input:focus::placeholder {
     padding: 17px;
   }
 
-  .register-div form > .input-div:first-child {
+  .register-div form>.input-div:first-child {
     gap: 6px;
   }
 
-  .register-div form > .input-div:first-child #name,
-  .register-div form > .input-div:first-child #enroll {
+  .register-div form>.input-div:first-child #name,
+  .register-div form>.input-div:first-child #enroll {
     width: calc((100% - 6px) / 2) !important;
     flex-basis: calc((100% - 6px) / 2);
   }
@@ -1321,6 +1373,7 @@ input:focus::placeholder {
    ========================================================= */
 
 @media (hover: none) and (pointer: coarse) {
+
   .nav-button:hover,
   #save-changes:hover,
   #logout:hover,
@@ -1331,6 +1384,7 @@ input:focus::placeholder {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -1438,7 +1492,7 @@ body.dark-theme .register-div {
   gap: 12px;
 }
 
-.map-lecture > span {
+.map-lecture>span {
   width: 100%;
   height: auto;
   min-height: 0;
@@ -1551,7 +1605,7 @@ body.dark-theme .register-div {
     gap: 9px;
   }
 
-  .map-lecture > span {
+  .map-lecture>span {
     width: 100%;
   }
 
