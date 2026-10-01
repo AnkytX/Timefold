@@ -7,6 +7,7 @@ TimeFold is a student-focused web application that simplifies the way students i
 Instead of repeatedly checking complicated timetable documents, TimeFold provides a clean and intuitive interface where students can quickly check their lectures, understand where they need to go, view important notices, and manage application preferences.
 
 ---
+
 ## ✨ Features
 
 ### 📅 Smart Timetable
@@ -50,6 +51,7 @@ TimeFold is designed to work across:
 ![TimeFold Dashboard](./public/images/screenshots/dashboard.png)
 
 ---
+
 ## 🛠️ Tech Stack
 
 ### Frontend
@@ -114,6 +116,9 @@ TimeFold/
 │   │   └── script.js
 │   │
 │   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   └── teacher-index.html
 │
 ├── server.js
 ├── package.json
@@ -307,5 +312,3 @@ TimeFold was developed collaboratively by three team members, with each member r
 ### If you find TimeFold interesting or useful, consider giving the repository a ⭐ on GitHub.
 
 ### Feedback, suggestions, and contributions are always welcome.
-
-Made with ❤️ for students
