@@ -1073,7 +1073,10 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
 #password,
 #enroll,
 #faculty_Id,
-#confirm_password {
+.faculty_id,
+.faculty_password,
+#confirm_password,
+#Sem {
   width: 100%;
   height: 50px;
   padding: 0 14px;
