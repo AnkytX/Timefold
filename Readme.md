@@ -46,6 +46,8 @@ TimeFold is designed to work across:
 - 📱 Mobile
 - 📟 Tablet
 
+### 🖼️ Screenshots
+
 ![TimeFold Dashboard](./public/images/screenshots/dashboard.png)
 
 ---
@@ -53,8 +55,8 @@ TimeFold is designed to work across:
 ## 🛠️ Tech Stack
 
 ### Frontend
-- HTML5
-- CSS3
+- HTML
+- CSS
 - JavaScript
 
 ### Backend
@@ -113,7 +115,7 @@ TimeFold/
 │   ├── js/
 │   │   └── script.js
 │   │
-│   └── *.html
+│   ├── index.html
 │
 ├── server.js
 ├── package.json
@@ -195,13 +197,119 @@ TimeFold uses environment variables to keep sensitive configuration outside the 
 
 ```text
 
-| Variable      | Description                     |
-| ------------- | ------------------------------- |
-| `PORT`        | Port used by the Node.js server |
-| `DB_SERVER`   | SQL Server host or IP address   |
-| `DB_PORT`     | SQL Server port                 |
-| `DB_DATABASE` | Database name                   |
-| `DB_USER`     | Database username               |
-| `DB_PASSWORD` | Database password               |
+                            | Variable      | Description                     |
+                            | ------------- | ------------------------------- |
+                            | `PORT`        | Port used by the Node.js server |
+                            | `DB_SERVER`   | SQL Server host or IP address   |
+                            | `DB_PORT`     | SQL Server port                 |
+                            | `DB_DATABASE` | Database name                   |
+                            | `DB_USER`     | Database username               |
+                            | `DB_PASSWORD` | Database password               |
 
 ```
+
+---
+
+## 🔒 Security
+
+Sensitive information should never be committed to the repository.
+
+Make sure your .gitignore contains:
+
+```bash
+
+.env
+node_modules/
+
+```
+
+If credentials are accidentally pushed to GitHub, immediately change or rotate the exposed credentials.
+
+---
+
+## 🎯 Project Goals
+
+### TimeFold is designed to:
+
+- Simplify academic timetable management.
+- Help students quickly identify their upcoming lectures.
+- Provide timely reminders before lectures.
+- Make classroom information easier to access.
+- Keep important notices in one place.
+- Reduce the need to repeatedly check traditional timetables.
+- Provide a clean and distraction-free student experience.
+- Create a foundation for a larger student-focused campus platform.
+
+---
+
+## 💡 Why TimeFold?
+
+### Traditional college timetables can be difficult to use during a busy academic day.
+
+Students often need to repeatedly check:
+
+- Which lecture is next?
+- What time does it start?
+- Which classroom should I go to?
+- Is there an important notice?
+- How much time is left before class?
+
+TimeFold brings these essential pieces of information into a single, simple interface.
+
+The goal is to make checking academic information faster, clearer, and more convenient.
+
+---
+
+## 📌 Project Status
+
+### 🚧 Currently in Development
+
+TimeFold is an actively developing project. The UI, backend, database structure, and features may continue to evolve as development progresses.
+
+---
+
+## 👥 Team
+
+TimeFold was developed collaboratively by three team members, with each member responsible for a core part of the application.
+
+| Team Member | Role | Responsibility |
+|-------------|------|----------------|
+| **Piyush Dubey** | Frontend Developer | UI/UX design, responsive layouts, frontend development, and user interactions |
+| **[Name]** | Backend Developer | Server-side development, API integration, authentication, and backend logic |
+| **[Name]** | Database Developer | Database design, SQL queries, data management, and database integration |
+
+### 🧩 Areas of Contribution
+
+**Frontend**
+- User interface and experience
+- Responsive design
+- HTML, CSS, and JavaScript
+- Frontend interactions and animations
+
+**Backend**
+- Node.js and Express.js
+- Server-side logic
+- API development
+- Authentication and application logic
+
+**Database**
+- Microsoft SQL Server
+- Database architecture
+- Tables and relationships
+- SQL queries and data management
+
+---
+
+## 📄 License
+
+This project is currently developed for educational and project purposes.
+
+---
+
+## ⭐ Support
+
+If you find TimeFold interesting or useful, consider giving the repository a ⭐ on GitHub.
+
+Feedback, suggestions, and contributions are always welcome.
+
+<p align="center"> Made with ❤️ for students </p>
