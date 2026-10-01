@@ -195,18 +195,16 @@ http://localhost:3000
 ## 🔐 Environment Variables
 TimeFold uses environment variables to keep sensitive configuration outside the source code.
 
-```text
 
-                            | Variable      | Description                     |
-                            | ------------- | ------------------------------- |
-                            | `PORT`        | Port used by the Node.js server |
-                            | `DB_SERVER`   | SQL Server host or IP address   |
-                            | `DB_PORT`     | SQL Server port                 |
-                            | `DB_DATABASE` | Database name                   |
-                            | `DB_USER`     | Database username               |
-                            | `DB_PASSWORD` | Database password               |
+| Variable      | Description                     |
+| ------------- | ------------------------------- |
+|  PORT         | Port used by the Node.js server |
+|  DB_SERVER    | SQL Server host or IP address   |
+|  DB_PORT      | SQL Server port                 |
+|  DB_DATABASE  | Database name                   |
+|  DB_USER      | Database username               |
+|  DB_PASSWORD  | Database password               |
 
-```
 
 ---
 
@@ -275,8 +273,8 @@ TimeFold was developed collaboratively by three team members, with each member r
 | Team Member | Role | Responsibility |
 |-------------|------|----------------|
 | **Piyush Dubey** | Frontend Developer | UI/UX design, responsive layouts, frontend development, and user interactions |
-| **[Name]** | Backend Developer | Server-side development, API integration, authentication, and backend logic |
-| **[Name]** | Database Developer | Database design, SQL queries, data management, and database integration |
+| **Ankit Shah** | Backend Developer | Server-side development, API integration, authentication, and backend logic |
+| **Satish Rout** | Database Developer | Database design, SQL queries, data management, and database integration |
 
 ### 🧩 Areas of Contribution
 
@@ -302,14 +300,14 @@ TimeFold was developed collaboratively by three team members, with each member r
 
 ## 📄 License
 
-This project is currently developed for educational and project purposes.
+### This project is currently developed for educational and project purposes.
 
 ---
 
 ## ⭐ Support
 
-If you find TimeFold interesting or useful, consider giving the repository a ⭐ on GitHub.
+### If you find TimeFold interesting or useful, consider giving the repository a ⭐ on GitHub.
 
-Feedback, suggestions, and contributions are always welcome.
+### Feedback, suggestions, and contributions are always welcome.
 
-<p align="center"> Made with ❤️ for students </p>
+Made with ❤️ for students
