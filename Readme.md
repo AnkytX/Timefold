@@ -147,3 +147,61 @@ Navigate to the project directory:
 ```bash
 cd TimeFold
 ```
+
+### 2. Install Dependencies
+Install all required Node.js packages:
+
+```bash
+npm install
+```
+
+### 3. Configure Environment Variables
+Create a .env file in the root directory of the project.
+
+```bash
+PORT=3000
+
+DB_SERVER=your-server
+DB_PORT=1433
+DB_DATABASE=your-database
+DB_USER=your-username
+DB_PASSWORD=your-password
+```
+Replace the values with your own database configuration.
+
+### 4. Start the Server
+Run the following command:
+
+```bash
+node server.js
+```
+
+If the server starts successfully, you should see:
+
+```bash
+Server is running on http://localhost:3000
+```
+
+Open your browser and visit:
+
+```bash
+http://localhost:3000
+```
+
+---
+
+## 🔐 Environment Variables
+TimeFold uses environment variables to keep sensitive configuration outside the source code.
+
+```text
+
+| Variable      | Description                     |
+| ------------- | ------------------------------- |
+| `PORT`        | Port used by the Node.js server |
+| `DB_SERVER`   | SQL Server host or IP address   |
+| `DB_PORT`     | SQL Server port                 |
+| `DB_DATABASE` | Database name                   |
+| `DB_USER`     | Database username               |
+| `DB_PASSWORD` | Database password               |
+
+```
