@@ -261,6 +261,22 @@ The goal is to make checking academic information faster, clearer, and more conv
 
 ---
 
+## 🔮 Future Improvements
+
+### Planned and potential improvements include:
+
+- 🔔 Customizable lecture reminders
+- 📍 Improved campus map
+- 📑 Assignment Reminder
+- 👤 Student profiles
+- 📊 Attendance tracking
+- 🗨️Student Chat
+- ☁️ Cloud synchronization
+- 📱 Progressive Web App (PWA)
+- 🔐 Improved authentication and authorization
+
+---
+
 ## 📌 Project Status
 
 ### 🚧 Currently in Development
@@ -303,12 +319,12 @@ TimeFold was developed collaboratively by three team members, with each member r
 
 ## 📄 License
 
-### This project is currently developed for educational and project purposes.
+This project is currently developed for educational and project purposes.
 
 ---
 
 ## ⭐ Support
 
-### If you find TimeFold interesting or useful, consider giving the repository a ⭐ on GitHub.
+If you find TimeFold interesting or useful, consider giving the repository a ⭐ on GitHub.
 
-### Feedback, suggestions, and contributions are always welcome.
+Feedback, suggestions, and contributions are always welcome.
