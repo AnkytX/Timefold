@@ -102,6 +102,8 @@ TimeFold is designed to work across:
 
 ## 📂 Project Structure
 
+```text
+
 TimeFold/
 │
 ├── public/
@@ -119,6 +121,8 @@ TimeFold/
 ├── .env
 ├── .gitignore
 └── README.md
+
+```
 
 The project structure may evolve as new features and modules are added.
 
