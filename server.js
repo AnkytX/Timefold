@@ -59,12 +59,15 @@ connectDatabase();
 
 // Agar user logged in nahi hai to login.html pe bhejo
 app.get("/", (req, res) => {
+  if (req.session.faculty_id) {
+    return res.redirect("/teacher-index.html");
+  }
   if (req.session.enroll_no) {
-    return res.redirect("./index.html");
+    return res.redirect("/index.html");
   }
   return res.redirect("/login.html");
 });
-;
+
 // LOGIN
 app.post("/login", async (req, res) => {
   const { enroll, password, batch } = req.body;
@@ -365,6 +368,73 @@ app.get("/logout", (req, res) => {
   });
 });
 
+app.post("/teacherlogin", async (req, res) => {
+  const { id_teacher, teacher_pasward } = req.body;
+
+  // 1. Validation check
+  if (!id_teacher || !teacher_pasward) {
+    return res.status(400).json({
+      success: false,
+      message: "Please enter Faculty ID and Password",
+    });
+  }
+
+  try {
+    const pool = await sql.connect(dbConfig);
+
+    // 2. Query check (Plain password match)
+    const result = await pool
+      .request()
+      .input("facultyId", sql.Int, parseInt(id_teacher, 10))
+      .input("password", sql.VarChar(255), teacher_pasward)
+      .query(`
+        SELECT faculty_id, faculty_code
+        FROM faculty
+        WHERE faculty_id = @facultyId
+          AND password_hash = @password
+      `);
+
+    // 3. User check
+    if (result.recordset.length === 0) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid Faculty ID or Password",
+      });
+    }
+
+    const teacher = result.recordset[0];
+
+    // 4. Session save
+    req.session.faculty_id = teacher.faculty_id;
+    req.session.faculty_code = teacher.faculty_code;
+
+    req.session.save((err) => {
+      if (err) {
+        console.error("Session error:", err);
+        return res.status(500).json({
+          success: false,
+          message: "Session creation failed",
+        });
+      }
+
+      res.json({
+        success: true,
+        message: "Teacher login successful",
+        teacher: {
+          faculty_id: teacher.faculty_id,
+          faculty_code: teacher.faculty_code,
+        },
+      });
+    });
+  } catch (err) {
+    console.error("Teacher login error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server error during login",
+    });
+  }
+});
+
 
 
 // UPDATE PASSWORD
@@ -477,8 +547,7 @@ app.post("/name", async (req, res) => {
     });
   }
 });
-  // data from teacher fro sql inject
-// data from teacher for SQL insert
+
 
 app.post("/notice", async (req, res) => {
     try {
@@ -518,61 +587,54 @@ app.post("/notice", async (req, res) => {
 });
 
 //notification fetch from database
-
 app.get("/student/notices", async (req, res) => {
-    try {
-        if (!req.session.enroll_no) {
-            return res.status(401).json({
-                success: false,
-                message: "Please login first"
-            });
-        }
-
-        const enrollNo = req.session.enroll_no;
-
-        const pool = await sql.connect(dbConfig);
-
-        const result = await pool.request()
-            .input("enroll_no", sql.VarChar, enrollNo)
-            .query(`
-                SELECT
-                    l.enroll_no,
-                    l.batch,
-                    n.sem,
-                    n.notice,
-                    n.notice_time,
-                    nf.faculty_id,
-                    nf.faculty_code
-                FROM login l
-
-                JOIN notice n
-                    ON n.batch = l.batch
-                    AND n.sem = CASE
-                        WHEN LEFT(l.enroll_no, 2) = '25' THEN 3
-                        WHEN LEFT(l.enroll_no, 2) = '26' THEN 1
-                    END
-
-                JOIN faculty nf
-                    ON n.faculty_id = nf.faculty_id
-
-                WHERE l.enroll_no = @enroll_no
-
-                ORDER BY n.notice_time DESC;
-            `);
-
-                 res.json({
-                success: true,
-                 notices: result.recordset
-        });
-
-    } catch (err) {
-        console.error("Student notice error:", err);
-
-        res.status(500).json({
-            success: false,
-            message: "Failed to fetch notices"
-        });
+  try {
+    if (!req.session.enroll_no) {
+      return res.status(401).json({
+        success: false,
+        message: "Please login first"
+      });
     }
+
+    const enrollNo = req.session.enroll_no;
+    const pool = await sql.connect(dbConfig);
+
+    const result = await pool.request()
+      .input("enroll_no", sql.VarChar, enrollNo)
+      .query(`
+        SELECT
+            l.enroll_no,
+            l.batch,
+            n.sem,
+            n.notice,
+            n.notice_time,
+            nf.faculty_id,
+            ISNULL(nf.faculty_code, 'Admin') AS faculty_code
+        FROM login l
+        JOIN notice n
+            ON RTRIM(LTRIM(n.batch)) = RTRIM(LTRIM(l.batch))
+            AND n.sem = CASE
+                WHEN LEFT(l.enroll_no, 2) = '25' THEN 3
+                WHEN LEFT(l.enroll_no, 2) = '26' THEN 1
+            END
+        LEFT JOIN faculty nf
+            ON n.faculty_id = nf.faculty_id
+        WHERE l.enroll_no = @enroll_no
+        ORDER BY n.notice_id DESC;
+      `);
+
+    res.json({
+      success: true,
+      notices: result.recordset
+    });
+
+  } catch (err) {
+    console.error("Student notice error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch notices"
+    });
+  }
 });
 // START SERVER
 app.listen(port, "0.0.0.0", () => {

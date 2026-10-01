@@ -1072,6 +1072,7 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
 #batch,
 #password,
 #enroll,
+#faculty_Id,
 #confirm_password {
   width: 100%;
   height: 50px;

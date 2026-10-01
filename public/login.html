@@ -110,11 +110,11 @@
                             style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
 
                             <div class="input-div">
-                                <input type="text" id="enroll" placeholder="Teacher_Id" required>
+                                <input type="text" id="Faculty_id" placeholder="Teacher_Id" required>
                             </div>
 
                             <div class="input-div">
-                                <input type="password" id="password" placeholder="Password" required>
+                                <input type="password" id="Faculty_pasward" placeholder="Password" required>
                             </div>
                         </div>
 
@@ -122,7 +122,9 @@
 
                         <button class="login-button"
                             style="width: 27.5vw; border-radius: 50px; padding: 0px 10px; height: 7vh;" type="button"
-                            onclick="login()">Log In</button>
+                            onclick="teacherLogin()">
+                            Save
+                        </button>
                     </form>
                 </div>
             </div>
@@ -134,165 +136,208 @@
 </body>
 <script>
 
+
+
     // ------------------------------------------------------------------------------------------------------------------
-    // STUDENT-TEACHER TOGGLE BUTTON
+    // TEACHER TOGGLE BUTTON
     // ------------------------------------------------------------------------------------------------------------------
+    async function teacherLogin() {
 
-    function showLoginType(type) {
+        const id_teacher = document.getElementById('Faculty_id').value.trim();
 
-        const studentLogin = document.getElementById("student-login");
-        const teacherLogin = document.getElementById("teacher-login");
-
-        const studentBtns = document.querySelectorAll(".student-btn");
-        const teacherBtns = document.querySelectorAll(".teacher-btn");
-
-        if (type === "student") {
-
-            studentLogin.style.display = "block";
-            teacherLogin.style.display = "none";
-
-            studentBtns.forEach(btn => {
-                btn.classList.add("active-login-btn");
-            });
-
-            teacherBtns.forEach(btn => {
-                btn.classList.remove("active-login-btn");
-            });
-
-        } else {
-
-            studentLogin.style.display = "none";
-            teacherLogin.style.display = "block";
-
-            teacherBtns.forEach(btn => {
-                btn.classList.add("active-login-btn");
-            });
-
-            studentBtns.forEach(btn => {
-                btn.classList.remove("active-login-btn");
-            });
-        }
-    }
+        const teacher_pasward = document.getElementById('Faculty_pasward').value.trim();
 
 
-    document.addEventListener("DOMContentLoaded", function () {
-        showLoginType("student");
-    });
+        if (!id_teacher || !teacher_pasward) {
 
-
-
-    // ANKIT KA JAVASCRIPT
-    async function login() {
-        const enroll = document.getElementById("enroll").value.trim();
-        const password = document.getElementById("password").value;
-        const batch = document.getElementById("batch").value;
-
-        if (!enroll || !password || !batch) {
             alert("Please enter all fields.");
-            return;
-        }
-        if (enroll.length !== 12) {
-            alert("Enrollment number must be exactly 12 digits");
-            return;
-        }
 
-        if (name.length > 20) {
-            alert("Name cannot be more than 20 characters");
             return;
-        }
 
+
+
+        }
         try {
-            const response = await fetch("/login", {
+            const res = await fetch("/teacherlogin", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 credentials: "include",
-                body: JSON.stringify({
-                    enroll,
-                    password,
-                    batch
-                })
+                body: JSON.stringify({ id_teacher, teacher_pasward }),
             });
 
-            const data = await response.json();
+            const data = await res.json();
 
-            if (response.ok) {
-
-
-                // const fake_tplen =
-                //     "secure_token_" + Math.random().toString(36).substring(2, 11);
-
-                // localStorage.setItem("usertokan", fake_tplen);
-
-
-                localStorage.setItem(
-                    "student",
-                    JSON.stringify(data.student)
-                );
-
-
-
-
-                window.location.href = "/index.html";
-
+            if (res.ok) {
+                alert(data.message);
+                window.location.href = "/teacher-index.html"; // Teacher dashboard
             } else {
                 alert(data.message || "Login failed");
             }
-
-        } catch (error) {
-            console.error("Login error:", error);
-            alert("Unable to connect to server.");
+        } catch (err) {
+            console.log(err);
+            alert("Unable to connect to server");
         }
     }
 
+        // ------------------------------------------------------------------------------------------------------------------
+        // STUDENT-TEACHER TOGGLE BUTTON
+        // ------------------------------------------------------------------------------------------------------------------
 
-    // ANIMATION SCRIPT
+        function showLoginType(type) {
 
-    function showLoginType(type) {
-    const studentLogin = document.getElementById("student-login");
-    const teacherLogin = document.getElementById("teacher-login");
+            const studentLogin = document.getElementById("student-login");
+            const teacherLogin = document.getElementById("teacher-login");
 
-    const studentBtns = document.querySelectorAll(".student-btn");
-    const teacherBtns = document.querySelectorAll(".teacher-btn");
+            const studentBtns = document.querySelectorAll(".student-btn");
+            const teacherBtns = document.querySelectorAll(".teacher-btn");
 
-    const toggles = document.querySelectorAll(".student-teacher-toggle");
+            if (type === "student") {
 
-    if (type === "student") {
+                studentLogin.style.display = "block";
+                teacherLogin.style.display = "none";
 
-        studentLogin.style.display = "block";
-        teacherLogin.style.display = "none";
+                studentBtns.forEach(btn => {
+                    btn.classList.add("active-login-btn");
+                });
 
-        studentBtns.forEach(btn => {
-            btn.classList.add("active-login-btn");
+                teacherBtns.forEach(btn => {
+                    btn.classList.remove("active-login-btn");
+                });
+
+            } else {
+
+                studentLogin.style.display = "none";
+                teacherLogin.style.display = "block";
+
+                teacherBtns.forEach(btn => {
+                    btn.classList.add("active-login-btn");
+                });
+
+                studentBtns.forEach(btn => {
+                    btn.classList.remove("active-login-btn");
+                });
+            }
+        }
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            showLoginType("student");
         });
 
-        teacherBtns.forEach(btn => {
-            btn.classList.remove("active-login-btn");
-        });
 
-        toggles.forEach(toggle => {
-            toggle.classList.remove("teacher-active");
-        });
 
-    } else {
+        // ANKIT KA JAVASCRIPT
+        async function login() {
+            const enroll = document.getElementById("enroll").value.trim();
+            const password = document.getElementById("password").value;
+            const batch = document.getElementById("batch").value;
 
-        studentLogin.style.display = "none";
-        teacherLogin.style.display = "block";
+            if (!enroll || !password || !batch) {
+                alert("Please enter all fields.");
+                return;
+            }
+            if (enroll.length !== 12) {
+                alert("Enrollment number must be exactly 12 digits");
+                return;
+            }
 
-        teacherBtns.forEach(btn => {
-            btn.classList.add("active-login-btn");
-        });
+            if (name.length > 20) {
+                alert("Name cannot be more than 20 characters");
+                return;
+            }
 
-        studentBtns.forEach(btn => {
-            btn.classList.remove("active-login-btn");
-        });
+            try {
+                const response = await fetch("/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({
+                        enroll,
+                        password,
+                        batch
+                    })
+                });
 
-        toggles.forEach(toggle => {
-            toggle.classList.add("teacher-active");
-        });
-    }
-}
+                const data = await response.json();
+
+                if (response.ok) {
+
+
+                    // const fake_tplen =
+                    //     "secure_token_" + Math.random().toString(36).substring(2, 11);
+
+                    // localStorage.setItem("usertokan", fake_tplen);
+
+
+                    localStorage.setItem(
+                        "student",
+                        JSON.stringify(data.student)
+                    );
+
+
+
+
+                    window.location.href = "/index.html";
+
+                } else {
+                    alert(data.message || "Login failed");
+                }
+
+            } catch (error) {
+                console.error("Login error:", error);
+                alert("Unable to connect to server.");
+            }
+        }
+
+
+        // ANIMATION SCRIPT
+
+        function showLoginType(type) {
+            const studentLogin = document.getElementById("student-login");
+            const teacherLogin = document.getElementById("teacher-login");
+
+            const studentBtns = document.querySelectorAll(".student-btn");
+            const teacherBtns = document.querySelectorAll(".teacher-btn");
+
+            const toggles = document.querySelectorAll(".student-teacher-toggle");
+
+            if (type === "student") {
+
+                studentLogin.style.display = "block";
+                teacherLogin.style.display = "none";
+
+                studentBtns.forEach(btn => {
+                    btn.classList.add("active-login-btn");
+                });
+
+                teacherBtns.forEach(btn => {
+                    btn.classList.remove("active-login-btn");
+                });
+
+                toggles.forEach(toggle => {
+                    toggle.classList.remove("teacher-active");
+                });
+
+            } else {
+
+                studentLogin.style.display = "none";
+                teacherLogin.style.display = "block";
+
+                teacherBtns.forEach(btn => {
+                    btn.classList.add("active-login-btn");
+                });
+
+                studentBtns.forEach(btn => {
+                    btn.classList.remove("active-login-btn");
+                });
+
+                toggles.forEach(toggle => {
+                    toggle.classList.add("teacher-active");
+                });
+            }
+        }
 
 </script>
 

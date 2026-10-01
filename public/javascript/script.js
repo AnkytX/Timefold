@@ -99,6 +99,7 @@ function showdashboard() {
 // ========================================================
 
 // Centralized wrapper for fetch calls
+// 1. Don't auto-redirect immediately on 401 if we are on a teacher page
 async function apiFetch(endpoint, options = {}) {
   const defaultOptions = {
     credentials: "include",
@@ -111,12 +112,34 @@ async function apiFetch(endpoint, options = {}) {
   const response = await fetch(endpoint, { ...defaultOptions, ...options });
 
   if (response.status === 401) {
-    showlogin();
+    // Only kick out to login if NOT on teacher-index.html
+    if (!window.location.pathname.includes("teacher-index.html")) {
+      showlogin();
+    }
     return null;
   }
 
   return response;
 }
+
+// 2. Only run student timetable queries if on the student page
+document.addEventListener("DOMContentLoaded", async () => {
+  initTheme();
+
+  // If this is a teacher page, skip student timetable & schedule fetch entirely
+  const isTeacherPage = window.location.pathname.includes("teacher") || !!document.querySelector(".teacher-nav");
+
+  if (!isTeacherPage) {
+    if (document.getElementById("mapViewport")) {
+      initMapGestures();
+    }
+    await reqnotification();
+    await initTimetable();
+    await loadSchedule();
+    await loadnotice();
+    setInterval(chekupcominglecture, 60000);
+  }
+});
 
 // Fetch user's active timetable
 async function fetchTimetable() {
@@ -151,42 +174,63 @@ async function fetchSchedule() {
 }
 
 // Fetch all student notices
-async function fetchNotices() {
-  try {
-    const response = await apiFetch("/student/notices", { method: "GET" });
-    if (!response || !response.ok) return null;
-    return await response.json();
-  } catch (error) {
-    console.error("Notice fetch error:", error);
-    return null;
+async function notice() {
+  const semElement = document.getElementById("Sem");
+  const batchElement = document.getElementById("batch");
+  const msgElement = document.getElementById("notice");
+
+  const Sem = semElement ? semElement.value.trim() : "";
+  const batch = batchElement ? batchElement.value.trim() : "";
+  const msgInput = msgElement ? msgElement.value.trim() : "";
+
+  // 1. Client-side input validation
+  if (!Sem) {
+    alert("Please enter the semester.");
+    semElement?.focus();
+    return;
   }
-}
+  if (!batch) {
+    alert("Please enter the batch name.");
+    batchElement?.focus();
+    return;
+  }
+  if (!msgInput) {
+    alert("Please enter a notice message.");
+    msgElement?.focus();
+    return;
+  }
 
-// Post a teacher notice
-async function sendNotice() {
-  const Sem = document.getElementById("Sem")?.value;
-  const batch = document.getElementById("batch")?.value;
-  const noticeText = document.getElementById("notice")?.value;
-
+  // 2. Submit data to server
   try {
     const response = await apiFetch("/notice", {
       method: "POST",
-      body: JSON.stringify({ Sem, batch, notice: noticeText })
+      body: JSON.stringify({
+        Sem: parseInt(Sem, 10),
+        batch: batch,
+        notice: msgInput
+      })
     });
 
-    if (!response) return;
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error("Server error:", data.message);
+    if (!response) {
+      alert("Session expired or request blocked. Please re-login.");
       return;
     }
 
-    console.log("Teacher notice:", data);
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      alert(data.message || "Notice posted successfully!");
+      if (msgElement) msgElement.value = "";
+    } else {
+      alert("Error: " + (data.message || "Unable to post notice."));
+    }
   } catch (error) {
-    console.error("Error sending notice:", error);
+    console.error("Notice error:", error);
+    alert("Network error: Could not connect to the server.");
   }
 }
+
+
 
 // Fetch notices and populate elements
 async function loadnotice() {
@@ -198,6 +242,17 @@ async function loadnotice() {
   console.log("Notice data:", notice_data);
 
   showNotice(notice_data);
+}
+
+async function fetchNotices() {
+  try {
+    const response = await apiFetch("/student/notices", { method: "GET" });
+    if (!response || !response.ok) return null;
+    return await response.json();
+  } catch (error) {
+    console.error("Notice fetch error:", error);
+    return null;
+  }
 }
 
 
