@@ -95,3 +95,51 @@ TimeFold is designed to work across:
                      │   Microsoft SQL Server  │
                      │        Database         │
                      └─────────────────────────┘
+
+```
+
+---
+
+## 📂 Project Structure
+
+TimeFold/
+│
+├── public/
+│   ├── css/
+│   │   └── style.css
+│   │
+│   ├── js/
+│   │   └── script.js
+│   │
+│   └── *.html
+│
+├── server.js
+├── package.json
+├── package-lock.json
+├── .env
+├── .gitignore
+└── README.md
+
+The project structure may evolve as new features and modules are added.
+
+---
+
+## 🚀 Getting Started
+Follow the steps below to run TimeFold locally.
+
+### Prerequisites
+Make sure the following software is installed on your system:
+- Node.js
+- Git
+- Microsoft SQL Server
+- Visual Studio Code or another code editor
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Piyush07d/TimeFold.git
+```
+Navigate to the project directory:
+```bash
+cd TimeFold
+```
