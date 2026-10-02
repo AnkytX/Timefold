@@ -576,7 +576,7 @@ section {
   gap: 10px;
 }
 
-.sem,
+/* .sem,
 .batch {
   margin-top: 10px;
   border-radius: 8px;
@@ -587,7 +587,7 @@ section {
   padding: 12px 18px;
   color: var(--muted);
   width: 100%;
-}
+} */
 
 .message input {
   width: 100%;
