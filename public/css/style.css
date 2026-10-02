@@ -1405,6 +1405,32 @@ input:focus::placeholder {
     height: 1.7em;
   }
 
+
+  /* HOME */
+  nav:has(.nav-button-div:nth-child(1).current-page)::before {
+    left: calc(9px + ((100% - 18px) / 10) - 21px);
+  }
+
+  /* MAP */
+  nav:has(.nav-button-div:nth-child(2).current-page)::before {
+    left: calc(9px + ((100% - 18px) / 10) - 21px + ((100% - 18px) / 5));
+  }
+
+  /* SCHEDULE */
+  nav:has(.nav-button-div:nth-child(3).current-page)::before {
+    left: calc(9px + ((100% - 18px) / 10) - 21px + (((100% - 18px) / 5) * 2));
+  }
+
+  /* NOTICE */
+  nav:has(.nav-button-div:nth-child(4).current-page)::before {
+    left: calc(9px + ((100% - 18px) / 10) - 21px + (((100% - 18px) / 5) * 3));
+  }
+
+  /* SETTINGS */
+  nav:has(.nav-button-div:nth-child(5).current-page)::before {
+    left: calc(9px + ((100% - 18px) / 10) - 21px + (((100% - 18px) / 5) * 4));
+  }
+
   /* =========================================================
    TEACHER NAV - MOBILE
    ========================================================= */
