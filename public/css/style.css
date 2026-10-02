@@ -1067,6 +1067,31 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
   width: 100%;
 }
 
+.password-input-div {
+    position: relative;
+}
+
+.password-input-div input {
+    padding-right: 50px !important;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    border: none;
+    background: transparent;
+    padding: 5px;
+
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+
+    z-index: 2;
+}
+
 /* Grouped Form Controls */
 #name,
 #batch,

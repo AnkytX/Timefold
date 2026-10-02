@@ -60,8 +60,12 @@
                                 <input type="text" id="enroll" placeholder="Enrollment Number" required>
                             </div>
 
-                            <div class="input-div">
+                            <div class="input-div password-input-div">
                                 <input type="password" id="password" placeholder="Password" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('password', this)"
+                                    aria-label="Show password">
+                                    🐵
+                                </button>
                             </div>
 
                             <div class="input-div">
@@ -120,8 +124,13 @@
                                 <input type="text" class="faculty_id" id="Faculty_id" placeholder="Teacher_Id" required>
                             </div>
 
-                            <div class="input-div">
-                                <input type="password" class="faculty_password" id="Faculty_pasward" placeholder="Password" required>
+                            <div class="input-div password-input-div">
+                                <input type="password" class="faculty_password" id="Faculty_pasward"
+                                    placeholder="Password" required>
+                                <button type="button" class="password-toggle"
+                                    onclick="togglePassword('Faculty_pasward', this)" aria-label="Show password">
+                                    🐵
+                                </button>
                             </div>
                         </div>
 
@@ -186,165 +195,183 @@
         }
     }
 
-        // ------------------------------------------------------------------------------------------------------------------
-        // STUDENT-TEACHER TOGGLE BUTTON
-        // ------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
+    // STUDENT-TEACHER TOGGLE BUTTON
+    // ------------------------------------------------------------------------------------------------------------------
 
-        function showLoginType(type) {
+    function showLoginType(type) {
 
-            const studentLogin = document.getElementById("student-login");
-            const teacherLogin = document.getElementById("teacher-login");
+        const studentLogin = document.getElementById("student-login");
+        const teacherLogin = document.getElementById("teacher-login");
 
-            const studentBtns = document.querySelectorAll(".student-btn");
-            const teacherBtns = document.querySelectorAll(".teacher-btn");
+        const studentBtns = document.querySelectorAll(".student-btn");
+        const teacherBtns = document.querySelectorAll(".teacher-btn");
 
-            if (type === "student") {
+        if (type === "student") {
 
-                studentLogin.style.display = "block";
-                teacherLogin.style.display = "none";
+            studentLogin.style.display = "block";
+            teacherLogin.style.display = "none";
 
-                studentBtns.forEach(btn => {
-                    btn.classList.add("active-login-btn");
-                });
+            studentBtns.forEach(btn => {
+                btn.classList.add("active-login-btn");
+            });
 
-                teacherBtns.forEach(btn => {
-                    btn.classList.remove("active-login-btn");
-                });
+            teacherBtns.forEach(btn => {
+                btn.classList.remove("active-login-btn");
+            });
+
+        } else {
+
+            studentLogin.style.display = "none";
+            teacherLogin.style.display = "block";
+
+            teacherBtns.forEach(btn => {
+                btn.classList.add("active-login-btn");
+            });
+
+            studentBtns.forEach(btn => {
+                btn.classList.remove("active-login-btn");
+            });
+        }
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        showLoginType("student");
+    });
+
+
+
+    // ANKIT KA JAVASCRIPT
+    async function login() {
+        const enroll = document.getElementById("enroll").value.trim();
+        const password = document.getElementById("password").value;
+        const batch = document.getElementById("batch").value;
+
+        if (!enroll || !password || !batch) {
+            alert("Please enter all fields.");
+            return;
+        }
+        if (enroll.length !== 12) {
+            alert("Enrollment number must be exactly 12 digits");
+            return;
+        }
+
+        if (name.length > 20) {
+            alert("Name cannot be more than 20 characters");
+            return;
+        }
+
+        try {
+            const response = await fetch("/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    enroll,
+                    password,
+                    batch
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+
+
+                // const fake_tplen =
+                //     "secure_token_" + Math.random().toString(36).substring(2, 11);
+
+                // localStorage.setItem("usertokan", fake_tplen);
+
+
+                localStorage.setItem(
+                    "student",
+                    JSON.stringify(data.student)
+                );
+
+
+
+
+                window.location.href = "/index.html";
 
             } else {
-
-                studentLogin.style.display = "none";
-                teacherLogin.style.display = "block";
-
-                teacherBtns.forEach(btn => {
-                    btn.classList.add("active-login-btn");
-                });
-
-                studentBtns.forEach(btn => {
-                    btn.classList.remove("active-login-btn");
-                });
+                alert(data.message || "Login failed");
             }
+
+        } catch (error) {
+            console.error("Login error:", error);
+            alert("Unable to connect to server.");
         }
+    }
 
 
-        document.addEventListener("DOMContentLoaded", function () {
-            showLoginType("student");
-        });
+    // ANIMATION SCRIPT
 
+    function showLoginType(type) {
+        const studentLogin = document.getElementById("student-login");
+        const teacherLogin = document.getElementById("teacher-login");
 
+        const studentBtns = document.querySelectorAll(".student-btn");
+        const teacherBtns = document.querySelectorAll(".teacher-btn");
 
-        // ANKIT KA JAVASCRIPT
-        async function login() {
-            const enroll = document.getElementById("enroll").value.trim();
-            const password = document.getElementById("password").value;
-            const batch = document.getElementById("batch").value;
+        const toggles = document.querySelectorAll(".student-teacher-toggle");
 
-            if (!enroll || !password || !batch) {
-                alert("Please enter all fields.");
-                return;
-            }
-            if (enroll.length !== 12) {
-                alert("Enrollment number must be exactly 12 digits");
-                return;
-            }
+        if (type === "student") {
 
-            if (name.length > 20) {
-                alert("Name cannot be more than 20 characters");
-                return;
-            }
+            studentLogin.style.display = "block";
+            teacherLogin.style.display = "none";
 
-            try {
-                const response = await fetch("/login", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    credentials: "include",
-                    body: JSON.stringify({
-                        enroll,
-                        password,
-                        batch
-                    })
-                });
+            studentBtns.forEach(btn => {
+                btn.classList.add("active-login-btn");
+            });
 
-                const data = await response.json();
+            teacherBtns.forEach(btn => {
+                btn.classList.remove("active-login-btn");
+            });
 
-                if (response.ok) {
+            toggles.forEach(toggle => {
+                toggle.classList.remove("teacher-active");
+            });
 
+        } else {
 
-                    // const fake_tplen =
-                    //     "secure_token_" + Math.random().toString(36).substring(2, 11);
+            studentLogin.style.display = "none";
+            teacherLogin.style.display = "block";
 
-                    // localStorage.setItem("usertokan", fake_tplen);
+            teacherBtns.forEach(btn => {
+                btn.classList.add("active-login-btn");
+            });
 
+            studentBtns.forEach(btn => {
+                btn.classList.remove("active-login-btn");
+            });
 
-                    localStorage.setItem(
-                        "student",
-                        JSON.stringify(data.student)
-                    );
-
-
-
-
-                    window.location.href = "/index.html";
-
-                } else {
-                    alert(data.message || "Login failed");
-                }
-
-            } catch (error) {
-                console.error("Login error:", error);
-                alert("Unable to connect to server.");
-            }
+            toggles.forEach(toggle => {
+                toggle.classList.add("teacher-active");
+            });
         }
+    }
 
+    // ------------------------------------------------------------------------------------------------------------------
+    // PASSWORD REVEAL BUTTON
+    // ------------------------------------------------------------------------------------------------------------------
 
-        // ANIMATION SCRIPT
+    function togglePassword(inputId, button) {
+        const input = document.getElementById(inputId);
 
-        function showLoginType(type) {
-            const studentLogin = document.getElementById("student-login");
-            const teacherLogin = document.getElementById("teacher-login");
-
-            const studentBtns = document.querySelectorAll(".student-btn");
-            const teacherBtns = document.querySelectorAll(".teacher-btn");
-
-            const toggles = document.querySelectorAll(".student-teacher-toggle");
-
-            if (type === "student") {
-
-                studentLogin.style.display = "block";
-                teacherLogin.style.display = "none";
-
-                studentBtns.forEach(btn => {
-                    btn.classList.add("active-login-btn");
-                });
-
-                teacherBtns.forEach(btn => {
-                    btn.classList.remove("active-login-btn");
-                });
-
-                toggles.forEach(toggle => {
-                    toggle.classList.remove("teacher-active");
-                });
-
-            } else {
-
-                studentLogin.style.display = "none";
-                teacherLogin.style.display = "block";
-
-                teacherBtns.forEach(btn => {
-                    btn.classList.add("active-login-btn");
-                });
-
-                studentBtns.forEach(btn => {
-                    btn.classList.remove("active-login-btn");
-                });
-
-                toggles.forEach(toggle => {
-                    toggle.classList.add("teacher-active");
-                });
-            }
+        if (input.type === "password") {
+            input.type = "text";
+            button.textContent = "🙈";
+            button.setAttribute("aria-label", "Hide password");
+        } else {
+            input.type = "password";
+            button.textContent = "🐵";
+            button.setAttribute("aria-label", "Show password");
         }
+    }
 
 </script>
 
