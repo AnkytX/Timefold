@@ -576,8 +576,8 @@ section {
   gap: 10px;
 }
 
-.sem,
-.batch{
+/* .sem,
+.batch {
   margin-top: 10px;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -587,7 +587,7 @@ section {
   padding: 12px 18px;
   color: var(--muted);
   width: 100%;
-}
+} */
 
 .message input {
   width: 100%;
@@ -821,6 +821,7 @@ section {
   margin-top: 2px;
 }
 
+
 .theme-toggle-wrap {
   display: flex;
   align-items: center;
@@ -859,6 +860,89 @@ body.dark-theme #theme-toggle {
 body.dark-theme #theme-toggle::after {
   transform: translateX(20px);
 }
+
+.about-us {
+  margin-top: 8px;
+  padding: 18.5px 14px;
+  border-radius: 15px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  cursor: pointer;
+
+  position: relative;
+  overflow: hidden;
+
+  /* Keep the closed size exactly the same */
+  max-height: 61px;
+
+  transition: max-height 0.45s ease;
+}
+
+.about-us-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  min-height: 24px;
+}
+
+.about-us-text .small-text {
+  margin-top: 2px;
+}
+
+/* Details are hidden initially */
+.about-details {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+
+  transform: translateY(-8px);
+
+  transition:
+    max-height 0.45s ease,
+    opacity 0.3s ease,
+    transform 0.45s ease;
+}
+
+/* Developer rows */
+.developer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 16px;
+}
+
+.developer a{
+  text-decoration: underline;
+}
+
+.developer:first-child {
+  padding-top: 20px;
+}
+
+/* EXPANDED STATE */
+.about-us.active {
+  max-height: 300px;
+}
+
+.about-us.active .about-details {
+  max-height: 220px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Arrow */
+.about-arrow {
+  transition: transform 0.35s ease;
+}
+
+.about-us.active .about-arrow {
+  transform: rotate(90deg);
+}
+
+.about-us-text .small-text {
+  margin-top: 2px;
+}
+
 
 /* =========================================================
    BOTTOM NAVIGATION
@@ -1068,28 +1152,28 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
 }
 
 .password-input-div {
-    position: relative;
+  position: relative;
 }
 
 .password-input-div input {
-    padding-right: 50px !important;
+  padding-right: 50px !important;
 }
 
 .password-toggle {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
 
-    border: none;
-    background: transparent;
-    padding: 5px;
+  border: none;
+  background: transparent;
+  padding: 5px;
 
-    cursor: pointer;
-    font-size: 1rem;
-    line-height: 1;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
 
-    z-index: 2;
+  z-index: 2;
 }
 
 /* Grouped Form Controls */
@@ -1574,6 +1658,7 @@ body.dark-theme .schedule-card,
 body.dark-theme .setting-title,
 body.dark-theme .main-setting,
 body.dark-theme .theme-setting,
+body.dark-theme .about-us,
 body.dark-theme .login-div,
 body.dark-theme .register-div {
   border-color: transparent;
