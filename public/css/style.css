@@ -868,14 +868,13 @@ body.dark-theme #theme-toggle::after {
   background: var(--surface-2);
   border: 1px solid var(--line);
   cursor: pointer;
-
   position: relative;
   overflow: hidden;
-
-  /* Keep the closed size exactly the same */
   max-height: 61px;
-
   transition: max-height 0.45s ease;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
 }
 
 .about-us-header {
@@ -911,7 +910,7 @@ body.dark-theme #theme-toggle::after {
   padding-top: 16px;
 }
 
-.developer a{
+.developer a {
   text-decoration: underline;
 }
 
