@@ -21,7 +21,7 @@ app.use(
         saveUninitialized: false,
         cookie: {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+             secure:  false ,               //process.env.NODE_ENV === "production",
             maxAge: 7 * 24 * 60 * 60 * 1000,
             sameSite: "lax"
         }
@@ -37,12 +37,18 @@ const dbConfig = {
   database: process.env.DB_DATABASE,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  port: Number(process.env.DB_PORT) || 1433 ,
- 
-
+  port: Number(process.env.DB_PORT) || 1433,
   options: {
-    encrypt: true,
-    trustServerCertificate: false,
+    encrypt: true, 
+    trustServerCertificate: true,                  
+    enableArithAbort: true,
+    connectTimeout: 30000,
+    requestTimeout: 30000,
+  },
+  pool: {
+    max: 10,
+    min: 0,
+    idleTimeoutMillis: 30000,
   },
 };
 
@@ -93,7 +99,7 @@ app.post("/login", async (req, res) => {
     if (result.recordset.length > 0) {
       const student = result.recordset[0];
       req.session.enroll_no = student.Enroll_no; // for login redirect loop
-
+  req.session.student_name = student.name;
       console.log("LOGIN SESSION:", req.session.enroll_no);
       // Ensure session is saved before sending the response
       req.session.save((err) => {
@@ -128,6 +134,23 @@ app.post("/login", async (req, res) => {
       message: "Please enter valid credentials",
     });
   }
+});
+
+app.get("/student-info", (req, res) => {
+    if (!req.session.enroll_no) {
+        return res.status(401).json({
+            success: false,
+            message: "Please login first"
+        });
+    }
+
+    res.json({
+        success: true,
+        student: {
+            enroll: req.session.enroll_no,
+            name: req.session.student_name
+        }
+    });
 });
 
 //REGISTRATION
@@ -203,8 +226,7 @@ app.get("/fetch", async (req, res) => {
         message: "Please login first",
       });
     }
-
-    // Get current day
+    
     // Get current day in India
     const actualDay = new Date()
       .toLocaleDateString("en-US", {
@@ -503,52 +525,61 @@ app.post("/password", async (req, res) => {
 });
  // mname update
 app.post("/name", async (req, res) => {
-  try {
-    const enroll_no = req.session.enroll_no;
-    if (!enroll_no) {
-      return res.status(401).json({
-        success: false,
-        message: "Unauthorized. Please log in first.",
-      });
+    try {
+        const enroll_no = req.session.enroll_no;
+ 
+        if (!enroll_no) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized. Please log in first."
+            });
+        }
+
+        const { Name } = req.body;
+
+        if (!Name || Name.trim() === "") {
+            return res.status(400).json({
+                success: false,
+                message: "Name cannot be empty."
+            });
+        }
+
+        const pool = await sql.connect(dbConfig);
+
+        const result = await pool
+            .request()
+            .input("name", sql.VarChar(50), Name.trim())
+            .input("Enroll_no", sql.VarChar(12), enroll_no)
+            .query(`
+                UPDATE dbo.login
+                SET name = @name
+                WHERE Enroll_no = @Enroll_no
+            `);
+
+        // Check if database update happened
+        if (result.rowsAffected[0] === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found."
+            });
+        }
+
+      
+        req.session.student_name = Name.trim();
+
+        res.json({
+            success: true,
+            message: "Name updated successfully"
+        });
+
+    } catch (err) {
+        console.error("Name update error:", err);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to update name"
+        });
     }
-
-    const { Name } = req.body;
-    if (!Name || Name.trim() === "") {
-      return res.status(400).json({
-        success: false,
-        message: "Name cannot be empty.",
-      });
-    }
-
-    const pool = await sql.connect(dbConfig);
-    const result = await pool
-      .request()
-      .input("name", sql.VarChar(50), Name.trim())
-      .input("Enroll_no", sql.VarChar(12), enroll_no)
-      .query(`
-        UPDATE dbo.login
-        SET name = @name
-        WHERE Enroll_no = @Enroll_no
-      `);
-
-    if (result.rowsAffected[0] === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found.",
-      });
-    }
-
-    res.json({
-      success: true,
-      message: "Name updated successfully",
-    });
-  } catch (err) {
-    console.error("Name update error:", err);
-    res.status(500).json({
-      success: false,
-      message: "Failed to update name",
-    });
-  }
 });
 
 
@@ -655,5 +686,5 @@ app.get("/student/notices", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on port http://localhost:${PORT}`);
 });

@@ -105,6 +105,7 @@ function showdashboard() {
 
 // Centralized wrapper for fetch calls
 // 1. Don't auto-redirect immediately on 401 if we are on a teacher page
+// Centralized wrapper for fetch calls
 async function apiFetch(endpoint, options = {}) {
   const defaultOptions = {
     credentials: "include",
@@ -114,19 +115,30 @@ async function apiFetch(endpoint, options = {}) {
     },
   };
 
-  const response = await fetch(endpoint, { ...defaultOptions, ...options });
+  try {
+    const response = await fetch(endpoint, { ...defaultOptions, ...options });
 
-  if (response.status === 401) {
-    // Only kick out to login if NOT on teacher-index.html
-    if (!window.location.pathname.includes("teacher-index.html")) {
-      showlogin();
+    // 1. Session expired or unauthorized
+    if (response.status === 401) {
+      if (!window.location.pathname.includes("teacher-index.html")) {
+        showlogin();
+      }
+      return null;
     }
+
+    // 2. Prevent crash if response is HTML (like login.html or 404 page)
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      console.warn(`[apiFetch] Expected JSON from ${endpoint}, but got HTML/Text.`);
+      return null;
+    }
+
+    return response;
+  } catch (error) {
+    console.error(`[apiFetch] Network error for ${endpoint}:`, error);
     return null;
   }
-
-  return response;
 }
-
 // 2. Only run student timetable queries if on the student page
 document.addEventListener("DOMContentLoaded", async () => {
   initTheme();
@@ -144,6 +156,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     await initTimetable();
     await loadSchedule();
     await loadnotice();
+    await loadStudentName()
+    await mon();
     setInterval(chekupcominglecture, 60000);
   }
 });
@@ -270,14 +284,14 @@ async function fetchNotices() {
 // 4. SHOW / RENDER
 // ========================================================
 
-// Render notices to dashboard
+
 // Render notices to dashboard
 function showNotice(notices) {
   const container = document.getElementById("notice-list");
   if (!container) return;
 
   const now = Date.now();
-  const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
+  const TWENTY_FOUR_HOURS = 12 * 60 * 60 * 1000;
 
   // 1. Strictly keep only valid notices posted within the last 24 hours
   const activeNotices = Array.isArray(notices)
@@ -292,7 +306,7 @@ function showNotice(notices) {
 
         const age = now - noticeTime;
 
-        // Must be in the past (age >= -60000ms grace for clock drift) and <= 24 hours
+        // Must be in the past (age >= -60000ms grace for clock drift) and 12 hours
         return age >= -60000 && age <= TWENTY_FOUR_HOURS;
       })
     : [];
@@ -329,20 +343,54 @@ function showNotice(notices) {
     container.innerHTML = `<p style="text-align: center; color: var(--muted, #888); margin-top: 2rem;">No notices today</p>`;
   }
 }
-// Determine lecture states (active, lunch, free, weekend) and update cards
-function showClassStatus(data) {
-  if (!Array.isArray(data) || data.length === 0) return;
 
+// ========================================================
+// 4. (showClassStatus)
+// ========================================================
+
+function showClassStatus(data) {
   const now = new Date();
-  const currentHour = now.getHours() * 60 + now.getMinutes();
+  const dayName = now.toLocaleDateString("en-US", {
+    weekday: "long",
+    timeZone: "Asia/Kolkata",
+  });
+
+  // Section Containers
+  const hide_current =
+    document.getElementById("delete-current-class") ||
+    document.getElementById("delet-current-class");
+  const hide_next = document.getElementById("delete-next-class");
+  const delete_map_lec = document.getElementById("map-lec");
+
+  // 1. Weekend check (runs even if data is [])
+  if (dayName === "Sunday" || dayName === "Saturday") {
+    const message = `<div class="bold-text">No Class Today</div>`;
+    [hide_current, hide_next, delete_map_lec].forEach((el) => {
+      if (el) {
+        el.style.display = "";
+        el.innerHTML = message;
+      }
+    });
+    return;
+  }
+
+  // 2. Weekday but no lectures scheduled
+  if (!Array.isArray(data) || data.length === 0) {
+    const message = `<div class="bold-text">No Classes Scheduled</div>`;
+    [hide_current, hide_next, delete_map_lec].forEach((el) => {
+      if (el) {
+        el.style.display = "";
+        el.innerHTML = message;
+      }
+    });
+    return;
+  }
 
   // Current Card Elements
   const currentClassNameEl = document.getElementById("current-class-sub");
   const currentStartTimeEl = document.getElementById("current-class-starttime");
   const currentEndTimeEl = document.getElementById("current-class-endtime");
-  const currentProfessorEl = document.getElementById(
-    "current-class-professor-name",
-  );
+  const currentProfessorEl = document.getElementById("current-class-professor-name");
   const roomNoEl = document.getElementById("room_no");
   const departmentEl = document.getElementById("Department");
 
@@ -354,27 +402,7 @@ function showClassStatus(data) {
   const nextRoomEl = document.getElementById("next-room");
   const nextDepartmentEl = document.getElementById("next-depa");
 
-  // Section Containers
-  const hide_current = document.getElementById("delet-current-class");
-  const hide_next = document.getElementById("delete-next-class");
-  const delete_map_lec = document.getElementById("map-lec");
-
-  const dayName = now.toLocaleDateString("en-US", {
-    weekday: "long",
-    timeZone: "Asia/Kolkata",
-  });
-
-  // Weekend logic
-  if (dayName === "Sunday" || dayName === "Saturday") {
-    const message = `<div class="bold-text">No Class Right Now</div>`;
-    [hide_current, hide_next, delete_map_lec].forEach((el) => {
-      if (el) {
-        el.style.display = "";
-        el.innerHTML = message;
-      }
-    });
-    return;
-  }
+  const currentHour = now.getHours() * 60 + now.getMinutes();
 
   // Active / Upcoming detection
   const currenttokan = data.findIndex((lecture) => {
@@ -569,24 +597,40 @@ function showTodayLectures(data) {
 // Render student greeting, initials, and date
 function showStudentHeader(data) {
   const now = new Date();
+
+
   const studentName = data[0]?.name || "Student";
-  const firstWord = studentName.trim().split(/\s+/)[0];
-  const formattedName =
-    firstWord.charAt(0).toUpperCase() + firstWord.slice(1).toLowerCase();
 
-  const greetingEl = document.getElementById("greeting");
-  if (greetingEl) {
-    greetingEl.innerText = `Hello, ${formattedName}`;
-  }
-
-  const insert_name = document.getElementById("initial");
-  if (insert_name && formattedName) {
-    insert_name.textContent = formattedName.charAt(0);
-  }
 
   const dateEl = document.getElementById("date");
+
   if (dateEl) {
-    dateEl.textContent = `Today, ${now.getDate()} ${now.toLocaleString("en-US", { month: "short" })}`;
+    dateEl.textContent = `Today, ${now.getDate()} ${now.toLocaleString("en-US", {
+      month: "short"
+    })}`;
+  }
+}
+async function loadStudentName() {
+  try {
+    const response = await apiFetch("/student-info", { method: "GET" });
+    if (!response || !response.ok) return;
+
+    const result = await response.json();
+    if (!result || !result.success || !result.student) return;
+
+   const name = result.student.name.trim().split(/\s+/)[0] || "Student";
+    const greetingEl = document.getElementById("greeting");
+    const initialEl = document.getElementById("initial");
+
+    if (greetingEl) {
+      greetingEl.innerText = `Hello, ${name}`;
+    }
+
+    if (initialEl && name.trim().length > 0) {
+      initialEl.textContent = name.trim().charAt(0).toUpperCase();
+    }
+  } catch (error) {
+    console.error("Name loading error:", error);
   }
 }
 
@@ -671,14 +715,40 @@ function initTheme() {
   }
 }
 
+
 // ========================================================
-// 6. TIMETABLE
+// 6. TIMETABLE (initTimetable)
 // ========================================================
 
-async function initTimetable() {
+  async function initTimetable() {
   timetableData = await fetchTimetable();
+
+  const now = new Date();
+  const dayName = now.toLocaleDateString("en-US", {
+    weekday: "long",
+    timeZone: "Asia/Kolkata",
+  });
+
+  // Check weekend first
+  if (dayName === "Sunday" || dayName === "Saturday") {
+    showClassStatus([]);
+    showStudentHeader(timetableData);
+    const todayLectures = document.getElementById("today-lectures");
+    if (todayLectures) {
+      todayLectures.innerHTML = `<p style="text-align: center; color: var(--muted, #888); margin-top: 1rem;">No classes today</p>`;
+    }
+    return;
+  }
+
   if (timetableData.length > 0) {
     showTimetable(timetableData);
+  } else {
+    showClassStatus([]);
+    showStudentHeader([]);
+    const todayLectures = document.getElementById("today-lectures");
+    if (todayLectures) {
+      todayLectures.innerHTML = `<p style="text-align: center; color: var(--muted, #888); margin-top: 1rem;">No lectures scheduled</p>`;
+    }
   }
 }
 
@@ -689,8 +759,13 @@ async function initTimetable() {
 function showSchedule(schedule) {
   const container = document.getElementById("lecture-container");
   if (!container) return;
+   const today = new Date().toLocaleDateString("en-US", {
+    weekday: "long",
+    timeZone: "Asia/Kolkata",
+  });
 
-  if (!schedule || schedule.length === 0) {
+
+  if (!schedule || schedule.length <0 ) {
     container.innerHTML = `<div class="schedule-empty">No classes scheduled</div>`;
     return;
   }
@@ -700,7 +775,7 @@ function showSchedule(schedule) {
       const formattedStartTime = formatScheduleTime(lecture.start_time);
       const formattedEndTime = formatScheduleTime(lecture.end_time);
       const faculty = lecture.faculty_code || "Staff";
-      const room = lecture.room || "TBA";
+      const room = lecture.room ;
       const subject = lecture.subject_code || "Lecture";
       const department = getdep(room).department;
 
@@ -723,6 +798,7 @@ function showSchedule(schedule) {
       `;
     })
     .join("");
+    
 }
 
 function setActiveDay(day) {
@@ -762,6 +838,12 @@ function fri() {
 }
 
 async function loadSchedule() {
+
+   const today = new Date().toLocaleDateString("en-US", {
+    weekday: "long",
+    timeZone: "Asia/Kolkata",
+  });
+
   weeklySchedule = await fetchSchedule();
 
   mondaySchedule = weeklySchedule.filter(
@@ -780,11 +862,7 @@ async function loadSchedule() {
     (item) => item.day?.trim().toLowerCase() === "friday",
   );
 
-  const today = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    timeZone: "Asia/Kolkata",
-  });
-
+ 
   if (today === "Monday") mon();
   else if (today === "Tuesday") tue();
   else if (today === "Wednesday") wed();
@@ -792,11 +870,12 @@ async function loadSchedule() {
   else if (today === "Friday") fri();
   else {
     const container = document.getElementById("lecture-container");
-    if (container) {
+    if (!container) {
       container.innerHTML = `<div class="schedule-empty">No classes today</div>`;
     }
   }
 }
+
 
 // ========================================================
 // 8. MAP
@@ -1277,14 +1356,3 @@ function chekupcominglecture() {
 // 11. PAGE INITIALIZATION
 // ========================================================
 
-document.addEventListener("DOMContentLoaded", async () => {
-  initTheme();
-  initMapGestures();
-  await reqnotification();
-  await initTimetable();
-  await loadSchedule();
-  await loadnotice();
-
-  // Run reminder check every minute
-  setInterval(chekupcominglecture, 60000);
-});
