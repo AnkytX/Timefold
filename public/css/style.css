@@ -1191,7 +1191,7 @@ input:focus::placeholder {
   }
 
   .main-head {
-    width: calc(100% - 28px);
+    width: calc(100% - 23px);
     height: 70px;
   }
 
