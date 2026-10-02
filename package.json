@@ -2,20 +2,20 @@
   "name": "timefold",
   "version": "1.0.0",
   "description": "",
-  "homepage": "https://github.com/Piyush07d/Timefold#readme",
+  "homepage": "https://github.com/AnkytX/Timefold#readme",
   "bugs": {
-    "url": "https://github.com/Piyush07d/Timefold/issues"
+    "url": "https://github.com/AnkytX/Timefold/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Piyush07d/Timefold.git"
+    "url": "git+https://github.com/AnkytX/Timefold.git"
   },
   "license": "ISC",
-  "author": "",
+  "author": "Ankit & Piyush",
   "type": "commonjs",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"No tests configured\"",
     "start": "node server.js"
   },
   "dependencies": {
