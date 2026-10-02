@@ -15,16 +15,22 @@ let fridaySchedule = [];
 const notifiedLectures = new Set();
 
 const MAP_URLS = {
-  "Mining Department": "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/minning.svg",
-  "Civil Department": "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/civil.svg",
-  "Workshop": "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/workshop.svg",
-  "Library Department": "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/library.svg",
-  "Electrical Department": "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/electrical.svg",
-  "Mechanical Department": "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/mechanical.svg"
+  "Mining Department":
+    "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/minning.svg",
+  "Civil Department":
+    "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/civil.svg",
+  Workshop:
+    "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/workshop.svg",
+  "Library Department":
+    "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/library.svg",
+  "Electrical Department":
+    "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/electrical.svg",
+  "Mechanical Department":
+    "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/mechanical.svg",
 };
 
-const DEFAULT_MAP = "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/no-lecture.svg";
-
+const DEFAULT_MAP =
+  "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/no-lecture.svg";
 
 // ========================================================
 // 2. HELPER FUNCTIONS
@@ -93,7 +99,6 @@ function showdashboard() {
   window.location.href = "/index.html";
 }
 
-
 // ========================================================
 // 3. API / FETCH
 // ========================================================
@@ -105,8 +110,8 @@ async function apiFetch(endpoint, options = {}) {
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      ...(options.headers || {})
-    }
+      ...(options.headers || {}),
+    },
   };
 
   const response = await fetch(endpoint, { ...defaultOptions, ...options });
@@ -127,7 +132,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   initTheme();
 
   // If this is a teacher page, skip student timetable & schedule fetch entirely
-  const isTeacherPage = window.location.pathname.includes("teacher") || !!document.querySelector(".teacher-nav");
+  const isTeacherPage =
+    window.location.pathname.includes("teacher") ||
+    !!document.querySelector(".teacher-nav");
 
   if (!isTeacherPage) {
     if (document.getElementById("mapViewport")) {
@@ -145,10 +152,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function fetchTimetable() {
   try {
     const response = await apiFetch("/fetch", { method: "GET" });
-    if (!response || !response.ok) throw new Error(`HTTP error! status: ${response?.status}`);
+    if (!response || !response.ok)
+      throw new Error(`HTTP error! status: ${response?.status}`);
 
     const result = await response.json();
-    if (!result.success || !Array.isArray(result.data) || result.data.length === 0) {
+    if (
+      !result.success ||
+      !Array.isArray(result.data) ||
+      result.data.length === 0
+    ) {
       console.warn("No timetable records found.");
       return [];
     }
@@ -163,7 +175,8 @@ async function fetchTimetable() {
 async function fetchSchedule() {
   try {
     const response = await apiFetch("/fetch-schedule", { method: "GET" });
-    if (!response || !response.ok) throw new Error(`HTTP error! status: ${response?.status}`);
+    if (!response || !response.ok)
+      throw new Error(`HTTP error! status: ${response?.status}`);
 
     const dataSchedule = await response.json();
     return dataSchedule.data || [];
@@ -207,8 +220,8 @@ async function notice() {
       body: JSON.stringify({
         Sem: parseInt(Sem, 10),
         batch: batch,
-        notice: msgInput
-      })
+        notice: msgInput,
+      }),
     });
 
     if (!response) {
@@ -229,8 +242,6 @@ async function notice() {
     alert("Network error: Could not connect to the server.");
   }
 }
-
-
 
 // Fetch notices and populate elements
 async function loadnotice() {
@@ -255,29 +266,69 @@ async function fetchNotices() {
   }
 }
 
-
 // ========================================================
 // 4. SHOW / RENDER
 // ========================================================
 
 // Render notices to dashboard
+// Render notices to dashboard
 function showNotice(notices) {
-  const here_notice = document.getElementById("notice");
-  const fir_notice = document.getElementById("faculty_name");
+  const container = document.getElementById("notice-list");
+  if (!container) return;
 
-  if (!here_notice) return;
+  const now = Date.now();
+  const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
 
-  if (Array.isArray(notices) && notices.length > 0) {
-    here_notice.innerText = notices[0].notice;
-    if (fir_notice) {
-      fir_notice.innerText = notices[0].faculty_code || "Unknown Faculty";
-    }
+  // 1. Strictly keep only valid notices posted within the last 24 hours
+  const activeNotices = Array.isArray(notices)
+    ? notices.filter((item) => {
+        const noticeDate = item.notice_time || item.created_at || item.timestamp;
+        
+        
+       
+
+        const noticeTime = new Date(noticeDate).getTime();
+        if (isNaN(noticeTime)) return false;
+
+        const age = now - noticeTime;
+
+        // Must be in the past (age >= -60000ms grace for clock drift) and <= 24 hours
+        return age >= -60000 && age <= TWENTY_FOUR_HOURS;
+      })
+    : [];
+
+  // 2. Clear old content
+  container.innerHTML = "";
+
+  // 3. Render notices or show empty fallback
+  if (activeNotices.length > 0) {
+    activeNotices.forEach((item) => {
+      const card = document.createElement("div");
+      card.className = "notice-card-wrapper";
+      card.style.marginBottom = "14px";
+
+      card.innerHTML = `
+        <div class="notice-container">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="margin: 0; font-size: 1.1rem; color: #450D5F;">ATTENTION</h2>
+            <span style="color: var(--muted, #666); font-size: 0.85rem; font-weight: 600;">
+              ${item.faculty_code || item.faculty_name || "Unknown Faculty"}
+            </span>
+          </div>
+          <div style="display: flex; flex-direction: column; margin-top: 8px;">
+            <p style="margin: 0; line-height: 1.5; color: inherit;">
+              ${item.notice}
+            </p>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(card);
+    });
   } else {
-    here_notice.innerText = "No notices today";
-    if (fir_notice) fir_notice.innerText = "";
+    container.innerHTML = `<p style="text-align: center; color: var(--muted, #888); margin-top: 2rem;">No notices today</p>`;
   }
 }
-
 // Determine lecture states (active, lunch, free, weekend) and update cards
 function showClassStatus(data) {
   if (!Array.isArray(data) || data.length === 0) return;
@@ -289,7 +340,9 @@ function showClassStatus(data) {
   const currentClassNameEl = document.getElementById("current-class-sub");
   const currentStartTimeEl = document.getElementById("current-class-starttime");
   const currentEndTimeEl = document.getElementById("current-class-endtime");
-  const currentProfessorEl = document.getElementById("current-class-professor-name");
+  const currentProfessorEl = document.getElementById(
+    "current-class-professor-name",
+  );
   const roomNoEl = document.getElementById("room_no");
   const departmentEl = document.getElementById("Department");
 
@@ -346,11 +399,14 @@ function showClassStatus(data) {
     if (hide_next && first_class) {
       hide_next.style.display = "";
       if (nextSubEl) nextSubEl.innerText = first_class.subject_code;
-      if (nextStartTimeEl) nextStartTimeEl.innerText = formatTime(first_class.start_time);
-      if (nextEndTimeEl) nextEndTimeEl.innerText = formatTime(first_class.end_time);
+      if (nextStartTimeEl)
+        nextStartTimeEl.innerText = formatTime(first_class.start_time);
+      if (nextEndTimeEl)
+        nextEndTimeEl.innerText = formatTime(first_class.end_time);
       if (nextProfessorEl) nextProfessorEl.innerText = first_class.faculty_code;
       if (nextRoomEl) nextRoomEl.innerText = first_class.room;
-      if (nextDepartmentEl) nextDepartmentEl.innerText = getdep(first_class.room).department;
+      if (nextDepartmentEl)
+        nextDepartmentEl.innerText = getdep(first_class.room).department;
     }
   }
 
@@ -384,22 +440,31 @@ function showClassStatus(data) {
     }
 
     if (hide_current) hide_current.style.display = "";
-    if (currentClassNameEl) currentClassNameEl.innerText = current_class.subject_code;
-    if (currentStartTimeEl) currentStartTimeEl.innerText = formatTime(current_class.start_time);
-    if (currentEndTimeEl) currentEndTimeEl.innerText = formatTime(current_class.end_time);
-    if (currentProfessorEl) currentProfessorEl.innerText = current_class.faculty_code;
+    if (currentClassNameEl)
+      currentClassNameEl.innerText = current_class.subject_code;
+    if (currentStartTimeEl)
+      currentStartTimeEl.innerText = formatTime(current_class.start_time);
+    if (currentEndTimeEl)
+      currentEndTimeEl.innerText = formatTime(current_class.end_time);
+    if (currentProfessorEl)
+      currentProfessorEl.innerText = current_class.faculty_code;
     if (roomNoEl) roomNoEl.innerText = current_class.room;
-    if (departmentEl) departmentEl.innerText = getdep(current_class.room).department;
+    if (departmentEl)
+      departmentEl.innerText = getdep(current_class.room).department;
 
     if (hide_next) {
       hide_next.style.display = "";
       if (next_class) {
         if (nextSubEl) nextSubEl.innerText = next_class.subject_code;
-        if (nextStartTimeEl) nextStartTimeEl.innerText = formatTime(next_class.start_time);
-        if (nextEndTimeEl) nextEndTimeEl.innerText = formatTime(next_class.end_time);
-        if (nextProfessorEl) nextProfessorEl.innerText = next_class.faculty_code;
+        if (nextStartTimeEl)
+          nextStartTimeEl.innerText = formatTime(next_class.start_time);
+        if (nextEndTimeEl)
+          nextEndTimeEl.innerText = formatTime(next_class.end_time);
+        if (nextProfessorEl)
+          nextProfessorEl.innerText = next_class.faculty_code;
         if (nextRoomEl) nextRoomEl.innerText = next_class.room;
-        if (nextDepartmentEl) nextDepartmentEl.innerText = getdep(next_class.room).department;
+        if (nextDepartmentEl)
+          nextDepartmentEl.innerText = getdep(next_class.room).department;
       } else {
         hide_next.innerHTML = `<div class="bold-text">No Class Right Now</div>`;
       }
@@ -424,11 +489,15 @@ function showClassStatus(data) {
         if (upcoming_class !== -1) {
           const next_class = data[upcoming_class];
           if (nextSubEl) nextSubEl.innerText = next_class.subject_code;
-          if (nextStartTimeEl) nextStartTimeEl.innerText = formatTime(next_class.start_time);
-          if (nextEndTimeEl) nextEndTimeEl.innerText = formatTime(next_class.end_time);
-          if (nextProfessorEl) nextProfessorEl.innerText = next_class.faculty_code;
+          if (nextStartTimeEl)
+            nextStartTimeEl.innerText = formatTime(next_class.start_time);
+          if (nextEndTimeEl)
+            nextEndTimeEl.innerText = formatTime(next_class.end_time);
+          if (nextProfessorEl)
+            nextProfessorEl.innerText = next_class.faculty_code;
           if (nextRoomEl) nextRoomEl.innerText = next_class.room;
-          if (nextDepartmentEl) nextDepartmentEl.innerText = getdep(next_class.room).department;
+          if (nextDepartmentEl)
+            nextDepartmentEl.innerText = getdep(next_class.room).department;
         } else {
           hide_next.innerHTML = `<div class="bold-text">No More Classes Today</div>`;
         }
@@ -443,11 +512,15 @@ function showClassStatus(data) {
         hide_next.style.display = "";
         const next_class = data[upcoming_class];
         if (nextSubEl) nextSubEl.innerText = next_class.subject_code;
-        if (nextStartTimeEl) nextStartTimeEl.innerText = formatTime(next_class.start_time);
-        if (nextEndTimeEl) nextEndTimeEl.innerText = formatTime(next_class.end_time);
-        if (nextProfessorEl) nextProfessorEl.innerText = next_class.faculty_code;
+        if (nextStartTimeEl)
+          nextStartTimeEl.innerText = formatTime(next_class.start_time);
+        if (nextEndTimeEl)
+          nextEndTimeEl.innerText = formatTime(next_class.end_time);
+        if (nextProfessorEl)
+          nextProfessorEl.innerText = next_class.faculty_code;
         if (nextRoomEl) nextRoomEl.innerText = next_class.room;
-        if (nextDepartmentEl) nextDepartmentEl.innerText = getdep(next_class.room).department;
+        if (nextDepartmentEl)
+          nextDepartmentEl.innerText = getdep(next_class.room).department;
       }
     } else {
       if (hide_current) {
@@ -498,7 +571,8 @@ function showStudentHeader(data) {
   const now = new Date();
   const studentName = data[0]?.name || "Student";
   const firstWord = studentName.trim().split(/\s+/)[0];
-  const formattedName = firstWord.charAt(0).toUpperCase() + firstWord.slice(1).toLowerCase();
+  const formattedName =
+    firstWord.charAt(0).toUpperCase() + firstWord.slice(1).toLowerCase();
 
   const greetingEl = document.getElementById("greeting");
   if (greetingEl) {
@@ -527,7 +601,6 @@ function showTimetable(data) {
   }
 }
 
-
 // ========================================================
 // 5. NAVIGATION + THEME
 // ========================================================
@@ -549,12 +622,18 @@ function showPage(pageId) {
 
   navButtons.forEach((button) => {
     const navButton = button.querySelector(".nav-button");
-    if (navButton && navButton.getAttribute("onclick")?.includes(`'${pageId}'`)) {
+    if (
+      navButton &&
+      navButton.getAttribute("onclick")?.includes(`'${pageId}'`)
+    ) {
       button.classList.add("current-page");
     }
   });
 
   window.location.hash = pageId;
+  if (pageId === "notice-page") {
+    loadnotice();
+  }
 }
 
 function applyTheme(theme) {
@@ -577,7 +656,9 @@ function applyTheme(theme) {
 }
 
 function toggleTheme() {
-  const currentTheme = document.body.classList.contains("dark-theme") ? "dark" : "light";
+  const currentTheme = document.body.classList.contains("dark-theme")
+    ? "dark"
+    : "light";
   applyTheme(currentTheme === "dark" ? "light" : "dark");
 }
 
@@ -590,7 +671,6 @@ function initTheme() {
   }
 }
 
-
 // ========================================================
 // 6. TIMETABLE
 // ========================================================
@@ -601,7 +681,6 @@ async function initTimetable() {
     showTimetable(timetableData);
   }
 }
-
 
 // ========================================================
 // 7. WEEKLY SCHEDULE
@@ -719,7 +798,6 @@ async function loadSchedule() {
   }
 }
 
-
 // ========================================================
 // 8. MAP
 // ========================================================
@@ -757,13 +835,16 @@ function initMapGestures() {
   const ANIM_MS = 300;
 
   // State
-  let scale = 1, x = 0, y = 0;
+  let scale = 1,
+    x = 0,
+    y = 0;
   const pointers = new Map();
   let gesture = null;
   let pinch = null;
   let samples = [];
   let lastTap = { time: -Infinity, x: 0, y: 0 };
-  let rafRender = 0, rafMotion = 0;
+  let rafRender = 0,
+    rafMotion = 0;
 
   // Helpers
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -822,7 +903,9 @@ function initMapGestures() {
     stopMotion();
     tScale = clamp(tScale, MIN_SCALE, MAX_SCALE);
     const c = clampPos(tScale, tx, ty);
-    const s0 = scale, x0 = x, y0 = y;
+    const s0 = scale,
+      x0 = x,
+      y0 = y;
     const t0 = performance.now();
     const step = (now) => {
       const t = Math.min(1, (now - t0) / duration);
@@ -942,7 +1025,8 @@ function initMapGestures() {
 
     if (gesture.second && e.pointerType !== "mouse") {
       gesture.dragZoom = true;
-      const s = gesture.startScale * Math.exp((p.y - gesture.startY) / DRAG_ZOOM_DIV);
+      const s =
+        gesture.startScale * Math.exp((p.y - gesture.startY) / DRAG_ZOOM_DIV);
       zoomAt(gesture.startX, gesture.startY, s);
       return;
     }
@@ -976,7 +1060,8 @@ function initMapGestures() {
     pinch = null;
     if (cancelled) return;
 
-    const isTap = !g.moved && !g.multi && e.timeStamp - g.startTime < TAP_MAX_TIME;
+    const isTap =
+      !g.moved && !g.multi && e.timeStamp - g.startTime < TAP_MAX_TIME;
     if (isTap) {
       if (g.second) {
         lastTap.time = -Infinity;
@@ -1013,8 +1098,12 @@ function initMapGestures() {
   const zoomBy = (f) => zoomToAnimated(cx(), cy(), scale * f);
   const reset = () => animateTo(1, 0, 0);
 
-  document.getElementById("zoomIn")?.addEventListener("click", () => zoomBy(1.6));
-  document.getElementById("zoomOut")?.addEventListener("click", () => zoomBy(1 / 1.6));
+  document
+    .getElementById("zoomIn")
+    ?.addEventListener("click", () => zoomBy(1.6));
+  document
+    .getElementById("zoomOut")
+    ?.addEventListener("click", () => zoomBy(1 / 1.6));
   document.getElementById("resetView")?.addEventListener("click", reset);
 
   viewport.addEventListener("keydown", (e) => {
@@ -1054,7 +1143,6 @@ function initMapGestures() {
   img.addEventListener("load", apply);
   apply();
 }
-
 
 // ========================================================
 // 9. ACCOUNT
@@ -1144,7 +1232,6 @@ async function logout() {
   }
 }
 
-
 // ========================================================
 // 10. BROWSER CLASS REMINDERS
 // ========================================================
@@ -1185,7 +1272,6 @@ function chekupcominglecture() {
     }
   });
 }
-
 
 // ========================================================
 // 11. PAGE INITIALIZATION

@@ -550,40 +550,51 @@ app.post("/name", async (req, res) => {
 
 
 app.post("/notice", async (req, res) => {
-    try {
-        const { batch, Sem, notice } = req.body;
-
-        if (!batch || !Sem || !notice) {
-            return res.status(400).json({
-                success: false,
-                message: "Please enter batch, sem and notice"
-            });
-        }
-
-        const pool = await sql.connect(dbConfig);
-
-        await pool.request()
-            .input("sem", sql.Int, Sem)
-            .input("batch", sql.VarChar, batch)
-            .input("notice", sql.VarChar, notice)
-            .query(`
-                INSERT INTO notice (sem, batch, notice)
-                VALUES (@sem, @batch, @notice)
-            `);
-
-        res.json({
-            success: true,
-            message: "Notice saved successfully"
-        });
-
-    } catch (err) {
-        console.log("Teacher notice error:", err);
-
-        res.status(500).json({
-            success: false,
-            message: "Failed to send notice"
-        });
+  try {
+    // 1. Ensure the teacher is logged in
+    const facultyId = req.session.faculty_id;
+    if (!facultyId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized. Please log in as a teacher.",
+      });
     }
+
+    const { batch, Sem, notice } = req.body;
+
+    // 2. Validate input
+    if (!batch || !Sem || !notice || notice.trim() === "") {
+      return res.status(400).json({
+        success: false,
+        message: "Please enter batch, sem and notice text.",
+      });
+    }
+
+    const pool = await sql.connect(dbConfig);
+
+    // 3. Insert notice along with faculty_id and notice_time
+    await pool
+      .request()
+      .input("sem", sql.Int, parseInt(Sem, 10))
+      .input("batch", sql.VarChar(10), batch.trim())
+      .input("notice", sql.NVarChar(sql.MAX), notice.trim())
+      .input("faculty_id", sql.Int, facultyId)
+      .query(`
+        INSERT INTO dbo.notice (sem, batch, notice, faculty_id, notice_time)
+        VALUES (@sem, @batch, @notice, @faculty_id, SYSUTCDATETIME());
+      `);
+
+    res.json({
+      success: true,
+      message: "Notice saved successfully",
+    });
+  } catch (err) {
+    console.error("Teacher notice error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to send notice",
+    });
+  }
 });
 
 //notification fetch from database
