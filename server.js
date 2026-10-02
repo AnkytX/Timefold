@@ -1,28 +1,31 @@
 const express = require("express");
 const sql = require("mssql");
 const session = require("express-session");
+
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const app = express();
-const port = 3000;
+
 
 
 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.set("trust proxy", 1);
+
 app.use(
-  session({
-    secret: "college-secret-key",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: false, // false because you are on http://localhost:3000
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days (persists across reloads)
-      sameSite: "lax",
-    },
-  }),
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            sameSite: "lax"
+        }
+    })
 );
 // TEST LOGOUT
 
@@ -34,7 +37,7 @@ const dbConfig = {
   database: process.env.DB_DATABASE,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  port: Number(process.env.DB_PORT),
+  port: Number(process.env.DB_PORT) || 1433 ,
  
 
   options: {
@@ -648,6 +651,9 @@ app.get("/student/notices", async (req, res) => {
   }
 });
 // START SERVER
-app.listen(port, "0.0.0.0", () => {
-  console.log(`Server is running on http://0.0.0.0:${port}`);
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
 });
