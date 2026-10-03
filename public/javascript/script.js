@@ -645,75 +645,7 @@ function showTimetable(data) {
   }
 }
 
-// ========================================================
-// 5. NAVIGATION + THEME
-// ========================================================
 
-function showPage(pageId) {
-  document.querySelectorAll(".page-section").forEach((page) => {
-    page.classList.remove("active");
-  });
-
-  const page = document.getElementById(pageId);
-  if (!page) return;
-
-  page.classList.add("active");
-
-  const navButtons = document.querySelectorAll(".nav-button-div");
-  navButtons.forEach((button) => {
-    button.classList.remove("current-page");
-  });
-
-  navButtons.forEach((button) => {
-    const navButton = button.querySelector(".nav-button");
-    if (
-      navButton &&
-      navButton.getAttribute("onclick")?.includes(`'${pageId}'`)
-    ) {
-      button.classList.add("current-page");
-    }
-  });
-
-  window.location.hash = pageId;
-  if (pageId === "notice-page") {
-    loadnotice();
-  }
-}
-
-function applyTheme(theme) {
-  const isDark = theme === "dark";
-  document.body.classList.toggle("dark-theme", isDark);
-  localStorage.setItem("timefold-theme", isDark ? "dark" : "light");
-
-  const label = document.getElementById("theme-label");
-  if (label) {
-    label.textContent = isDark ? "Dark" : "Light";
-  }
-
-  const toggle = document.getElementById("theme-toggle");
-  if (toggle) {
-    toggle.setAttribute(
-      "aria-label",
-      isDark ? "Switch to light mode" : "Switch to dark mode",
-    );
-  }
-}
-
-function toggleTheme() {
-  const currentTheme = document.body.classList.contains("dark-theme")
-    ? "dark"
-    : "light";
-  applyTheme(currentTheme === "dark" ? "light" : "dark");
-}
-
-function initTheme() {
-  const savedTheme = localStorage.getItem("timefold-theme");
-  if (savedTheme === "dark" || savedTheme === "light") {
-    applyTheme(savedTheme);
-  } else {
-    applyTheme("light");
-  }
-}
 
 
 // ========================================================
@@ -1353,6 +1285,74 @@ function chekupcominglecture() {
 }
 
 // ========================================================
-// 11. PAGE INITIALIZATION
+// 5. NAVIGATION + THEME
 // ========================================================
+
+function showPage(pageId) {
+  document.querySelectorAll(".page-section").forEach((page) => {
+    page.classList.remove("active");
+  });
+
+  const page = document.getElementById(pageId);
+  if (!page) return;
+
+  page.classList.add("active");
+
+  const navButtons = document.querySelectorAll(".nav-button-div");
+  navButtons.forEach((button) => {
+    button.classList.remove("current-page");
+  });
+
+  navButtons.forEach((button) => {
+    const navButton = button.querySelector(".nav-button");
+    if (
+      navButton &&
+      navButton.getAttribute("onclick")?.includes(`'${pageId}'`)
+    ) {
+      button.classList.add("current-page");
+    }
+  });
+
+  window.location.hash = pageId;
+  if (pageId === "notice-page") {
+    loadnotice();
+  }
+}
+
+function applyTheme(theme) {
+  const isDark = theme === "dark";
+  document.body.classList.toggle("dark-theme", isDark);
+  localStorage.setItem("timefold-theme", isDark ? "dark" : "light");
+
+  const label = document.getElementById("theme-label");
+  if (label) {
+    label.textContent = isDark ? "Dark" : "Light";
+  }
+
+  const toggle = document.getElementById("theme-toggle");
+  if (toggle) {
+    toggle.setAttribute(
+      "aria-label",
+      isDark ? "Switch to light mode" : "Switch to dark mode",
+    );
+  }
+}
+
+function toggleTheme() {
+  const currentTheme = document.body.classList.contains("dark-theme")
+    ? "dark"
+    : "light";
+  applyTheme(currentTheme === "dark" ? "light" : "dark");
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem("timefold-theme");
+  if (savedTheme === "dark" || savedTheme === "light") {
+    applyTheme(savedTheme);
+  } else {
+    applyTheme("light");
+  }
+}
+
+
 
