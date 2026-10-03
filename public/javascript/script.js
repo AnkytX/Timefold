@@ -16,21 +16,21 @@ const notifiedLectures = new Set();
 
 const MAP_URLS = {
   "Mining Department":
-    "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/minning.svg",
+    "public/assets/images/mining.svg",
   "Civil Department":
-    "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/civil.svg",
-  Workshop:
-    "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/workshop.svg",
+    "public/assets/images/civil.svg",
+  "Workshop":
+    "public/assets/images/workshop.svg",
   "Library Department":
-    "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/library.svg",
+    "public/assets/images/library.svg",
   "Electrical Department":
-    "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/electrical.svg",
+    "public/assets/images/electrical.svg",
   "Mechanical Department":
-    "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/mechanical.svg",
+    "public/assets/images/mechanical.svg",
 };
 
 const DEFAULT_MAP =
-  "https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/timefold%20map/no-lecture.svg";
+  "public/assets/images/no-lecture.svg";
 
 // ========================================================
 // 2. HELPER FUNCTIONS
