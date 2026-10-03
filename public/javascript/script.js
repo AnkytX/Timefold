@@ -16,7 +16,7 @@ const notifiedLectures = new Set();
 
 const MAP_URLS = {
   "Mining Department":
-    "public/assets/images/mining.svg",
+    "public/assets/images/minning.svg",
   "Civil Department":
     "public/assets/images/civil.svg",
   "Workshop":
