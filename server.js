@@ -21,7 +21,7 @@ app.use(
         saveUninitialized: false,
         cookie: {
             httpOnly: true,
-             secure:  false ,               //process.env.NODE_ENV === "production",
+             secure:  true ,               //process.env.NODE_ENV === "production",
             maxAge: 7 * 24 * 60 * 60 * 1000,
             sameSite: "lax"
         }
@@ -686,5 +686,5 @@ app.get("/student/notices", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on port http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
