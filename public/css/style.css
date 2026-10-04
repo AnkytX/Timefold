@@ -1115,14 +1115,14 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
   left: calc(5px + (100% - 10px) / 6 - 30px + ((100% - 10px) / 3) * 2);
 }
 
-*/
+
 /* =========================================================
    LOGIN & REGISTER FORM
    ========================================================= */
 
 .main-div {
   width: min(100% - 36px, 430px);
-  margin: 0 auto;
+  margin: 0 auto !important;
   padding-top: 25px;
 }
 
@@ -1168,6 +1168,7 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
   position: relative;
   z-index: 2;
   width: 100%;
+  margin: 0px auto;
   padding: 22px;
   border-radius: var(--radius-xl);
   background: var(--surface);
@@ -1189,7 +1190,7 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
 
 
 .student-teacher-toggle-button.active-login-btn {
-  background: #ff4326 !important;
+  background: var(--pri) !important;
   color: #fff;
 }
 
@@ -1498,8 +1499,10 @@ input:focus::placeholder {
 
   /* Mobile Auth Forms */
   .main-div {
-    width: calc(100% - 28px);
+    width: calc(100% - 36px);
     max-width: 430px;
+    margin-left: auto !important;
+    margin-right: auto !important;
     padding-top: 18px;
   }
 
