@@ -3,7 +3,7 @@ const sql = require("mssql");
 const session = require("express-session");
 
 require("dotenv").config();
-const bcrypt = require("bcrypt");
+
 const app = express();
 
 app.use(express.json());
@@ -176,7 +176,7 @@ app.post("/teacherlogin", async (req, res) => {
       return res.json({
         success: true,
         message: "Teacher login successful",
-        faculty_code: faculty.faculty_code,
+       faculty_name: req.session.faculty_name,
       });
     });
   } catch (error) {
@@ -199,9 +199,11 @@ app.get("/teacherinfo", (req, res) => {
 
   return res.json({
     success: true,
-    faculty_code: req.session.faculty_code,
+    id: req.session.faculty_id,
+    faculty_name: req.session.faculty_name,
+    faculty_code: req.session.faculty_name,
   });
-});
+}); 
 
 // fetch name and show
 app.get("/student-info", (req, res) => {
@@ -262,7 +264,7 @@ ORDER BY t.start_time;
         `);
 res.json({
   success:true,
-  faculttimetabel :result.recordset
+  timetabel: result.recordset
 });
 
   } catch (error) {
