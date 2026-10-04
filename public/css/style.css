@@ -8,11 +8,13 @@
   --muted: #a9abb2;
   --line: rgba(255, 255, 255, 0.1);
 
-  --red: #ff4326;
-  --red-dark: #a83a2b;
+  /* --pri: #ff4326; */
 
-  --blue: #4d6ed8;
-  --blue-dark: #26396f;
+  --pri: #ae7b64;
+
+  /* --sec: #4d6ed8; */
+
+  --sec: #43395e;
 
   --white-card: #f4f4f2;
   --black: #111214;
@@ -23,6 +25,8 @@
   --radius-md: 15px;
 
   --nav: rgba(42, 43, 48, 0.96);
+  --nav-bg: #0e101c;
+  --nav-hover: rgb(255, 255, 255);
 }
 
 /* =========================================================
@@ -129,10 +133,9 @@ section {
   width: 48px;
   height: 48px;
   flex: 0 0 48px;
-  border-radius: 15px;
+  border: 0.5px solid var(--nav-bg);
   display: grid;
   place-items: center;
-  background: var(--blue);
   color: #fff;
 }
 
@@ -218,25 +221,21 @@ section {
 }
 
 .current {
-  background: var(--red);
-}
-
-.next {
-  background: var(--blue);
+  background: var(--pri);
 }
 
 .signal-heading-container {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   margin-bottom: 11px;
 }
 
 .green-signal {
-  height: 10px;
   width: 10px;
+  height: 10px;
+  background: rgb(11, 226, 11);
   border-radius: 50%;
-  background: rgb(73, 255, 45);
 
   animation: signalGlow 1.5s ease-in-out infinite;
 }
@@ -245,29 +244,37 @@ section {
 
   0%,
   100% {
-    box-shadow: 0 0 9px 1px rgb(221, 255, 30);
+    box-shadow:
+      0 0 4px rgb(11, 226, 11),
+      0 0 8px rgba(11, 226, 11, 0.6),
+      0 0 14px rgba(11, 226, 11, 0.3);
   }
 
   50% {
     box-shadow:
-      0 0 14px 2px rgb(221, 255, 30),
-      0 0 35px 8px rgba(73, 255, 45, 0.5);
+      0 0 7px rgb(11, 226, 11),
+      0 0 15px rgba(11, 226, 11, 0.9),
+      0 0 28px rgba(11, 226, 11, 0.6);
   }
 }
 
+
 .orange-signal {
-  height: 10px;
   width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: rgb(255, 173, 21);
-  box-shadow: 0px 0px 9px 2px rgba(255, 176, 30, 0.527);
+  background-color: rgba(255, 166, 0, 0.81);
 }
 
 .grey-signal {
-  height: 10px;
   width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: rgba(145, 144, 144, 0.825);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.next {
+  background: var(--sec);
 }
 
 .layer-current {
@@ -372,12 +379,6 @@ section {
   letter-spacing: -0.02em;
 }
 
-#currentDay {
-  color: var(--muted);
-  margin-left: 4px;
-  font-size: 0.78rem;
-  font-weight: 600;
-}
 
 .lectures,
 .schedule-list {
@@ -512,15 +513,13 @@ section {
   min-height: 140px;
   padding: 18px 20px;
   border-radius: var(--radius-xl);
-  background: var(--blue);
+  background: var(--sec);
   color: #fff;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   overflow: hidden;
   position: relative;
-  display: flex;
-  justify-content: center;
   gap: 154px;
 }
 
@@ -554,7 +553,6 @@ section {
   color: rgba(255, 255, 255, 0.92);
   font-size: 0.85rem;
   font-weight: 650;
-  display: flex;
   flex-direction: column;
   height: 16vh;
 }
@@ -620,18 +618,6 @@ section {
   gap: 10px;
 }
 
-/* .sem,
-.batch {
-  margin-top: 10px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 510;
-  border: 1px solid var(--line);
-  background-color: var(--surface-2);
-  padding: 12px 18px;
-  color: var(--muted);
-  width: 100%;
-} */
 
 .message input {
   width: 100%;
@@ -645,7 +631,7 @@ section {
 }
 
 .post {
-  background: var(--red);
+  background: var(--pri);
   color: #fff;
   border: 0;
   min-height: 10px;
@@ -662,16 +648,17 @@ section {
   flex-direction: row-reverse;
 }
 
+
 .teacher-nav:has(.nav-button-div:nth-child(1).current-page)::before {
-  left: calc(3px + ((100% - 6px) / 6) - 21px);
+  left: calc(9px + ((100% - 18px) / 6) - 27px);
 }
 
 .teacher-nav:has(.nav-button-div:nth-child(2).current-page)::before {
-  left: calc(3px + ((100% - 6px) / 6) - 21px + ((100% - 6px) / 3));
+  left: calc(9px + ((100% - 18px) / 6) - 27px + ((100% - 18px) / 3));
 }
 
 .teacher-nav:has(.nav-button-div:nth-child(3).current-page)::before {
-  left: calc(3px + ((100% - 6px) / 6) - 21px + (((100% - 6px) / 3) * 2));
+  left: calc(9px + ((100% - 18px) / 6) - 27px + (((100% - 18px) / 3) * 2));
 }
 
 /* =========================================================
@@ -712,7 +699,7 @@ section {
 }
 
 .day.active {
-  background: var(--red);
+  background: var(--pri);
   color: #fff;
   border-color: transparent;
 }
@@ -739,7 +726,7 @@ section {
   width: 3px;
   height: 35px;
   border-radius: 99px;
-  background: var(--blue);
+  background: var(--sec);
   margin: 0 14px;
 }
 
@@ -819,9 +806,6 @@ section {
   color: var(--text);
 }
 
-#setting-input::placeholder {
-  color: #777a83;
-}
 
 #save-changes,
 #logout {
@@ -836,12 +820,12 @@ section {
 }
 
 #save-changes {
-  background: var(--blue);
+  background: var(--sec);
   color: #fff;
 }
 
 #logout {
-  background: var(--red);
+  background: var(--pri);
   color: #fff;
 }
 
@@ -894,7 +878,7 @@ section {
 }
 
 body.dark-theme #theme-toggle {
-  background: var(--blue);
+  background: var(--sec);
 }
 
 body.dark-theme #theme-toggle::after {
@@ -978,14 +962,11 @@ body.dark-theme #theme-toggle::after {
   transform: rotate(90deg);
 }
 
-.about-us-text .small-text {
-  margin-top: 2px;
-}
-
 
 /* =========================================================
    BOTTOM NAVIGATION
    ========================================================= */
+
 
 nav {
   position: fixed;
@@ -994,113 +975,147 @@ nav {
   bottom: 14px;
   transform: translateX(-50%);
 
-  width: min(calc(100% - 36px), 760px);
-  height: 48px;
-  padding: 3px;
-
   display: flex;
+  justify-content: space-between;
   align-items: center;
 
-  background: #0d0f1a;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 28px;
+  width: min(calc(100% - 36px), 500px);
+  height: 65px;
+  padding: 6px 5px;
 
-  overflow: hidden;
-}
-
-nav::before {
-  content: "";
-  position: absolute;
-
-  width: 42px;
-  height: 42px;
-  top: 2px;
-  left: 3px;
-
-  border-radius: 50%;
-  background: #ffffff;
-
-  z-index: 0;
-  pointer-events: none;
-
-  transition: none;
-}
-
-.nav-button-div {
-  width: 42px;
-  height: 42px;
-  flex: 1;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  position: relative;
-  z-index: 2;
-  background: transparent !important;
+  background: var(--nav-bg);
+  border-radius: 30px;
 }
 
 .nav-button {
-  width: 42px;
-  height: 42px;
-  padding: 0;
-  margin: 0;
+  height: 60px;
+  width: 60px;
+  flex: 0 0 60px;
 
+  border-radius: 50px;
+  box-shadow: none;
   border: 0;
-  background: transparent;
-  border-radius: 50%;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: transparent;
+  color: #aeb0b6;
+
+  display: grid;
+  place-items: center;
 
   cursor: pointer;
   position: relative;
   z-index: 3;
 
-  -webkit-tap-highlight-color: transparent;
+}
+
+/* Active button */
+
+.nav-button-div.current-page .nav-button {
+  background: var(--nav-hover);
+}
+
+.nav-button {
+  position: relative;
+  z-index: 2;
+}
+
+.nav-button-div.current-page .nav-button::before {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  inset: 0;
+
+  border-radius: 50%;
+  background: white;
+
+  z-index: -1;
+
+  animation: activeSlide 0.35s ease-in-out;
+}
+
+@keyframes activeSlide {
+  0% {
+    transform: scale(0);
+  }
+
+  40% {
+    transform: scale(1.03);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.nav-button-div.current-page .nav-button svg {
+  animation: iconRotate 0.35s ease;
+}
+
+@keyframes iconRotate {
+  0% {
+    transform: rotate(-12deg) scale(0.85);
+  }
+
+  70% {
+    transform: rotate(4deg) scale(1.08);
+  }
+
+  100% {
+    transform: rotate(0) scale(1);
+  }
 }
 
 .nav-button svg {
-  width: 30px;
-  height: 30px;
+  width: 22px;
+  height: 22px;
   opacity: 1;
 }
 
-.nav-button path {
-  fill: white !important;
-  stroke: #f1f1f3 !important;
-  stroke-width: 0.51;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
 .nav-button-div.current-page .nav-button path {
-  fill: none !important;
-  stroke: #20222b !important;
-  stroke-width: 1.7;
+  stroke: #000000;
+  fill: #000000;
 }
 
+
+/* The wrapper remains in the HTML because JS and :has()
+   use .nav-button-div.current-page. It has no visual styling. */
+/* 
 nav:has(.nav-button-div:nth-child(1).current-page)::before {
-  left: calc(3px + ((100% - 6px) / 10) - 21px);
+  left: calc(5px + (100% - 10px) / 14 - 34px);
 }
 
 nav:has(.nav-button-div:nth-child(2).current-page)::before {
-  left: calc(3px + ((100% - 6px) / 10) - 21px + ((100% - 6px) / 5));
+  left: calc(5px + (100% - 10px) / 11.5 - 33px + (100% - 10px) / 5);
 }
 
 nav:has(.nav-button-div:nth-child(3).current-page)::before {
-  left: calc(3px + ((100% - 6px) / 10) - 21px + (((100% - 6px) / 5) * 2));
+  left: calc(5px + (100% - 10px) / 10 - 30px + ((100% - 10px) / 5) * 2);
 }
 
 nav:has(.nav-button-div:nth-child(4).current-page)::before {
-  left: calc(3px + ((100% - 6px) / 10) - 21px + (((100% - 6px) / 5) * 3));
+  left: calc(5px + (100% - 10px) / 8.7 - 27.5px + ((100% - 10px) / 5) * 3);
 }
 
 nav:has(.nav-button-div:nth-child(5).current-page)::before {
-  left: calc(3px + ((100% - 6px) / 10) - 21px + (((100% - 6px) / 5) * 4));
+  left: calc(5px + (100% - 10px) / 7.7 - 26px + ((100% - 10px) / 5) * 4);
 }
 
+/* Teacher navigation */
+
+.teacher-nav:has(.nav-button-div:nth-child(1).current-page)::before {
+  left: calc(5px + (100% - 10px) / 6 - 30px);
+}
+
+.teacher-nav:has(.nav-button-div:nth-child(2).current-page)::before {
+  left: calc(5px + (100% - 10px) / 6 - 30px + (100% - 10px) / 3);
+}
+
+.teacher-nav:has(.nav-button-div:nth-child(3).current-page)::before {
+  left: calc(5px + (100% - 10px) / 6 - 30px + ((100% - 10px) / 3) * 2);
+}
+
+*/
 /* =========================================================
    LOGIN & REGISTER FORM
    ========================================================= */
@@ -1260,7 +1275,7 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
 
 input:focus {
   outline: 2px solid rgba(77, 110, 216, 0.35);
-  border-color: var(--blue);
+  border-color: var(--sec);
 }
 
 input:focus::placeholder {
@@ -1286,7 +1301,7 @@ input:focus::placeholder {
 }
 
 .reg-link>a {
-  color: var(--red) !important;
+  color: var(--pri) !important;
 }
 
 .login-button,
@@ -1300,7 +1315,7 @@ input:focus::placeholder {
   padding: 0 10px;
   border: 0;
   border-radius: 50px;
-  background: var(--red);
+  background: var(--pri);
   color: #fff;
   font-size: 1rem;
   font-weight: 800;
@@ -1321,9 +1336,6 @@ input:focus::placeholder {
   font-size: 0.72rem;
 }
 
-/* =========================================================
-   TEACHER LOG IN
-   ========================================================= */
 
 
 /* =========================================================
@@ -1366,7 +1378,7 @@ input:focus::placeholder {
     width: 44px;
     height: 44px;
     flex-basis: 44px;
-    border-radius: 14px;
+    border-radius: 50%;
   }
 
   .title img {
@@ -1437,88 +1449,51 @@ input:focus::placeholder {
   nav {
     width: calc(100% - 28px);
     bottom: 10px;
-    height: 48px;
-    padding: 3px;
-    border-radius: 28px;
+    height: 65px;
+    padding: 6px 5px;
+    border-radius: 30px;
   }
 
   nav::before {
-    width: 42px;
-    height: 42px;
-    top: 2px;
-    left: 3px;
-    border-radius: 50%;
-  }
-
-  .nav-button-div {
-    width: 42px;
-    height: 42px;
+    width: 60px;
+    height: 60px;
+    top: 2.5px;
+    border-radius: 50px;
   }
 
   .nav-button {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    flex: 0 0 60px;
+    border-radius: 50px;
   }
 
   .nav-button svg {
-    width: 25px;
-    height: 25px;
-
-  }
-
-  .nav-button path {
-    fill: white !important;
-    stroke: #f1f1f3 !important;
-    stroke-width: 0.1;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  nav:has(.nav-button-div:nth-child(1).current-page)::before {
-    left: calc(3px + ((100% - 6px) / 10) - 21px);
-  }
-
-  nav:has(.nav-button-div:nth-child(2).current-page)::before {
-    left: calc(3px + ((100% - 6px) / 10) - 21px + ((100% - 6px) / 5));
-  }
-
-  nav:has(.nav-button-div:nth-child(3).current-page)::before {
-    left: calc(3px + ((100% - 6px) / 10) - 21px + (((100% - 6px) / 5) * 2));
-  }
-
-  nav:has(.nav-button-div:nth-child(4).current-page)::before {
-    left: calc(3px + ((100% - 6px) / 10) - 21px + (((100% - 6px) / 5) * 3));
-  }
-
-  nav:has(.nav-button-div:nth-child(5).current-page)::before {
-    left: calc(3px + ((100% - 6px) / 10) - 21px + (((100% - 6px) / 5) * 4));
+    width: 22px;
+    height: 22px;
   }
 
   /* =========================================================
-   TEACHER NAV - MOBILE
-   ========================================================= */
+     TEACHER NAV - MOBILE
+     ========================================================= */
 
   .teacher-nav::before {
-    width: 42px;
-    height: 42px;
-    top: 9px;
-    border-radius: 14px;
+    width: 60px;
+    height: 60px;
+    top: 2.5px;
+    border-radius: 50px;
   }
 
-  /* HOME */
   .teacher-nav:has(.nav-button-div:nth-child(1).current-page)::before {
-    left: calc(3px + (100% - 6px) / 6 - 21px);
+    left: calc(5px + (100% - 10px) / 6 - 30px);
   }
 
-  /* NOTICE */
   .teacher-nav:has(.nav-button-div:nth-child(2).current-page)::before {
-    left: calc(3px + (100% - 6px) / 6 - 21px + (100% - 6px) / 3);
+    left: calc(5px + (100% - 10px) / 6 - 30px + (100% - 10px) / 3);
   }
 
-  /* SETTINGS */
   .teacher-nav:has(.nav-button-div:nth-child(3).current-page)::before {
-    left: calc(3px + (100% - 6px) / 6 - 21px + ((100% - 6px) / 3) * 2);
+    left: calc(5px + (100% - 10px) / 6 - 30px + ((100% - 10px) / 3) * 2);
   }
 
   /* Mobile Auth Forms */
@@ -1696,12 +1671,12 @@ body:not(.dark-theme) .setting-title img {
   filter: none;
 }
 
-body:not(.dark-theme) .nav-button,
+/* body:not(.dark-theme) .nav-button,
 body:not(.dark-theme) .nav-button path {
   color: #4f5158;
   fill: #4f5158;
   stroke: #4f5158;
-}
+} */
 
 body:not(.dark-theme) .map-box {
   background: #e9eaec;
