@@ -259,7 +259,7 @@ LEFT JOIN subject s
 LEFT JOIN timetable_batch tb
     ON t.timetable_id = tb.timetable_id
 WHERE f.faculty_login_id = @faculty_login_id
-AND t.day = 'monday'
+AND t.day = LOWER(@Day)
 ORDER BY t.start_time;
         `);
 res.json({
