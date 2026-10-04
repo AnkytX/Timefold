@@ -151,7 +151,9 @@
 
 </body>
 <script>
+   // teacher  login data to server
 
+     
 
 
     // ------------------------------------------------------------------------------------------------------------------
@@ -159,18 +161,16 @@
     // ------------------------------------------------------------------------------------------------------------------
     async function teacherLogin() {
 
-        const id_teacher = document.getElementById('Faculty_id').value.trim();
+        const faculty_login_id = document.getElementById('Faculty_id').value.trim();
 
-        const teacher_pasward = document.getElementById('Faculty_pasward').value.trim();
+        const faculty_login_password = document.getElementById('Faculty_pasward').value.trim();
 
 
-        if (!id_teacher || !teacher_pasward) {
+        if (!faculty_login_id || !faculty_login_password) {
 
             alert("Please enter all fields.");
 
             return;
-
-
 
         }
         try {
@@ -178,7 +178,7 @@
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
-                body: JSON.stringify({ id_teacher, teacher_pasward }),
+                body: JSON.stringify({ faculty_login_id, faculty_login_password }),
             });
 
             const data = await res.json();

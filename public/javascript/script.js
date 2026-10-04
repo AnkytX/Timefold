@@ -199,8 +199,7 @@ async function fetchSchedule() {
     return [];
   }
 }
-
-// Fetch all student notices
+// post  logic of student notices
 async function notice() {
   const semElement = document.getElementById("Sem");
   const batchElement = document.getElementById("batch");
@@ -256,7 +255,16 @@ async function notice() {
     alert("Network error: Could not connect to the server.");
   }
 }
-
+async function fetchNotices() {
+  try {
+    const response = await apiFetch("/student/notices", { method: "GET" });
+    if (!response || !response.ok) return null;
+    return await response.json();
+  } catch (error) {
+    console.error("Notice fetch error:", error);
+    return null;
+  }
+}
 // Fetch notices and populate elements
 async function loadnotice() {
   const noticeResult = await fetchNotices();
@@ -269,16 +277,7 @@ async function loadnotice() {
   showNotice(notice_data);
 }
 
-async function fetchNotices() {
-  try {
-    const response = await apiFetch("/student/notices", { method: "GET" });
-    if (!response || !response.ok) return null;
-    return await response.json();
-  } catch (error) {
-    console.error("Notice fetch error:", error);
-    return null;
-  }
-}
+
 
 // ========================================================
 // 4. SHOW / RENDER
@@ -1354,5 +1353,86 @@ function initTheme() {
   }
 }
 
+
+
+// ========================================================
+ // variable for  teacher  page 
+// ========================================================
+let faculty_name;
+let facultytimetabel = [];
+
+// ========================================================
+// 5 teacher releted things
+// ========================================================
+   const currentHour = now.getHours() * 60 + now.getMinutes();
+
+//nteache  name inser +fetch
+ async function teachername() {
+     
+         try {
+             const response = await fetch("/teacherinfo",{
+              method:"GET",
+             
+              credentials :"include",
+              
+             });
+             if (!response.ok) {
+              window.location.href = "/login.html"
+              return;
+             }
+             
+             const data = await response.json();
+            console.log(data);
+              if (data.success) {
+                  faculty_name = data.faculty_code;
+                const faculty_namee = document.getElementById('greeting-faculty');
+             faculty_namee.innerText = data.faculty_code || "Teacher";
+             
+              }
+             
+         
+         } catch (error) {
+             console.error("API Error:", error);
+         }
+     
+ }
+ if (window.location.pathname.includes("teacher-index.html")) {
+    teachername();
+    teachertimetabel();
+}
+// teacher time table data
+async function teachertimetabel() {
+    try {
+             const response = await fetch("/teachertimetabel",{
+              method: "GET",
+              credentials :"include"
+             })
+             if (!response.ok) {
+              console.log("error while fetch today data");
+              return;
+             }
+             const data= await response.json();
+             console.log(data);
+             
+              facultytimetabel= data.timetabel;
+
+        
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+ 
+function showteacherdata(){
+  
+
+  const current_lec = facultytimetabel.findIndex((lecture) =>{
+    const start = toMinutes(lecture.start_time);
+    const end  = toMinutes(lecture.end_time);
+    return currentHour >= start && currentHour <=end ;
+  })
+  
+
+}
 
 

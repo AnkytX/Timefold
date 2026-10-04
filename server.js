@@ -6,30 +6,26 @@ require("dotenv").config();
 const bcrypt = require("bcrypt");
 const app = express();
 
-
-
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("trust proxy", 1);
 
 app.use(
-    session({
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-            httpOnly: true,
-             secure:  true ,               //process.env.NODE_ENV === "production",
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-            sameSite: "lax"
-        }
-    })
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: false, //process.env.NODE_ENV === "production",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: "lax",
+    },
+  }),
 );
 // TEST LOGOUT
 
-app.use(express.static("public"))
+app.use(express.static("public"));
 
 // SQL Server configuration
 const dbConfig = {
@@ -39,8 +35,8 @@ const dbConfig = {
   password: process.env.DB_PASSWORD,
   port: Number(process.env.DB_PORT) || 1433,
   options: {
-    encrypt: true, 
-    trustServerCertificate: true,                  
+    encrypt: true,
+    trustServerCertificate: true,
     enableArithAbort: true,
     connectTimeout: 30000,
     requestTimeout: 30000,
@@ -68,16 +64,13 @@ connectDatabase();
 
 // Agar user logged in nahi hai to login.html pe bhejo
 app.get("/", (req, res) => {
-  if (req.session.faculty_id) {
-    return res.redirect("/teacher-index.html");
-  }
   if (req.session.enroll_no) {
     return res.redirect("/index.html");
   }
   return res.redirect("/login.html");
 });
 
-// LOGIN
+// LOGIN student
 app.post("/login", async (req, res) => {
   const { enroll, password, batch } = req.body;
 
@@ -99,7 +92,7 @@ app.post("/login", async (req, res) => {
     if (result.recordset.length > 0) {
       const student = result.recordset[0];
       req.session.enroll_no = student.Enroll_no; // for login redirect loop
-  req.session.student_name = student.name;
+      req.session.student_name = student.name;
       console.log("LOGIN SESSION:", req.session.enroll_no);
       // Ensure session is saved before sending the response
       req.session.save((err) => {
@@ -136,21 +129,148 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/student-info", (req, res) => {
-    if (!req.session.enroll_no) {
-        return res.status(401).json({
-            success: false,
-            message: "Please login first"
-        });
+// teacher login
+app.post("/teacherlogin", async (req, res) => {
+  try {
+    const { faculty_login_id, faculty_login_password } = req.body;
+
+    const pool = await sql.connect(dbConfig);
+
+    const result = await pool
+      .request()
+      .input("faculty_login_id", sql.VarChar, faculty_login_id)
+      .input("faculty_login_password", sql.VarChar, faculty_login_password)
+      .query(`
+                SELECT *
+                FROM faculty
+                WHERE faculty_login_id = @faculty_login_id
+                AND password_hash = @faculty_login_password
+            `);
+
+    // Login failed
+    if (result.recordset.length === 0) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid login ID or password",
+      });
     }
 
-    res.json({
+    // Login successful
+    const faculty = result.recordset[0];
+    req.session.faculty_login_id = faculty.faculty_login_id;
+    req.session.faculty_name = faculty.faculty_code;
+    req.session.faculty_id = faculty.faculty_id;
+
+    console.log("TEACHER LOGIN SESSION:", req.session);
+
+    req.session.save((err) => {
+      if (err) {
+        console.error("Teacher session save error:", err);
+
+        return res.status(500).json({
+          success: false,
+          message: "Session failed",
+        });
+      }
+
+      return res.json({
         success: true,
-        student: {
-            enroll: req.session.enroll_no,
-            name: req.session.student_name
-        }
+        message: "Teacher login successful",
+        faculty_code: faculty.faculty_code,
+      });
     });
+  } catch (error) {
+    console.error("Teacher login error:", error);
+
+    return res.status(500).json({
+      success: false,
+      error: "Server error",
+    });
+  }
+});
+// fetchteacheer  data
+app.get("/teacherinfo", (req, res) => {
+  if (!req.session.faculty_login_id) {
+    return res.status(401).json({
+      success: false,
+      message: "Not logged in",
+    });
+  }
+
+  return res.json({
+    success: true,
+    faculty_code: req.session.faculty_code,
+  });
+});
+
+// fetch name and show
+app.get("/student-info", (req, res) => {
+  if (!req.session.enroll_no) {
+    return res.status(401).json({
+      success: false,
+      message: "Please login first",
+    });
+  }
+
+  res.json({
+    success: true,
+    student: {
+      enroll: req.session.enroll_no,
+      name: req.session.student_name,
+    },
+  });
+});
+
+//teacher  time table
+app.get("/teachertimetabel", async (req, res) => {
+  try {
+    if (!req.session.faculty_login_id) {
+      return res.status(401).json({
+        success: false,
+        message: "please login",
+      });
+    }
+    const Day = new Date().toLocaleDateString("en-US", {
+      weekday: "long",
+    });
+
+    const faculty_login_id = req.session.faculty_login_id;
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input("faculty_login_id", sql.VarChar, faculty_login_id)
+      .input("Day" ,sql.VarChar,Day).query(`
+         SELECT
+    t.day,
+    CONVERT(VARCHAR(5), t.start_time, 108) AS start_time,
+    CONVERT(VARCHAR(5), t.end_time, 108) AS end_time,
+    t.sem,
+    s.subject_code,
+    tb.batch,
+    t.room,
+    t.type
+FROM timetable t
+INNER JOIN faculty f
+    ON t.faculty_id = f.faculty_id
+LEFT JOIN subject s
+    ON t.subject_id = s.subject_id
+LEFT JOIN timetable_batch tb
+    ON t.timetable_id = tb.timetable_id
+WHERE f.faculty_login_id = @faculty_login_id
+AND t.day = 'monday'
+ORDER BY t.start_time;
+        `);
+res.json({
+  success:true,
+  faculttimetabel :result.recordset
+});
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Server error",
+    });
+  }
 });
 
 //REGISTRATION
@@ -226,7 +346,7 @@ app.get("/fetch", async (req, res) => {
         message: "Please login first",
       });
     }
-    
+
     // Get current day in India
     const actualDay = new Date()
       .toLocaleDateString("en-US", {
@@ -309,7 +429,7 @@ app.get("/fetch", async (req, res) => {
     });
   }
 });
-
+// student fetch shedule
 app.get("/fetch-schedule", async (req, res) => {
   try {
     const enroll_no = req.session.enroll_no;
@@ -370,7 +490,6 @@ app.get("/fetch-schedule", async (req, res) => {
       .json({ success: false, message: "Failed to fetch full schedule" });
   }
 });
-// logout things
 
 // LOGOUT
 app.get("/logout", (req, res) => {
@@ -393,80 +512,13 @@ app.get("/logout", (req, res) => {
   });
 });
 
-app.post("/teacherlogin", async (req, res) => {
-  const { id_teacher, teacher_pasward } = req.body;
-
-  // 1. Validation check
-  if (!id_teacher || !teacher_pasward) {
-    return res.status(400).json({
-      success: false,
-      message: "Please enter Faculty ID and Password",
-    });
-  }
-
-  try {
-    const pool = await sql.connect(dbConfig);
-
-    // 2. Query check (Plain password match)
-    const result = await pool
-      .request()
-      .input("facultyId", sql.Int, parseInt(id_teacher, 10))
-      .input("password", sql.VarChar(255), teacher_pasward)
-      .query(`
-        SELECT faculty_id, faculty_code
-        FROM faculty
-        WHERE faculty_id = @facultyId
-          AND password_hash = @password
-      `);
-
-    // 3. User check
-    if (result.recordset.length === 0) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid Faculty ID or Password",
-      });
-    }
-
-    const teacher = result.recordset[0];
-
-    // 4. Session save
-    req.session.faculty_id = teacher.faculty_id;
-    req.session.faculty_code = teacher.faculty_code;
-
-    req.session.save((err) => {
-      if (err) {
-        console.error("Session error:", err);
-        return res.status(500).json({
-          success: false,
-          message: "Session creation failed",
-        });
-      }
-
-      res.json({
-        success: true,
-        message: "Teacher login successful",
-        teacher: {
-          faculty_id: teacher.faculty_id,
-          faculty_code: teacher.faculty_code,
-        },
-      });
-    });
-  } catch (err) {
-    console.error("Teacher login error:", err);
-    res.status(500).json({
-      success: false,
-      message: "Server error during login",
-    });
-  }
-});
-
-
-
-// UPDATE PASSWORD
+// ========================================================
+// PASSWORD UPDATE (Supports both Teacher & Student sessions)
+// ========================================================
 app.post("/password", async (req, res) => {
   try {
-    // 1. Verify user session
     const enroll_no = req.session.enroll_no;
+
     if (!enroll_no) {
       return res.status(401).json({
         success: false,
@@ -476,7 +528,6 @@ app.post("/password", async (req, res) => {
 
     const { password } = req.body;
 
-    // 2. Validate input
     if (!password || password.trim() === "") {
       return res.status(400).json({
         success: false,
@@ -484,7 +535,26 @@ app.post("/password", async (req, res) => {
       });
     }
 
-   
+    const pool = await sql.connect(dbConfig);
+
+    // Teacher password change
+    // const result = await pool
+    //   .request()
+    //   .input("password_hash", sql.VarChar(50), password.trim())
+    //   .input("faculty_id", sql.Int, faculty_id)
+    //   .query(`
+    //     UPDATE dbo.faculty
+    //     SET password_hash = @password_hash
+    //     WHERE faculty_id = @faculty_id
+    //   `);
+
+    if (result.rowsAffected[0] === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Faculty record not found." });
+    }
+
+    // Student password change
     if (password.length > 8) {
       return res.status(400).json({
         success: false,
@@ -492,23 +562,19 @@ app.post("/password", async (req, res) => {
       });
     }
 
-    
-    const pool = await sql.connect(dbConfig);
     const result = await pool
       .request()
       .input("passwd", sql.VarChar(8), password.trim())
-      .input("Enroll_no", sql.VarChar(12), enroll_no)
-      .query(`
-        UPDATE dbo.login
-        SET passwd = @passwd
-        WHERE Enroll_no = @Enroll_no
-      `);
+      .input("Enroll_no", sql.VarChar(12), enroll_no).query(`
+          UPDATE dbo.login
+          SET passwd = @passwd
+          WHERE Enroll_no = @Enroll_no
+        `);
 
     if (result.rowsAffected[0] === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "User record not found.",
-      });
+      return res
+        .status(404)
+        .json({ success: false, message: "Student record not found." });
     }
 
     res.json({
@@ -523,65 +589,61 @@ app.post("/password", async (req, res) => {
     });
   }
 });
- // mname update
+// mname update
 app.post("/name", async (req, res) => {
-    try {
-        const enroll_no = req.session.enroll_no;
- 
-        if (!enroll_no) {
-            return res.status(401).json({
-                success: false,
-                message: "Unauthorized. Please log in first."
-            });
-        }
+  try {
+    const enroll_no = req.session.enroll_no;
 
-        const { Name } = req.body;
+    if (!enroll_no) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized. Please log in first.",
+      });
+    }
 
-        if (!Name || Name.trim() === "") {
-            return res.status(400).json({
-                success: false,
-                message: "Name cannot be empty."
-            });
-        }
+    const { Name } = req.body;
 
-        const pool = await sql.connect(dbConfig);
+    if (!Name || Name.trim() === "") {
+      return res.status(400).json({
+        success: false,
+        message: "Name cannot be empty.",
+      });
+    }
 
-        const result = await pool
-            .request()
-            .input("name", sql.VarChar(50), Name.trim())
-            .input("Enroll_no", sql.VarChar(12), enroll_no)
-            .query(`
+    const pool = await sql.connect(dbConfig);
+
+    const result = await pool
+      .request()
+      .input("name", sql.VarChar(50), Name.trim())
+      .input("Enroll_no", sql.VarChar(12), enroll_no).query(`
                 UPDATE dbo.login
                 SET name = @name
                 WHERE Enroll_no = @Enroll_no
             `);
 
-        // Check if database update happened
-        if (result.rowsAffected[0] === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found."
-            });
-        }
-
-      
-        req.session.student_name = Name.trim();
-
-        res.json({
-            success: true,
-            message: "Name updated successfully"
-        });
-
-    } catch (err) {
-        console.error("Name update error:", err);
-
-        res.status(500).json({
-            success: false,
-            message: "Failed to update name"
-        });
+    // Check if database update happened
+    if (result.rowsAffected[0] === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
     }
-});
 
+    req.session.student_name = Name.trim();
+
+    res.json({
+      success: true,
+      message: "Name updated successfully",
+    });
+  } catch (err) {
+    console.error("Name update error:", err);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to update name",
+    });
+  }
+});
 
 app.post("/notice", async (req, res) => {
   try {
@@ -612,8 +674,7 @@ app.post("/notice", async (req, res) => {
       .input("sem", sql.Int, parseInt(Sem, 10))
       .input("batch", sql.VarChar(10), batch.trim())
       .input("notice", sql.NVarChar(sql.MAX), notice.trim())
-      .input("faculty_id", sql.Int, facultyId)
-      .query(`
+      .input("faculty_id", sql.Int, facultyId).query(`
         INSERT INTO dbo.notice (sem, batch, notice, faculty_id, notice_time)
         VALUES (@sem, @batch, @notice, @faculty_id, SYSUTCDATETIME());
       `);
@@ -637,16 +698,16 @@ app.get("/student/notices", async (req, res) => {
     if (!req.session.enroll_no) {
       return res.status(401).json({
         success: false,
-        message: "Please login first"
+        message: "Please login first",
       });
     }
 
     const enrollNo = req.session.enroll_no;
     const pool = await sql.connect(dbConfig);
 
-    const result = await pool.request()
-      .input("enroll_no", sql.VarChar, enrollNo)
-      .query(`
+    const result = await pool
+      .request()
+      .input("enroll_no", sql.VarChar, enrollNo).query(`
         SELECT
             l.enroll_no,
             l.batch,
@@ -670,14 +731,13 @@ app.get("/student/notices", async (req, res) => {
 
     res.json({
       success: true,
-      notices: result.recordset
+      notices: result.recordset,
     });
-
   } catch (err) {
     console.error("Student notice error:", err);
     res.status(500).json({
       success: false,
-      message: "Failed to fetch notices"
+      message: "Failed to fetch notices",
     });
   }
 });
@@ -686,5 +746,5 @@ app.get("/student/notices", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port http://localhost:${PORT}`);
 });
