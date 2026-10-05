@@ -351,8 +351,18 @@ function showClassStatus(data) {
   const next_card = document.getElementById("delete-next-class");
   const map_current_card= document.getElementById("map-lec");
 
+
+    //light
+    const green = document.getElementById('green');
+    const grey = document.getElementById('grey');
+    const orange = document.getElementById('orange');
+
   // 1. Weekend check (runs even if data is [])
   if (dayName === "Sunday" || dayName === "Saturday") {
+    if (green && orange) {
+      green.style.display = "none"
+      orange.style.display = "none"
+    }
     const message = `<div class="bold-text">Its</div>`;
     [current_card,next_card,map_current_card].forEach((el) => {
       if (el) {
@@ -365,6 +375,8 @@ function showClassStatus(data) {
 
   // 2. Weekday but no lectures scheduled
   if (!Array.isArray(data) || data.length === 0) {
+    green.style.display = "none"
+      orange.style.display = "none"
     const message = `<div class="bold-text">No Classes Scheduled</div>`;
     [map_current_card,next_card,current_card].forEach((el) => {
       if (el) {
@@ -392,23 +404,31 @@ function showClassStatus(data) {
   });
 
      if (currenttime_s >= 1020 || currenttime_s < 540) {
+      orange.style.display = "none"
+      green.style.display = "none"
         if (current_card) {
-          current_card.innerHTML = `<div class="bold-text"> No classes </div>`
-          map_current_card.innerHTML= `<div class="bold-text"> No classes </div>`
+          
+         
+          current_card.innerHTML = `<div class="bold-text"> No Classes </div>`
+          map_current_card.innerHTML= `<div class="bold-text"> No Classes </div>`
         }
         if (next_card) {
-          next_card.innerHTML = `<div class="bold-text"> NO classes </div>`
+          
+          
+          next_card.innerHTML = `<div class="bold-text"> No Classes </div>`
           
         }
 
 
     
      }else if (currenttime_s >= 540 && currenttime_s < 630) {
+         green.style.display = "none"
+         orange.style.display = "none"
     const first_class = data[0];
 
       if (first_class && current_card) {
-      current_card.innerHTML= `<div class="bold-text">Class starting soon </div>` ;
-      map_current_card.innerHTML = `<div class="bold-text">Class starting soon </div>`
+      current_card.innerHTML= `<div class="bold-text">Class Starting Soon </div>` ;
+      map_current_card.innerHTML = `<div class="bold-text">Class Starting Soon </div>`
        }
 
       if(next_card && first_class) {
@@ -452,6 +472,7 @@ function showClassStatus(data) {
 
      // if current class  start
      }  else if (currenttokan !== -1){
+      grey.style.display = "none"
       const current_class = data[currenttokan];
         if (map_current_card) {
           map_current_card.innerHTML = ` <span class="map-lec-subprof">
@@ -560,7 +581,7 @@ function showClassStatus(data) {
         </div>
             `
           }else{
-            next_card.innerHTML = `<div class="bold-text">Class starting soon </div>`;
+            next_card.innerHTML = `<div class="bold-text">No More Class Today </div>`;
           }
        }
        else{
@@ -568,8 +589,9 @@ function showClassStatus(data) {
         const endlunch  =  13*60;
         const itslunch = currenttime_s >= startlunch && currenttime_s < endlunch;
         if (itslunch) {
-        current_card.innerHTML = `<div class="bold-text">Its lunch time 🍚 </div>`
-        map_current_card.innerHTML =`<div class="bold-text">Its lunch time 🍚 </div>`
+              green.style.display = "none"
+        current_card.innerHTML = `<div class="bold-text">Its Lunch Time 🍚 </div>`
+        map_current_card.innerHTML =`<div class="bold-text">Its Lunch Time 🍚 </div>`
            
        }else if(upcoming_class !== -1 ){
         
@@ -619,15 +641,17 @@ function showClassStatus(data) {
                   `
                  }
           }else{
+            green.style.display = "none"
+          orange.style.display = "none"
             if (current_card) {
-                current_card.innerHTML = `<div class="bold-text"> No more class today </div>`
+                current_card.innerHTML = `<div class="bold-text"> No More Class Today </div>`
             }
             if (next_card) {
-              next_card.innerHTML = `<div class="bold-text"> No more class today</div>`
+              next_card.innerHTML = `<div class="bold-text"> No More Class Today</div>`
               
             }
             if (map_current_card) {
-              map_current_card.innerHTML =`<div class="bold-text"> No more class today</div>`
+              map_current_card.innerHTML =`<div class="bold-text"> No More Class Today</div>`
               
             }
           }  
