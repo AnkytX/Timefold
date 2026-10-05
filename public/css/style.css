@@ -429,9 +429,9 @@ section {
   font-weight: 750;
 }
 
-.lecture-div .bold-text {
-  /* color: var(--text); */
-}
+/* .lecture-div .bold-text {
+  color: var(--text);
+} */
 
 /* .lecture-div .small-text {
   color: var(--muted);
