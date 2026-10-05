@@ -25,7 +25,7 @@
   --radius-md: 15px;
 
   --nav: rgba(42, 43, 48, 0.96);
-  --nav-bg: #0e101c;
+  --nav-bg: #121525;
   --nav-hover: rgb(255, 255, 255);
 }
 
@@ -113,8 +113,8 @@ section {
 
 .seperation-line {
   border: 0;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  height: 0.5px;
+  background: rgba(62, 59, 59, 0.51);
   margin: 18px 0;
 }
 
@@ -146,7 +146,7 @@ section {
   place-items: center;
   color: #fff;
   border-radius: 50%;
-  background-color: #0e101c44;
+  background-color: #2d2d2d31;
 }
 
 #initial {
@@ -252,19 +252,25 @@ section {
 
 @keyframes signalGlow {
 
-  0%,
-  100% {
+  0% {
     box-shadow:
-      0 0 4px rgb(11, 226, 11),
-      0 0 8px rgba(11, 226, 11, 0.6),
-      0 0 14px rgba(11, 226, 11, 0.3);
+      0 0 0px rgb(11, 226, 11),
+      0 0 0px rgb(11, 226, 11),
+      0 0 0px rgb(11, 226, 11);
   }
 
   50% {
     box-shadow:
-      0 0 7px rgb(11, 226, 11),
-      0 0 15px rgba(11, 226, 11, 0.9),
-      0 0 28px rgba(11, 226, 11, 0.6);
+      0 0 8px rgb(11, 226, 11),
+      0 0 11px rgb(11, 226, 11),
+      0 0 15px rgb(11, 226, 11);
+  }
+
+  100% {
+    box-shadow:
+      0 0 18px rgb(11, 226, 11),
+      0 0 20px rgb(11, 226, 11),
+      0 0 25px rgb(11, 226, 11);
   }
 }
 
@@ -376,7 +382,7 @@ section {
 .today {
   width: 100%;
   margin: 12px 0 30px;
-  padding: 17px;
+  padding: 17px 10px;
   border-radius: var(--radius-xl);
   background: var(--surface);
   color: var(--text);
@@ -384,7 +390,8 @@ section {
 }
 
 .today h2 {
-  font-size: 1.05rem;
+  margin: 0px 8px;
+  font-size: 1.08rem;
   font-weight: 750;
   letter-spacing: -0.02em;
 }
