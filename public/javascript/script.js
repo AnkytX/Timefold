@@ -394,6 +394,7 @@ function showClassStatus(data) {
      if (currenttime_s >= 1020 || currenttime_s < 540) {
         if (current_card) {
           current_card.innerHTML = `<div class="bold-text"> No classes </div>`
+          map_current_card.innerHTML= `<div class="bold-text"> No classes </div>`
         }
         if (next_card) {
           next_card.innerHTML = `<div class="bold-text"> NO classes </div>`
@@ -407,6 +408,7 @@ function showClassStatus(data) {
 
       if (first_class && current_card) {
       current_card.innerHTML= `<div class="bold-text">Class starting soon </div>` ;
+      map_current_card.innerHTML = `<div class="bold-text">Class starting soon </div>`
        }
 
       if(next_card && first_class) {
@@ -451,6 +453,24 @@ function showClassStatus(data) {
      // if current class  start
      }  else if (currenttokan !== -1){
       const current_class = data[currenttokan];
+        if (map_current_card) {
+          map_current_card.innerHTML = ` <span class="map-lec-subprof">
+          <h1 id="current-map-sub">${current_class.subject_code}</h1>
+          <h1 id="current-map-professor">${current_class.faculty_code}</h1>
+        </span>
+        <span class="map-lec-timeroom">
+          <span class="map-lec-sub">
+            <p class="bold-text" id="current-map-time">${formatTime(current_class.start_time)}</p>
+          </span>
+          <span class="map-lec-sub">
+            <p class="bold-text">|</p>
+          </span>
+          <span class="map-lec-sub">
+            <p class="bold-text" id="current-map-room">${current_class.room}</p>
+          </span>
+        </span>`
+          
+        }
           if(current_class && current_card){
             current_card.innerHTML = `
                              <div class="card-description" id="current-class-sub-div">
@@ -549,6 +569,7 @@ function showClassStatus(data) {
         const itslunch = currenttime_s >= startlunch && currenttime_s < endlunch;
         if (itslunch) {
         current_card.innerHTML = `<div class="bold-text">Its lunch time 🍚 </div>`
+        map_current_card.innerHTML =`<div class="bold-text">Its lunch time 🍚 </div>`
            
        }else if(upcoming_class !== -1 ){
         
@@ -603,6 +624,10 @@ function showClassStatus(data) {
             }
             if (next_card) {
               next_card.innerHTML = `<div class="bold-text"> No more class today</div>`
+              
+            }
+            if (map_current_card) {
+              map_current_card.innerHTML =`<div class="bold-text"> No more class today</div>`
               
             }
           }  
