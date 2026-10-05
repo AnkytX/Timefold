@@ -1,32 +1,39 @@
 :root {
-  --bg: #1b1c20;
-  --surface: #26272c;
-  --surface-2: #303136;
+  --bg: #1b1c1f;
+  --surface: #212125d1;
+  --surface-2: #3031363f;
   --surface-3: #394cad;
 
   --text: #f7f7f8;
   --muted: #a9abb2;
-  --line: rgba(255, 255, 255, 0.1);
+  --line: rgba(255, 255, 255, 0.033);
 
-  /* --pri: #ff4326; */
 
   --pri: #ae7b64;
-
-  /* --sec: #4d6ed8; */
-
   --sec: #43395e;
 
   --white-card: #f4f4f2;
   --black: #111214;
-  --green: #58b97a;
+  --green: rgba(2, 255, 2, 0.756);
 
   --radius-xl: 26px;
   --radius-lg: 20px;
   --radius-md: 15px;
 
   --nav: rgba(42, 43, 48, 0.96);
-  --nav-bg: #121525;
+  --nav-bg: #111422;
   --nav-hover: rgb(255, 255, 255);
+}
+
+body:not(.dark-theme) {
+  --bg: #f2f2f0;
+  --surface: #ffffff;
+  --surface-2: #ececee;
+  --surface-3: #e2e3e6;
+  --text: #16171a;
+  --muted: #70727a;
+  --line: rgba(20, 21, 24, 0.09);
+  --nav: rgba(255, 255, 255, 0.94);
 }
 
 /* =========================================================
@@ -244,33 +251,37 @@ section {
 .green-signal {
   width: 10px;
   height: 10px;
-  background: rgb(11, 226, 11);
+  background: rgb(19, 234, 19);
   border-radius: 50%;
 
-  animation: signalGlow 1.5s ease-in-out infinite;
+  animation: signalGlow 2s ease-in-out infinite;
 }
 
 @keyframes signalGlow {
-
+  /* Normal — no glow */
   0% {
-    box-shadow:
-      0 0 0px rgb(11, 226, 11),
-      0 0 0px rgb(11, 226, 11),
-      0 0 0px rgb(11, 226, 11);
+    box-shadow: 0 0 0 var(--green);
   }
 
-  50% {
+  /* Slowly grows */
+  35% {
     box-shadow:
-      0 0 8px rgb(11, 226, 11),
-      0 0 11px rgb(11, 226, 11),
-      0 0 15px rgb(11, 226, 11);
+      0 0 5px var(--green),
+      0 0 10px var(--green),
+      0 0 18px var(--green);
   }
 
+  /* Slowly reduces */
+  70% {
+    box-shadow:
+      0 0 3px var(--green),
+      0 0 7px var(--green),
+      0 0 12px var(--green);
+  }
+
+  /* Stops / stays off briefly */
   100% {
-    box-shadow:
-      0 0 18px rgb(11, 226, 11),
-      0 0 20px rgb(11, 226, 11),
-      0 0 25px rgb(11, 226, 11);
+    box-shadow: 0 0 0 var(--green);
   }
 }
 
@@ -285,8 +296,9 @@ section {
 .grey-signal {
   width: 10px;
   height: 10px;
+  outline: 0.5px solid rgb(74, 70, 70);
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(111, 107, 107, 0.901);
 }
 
 .next {
@@ -391,7 +403,7 @@ section {
 
 .today h2 {
   margin: 0px 8px;
-  font-size: 1.08rem;
+  font-size: 1.35rem;
   font-weight: 750;
   letter-spacing: -0.02em;
 }
@@ -431,17 +443,20 @@ section {
 .lecture-div> :last-child {
   align-items: flex-end;
   justify-content: center;
-  color: var(--text);
-  font-size: 0.78rem;
+  /* color: var(--text); */
+  color: #fff;
+  font-size: 1rem;
   font-weight: 750;
 }
 
 .lecture-div .bold-text {
-  color: var(--text);
+  /* color: var(--text); */
+  color: #fff;
 }
 
 .lecture-div .small-text {
-  color: var(--muted);
+  /* color: var(--muted); */
+  color: #fff;
 }
 
 /* =========================================================
@@ -1673,17 +1688,6 @@ input:focus::placeholder {
   }
 }
 
-body:not(.dark-theme) {
-  --bg: #f2f2f0;
-  --surface: #ffffff;
-  --surface-2: #ececee;
-  --surface-3: #e2e3e6;
-  --text: #16171a;
-  --muted: #70727a;
-  --line: rgba(20, 21, 24, 0.09);
-  --nav: rgba(255, 255, 255, 0.94);
-}
-
 body:not(.dark-theme) .main-head {
   background: var(--bg);
 }
@@ -1729,6 +1733,7 @@ body.dark-theme .login-div,
 body.dark-theme .register-div {
   border-color: transparent;
 }
+
 
 body.dark-theme #initial {
   color: white;
