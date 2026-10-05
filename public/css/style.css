@@ -379,7 +379,7 @@ section {
   padding: 17px;
   border-radius: var(--radius-xl);
   background: var(--surface);
-  color: var(--text);
+  /* color: var(--text); */
   border: 1px solid var(--line);
 }
 
@@ -424,18 +424,18 @@ section {
 .lecture-div> :last-child {
   align-items: flex-end;
   justify-content: center;
-  color: var(--text);
+  /* color: var(--text); */
   font-size: 0.78rem;
   font-weight: 750;
 }
 
 .lecture-div .bold-text {
-  color: var(--text);
+  /* color: var(--text); */
 }
 
-.lecture-div .small-text {
+/* .lecture-div .small-text {
   color: var(--muted);
-}
+} */
 
 /* =========================================================
    MAP (INTERACTIVE & CONTAINER)
