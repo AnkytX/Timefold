@@ -345,16 +345,16 @@ function showClassStatus(data) {
   });
 
   // Section Containers
-  const hide_current =
-    document.getElementById("delete-current-class") ||
-    document.getElementById("delet-current-class");
-  const hide_next = document.getElementById("delete-next-class");
-  const delete_map_lec = document.getElementById("map-lec");
+  const current_card = document.getElementById("delete-current-class") ||
+  document.getElementById("delet-current-class");
+  
+  const next_card = document.getElementById("delete-next-class");
+  const map_current_card= document.getElementById("map-lec");
 
   // 1. Weekend check (runs even if data is [])
   if (dayName === "Sunday" || dayName === "Saturday") {
-    const message = `<div class="bold-text">No Class Today</div>`;
-    [hide_current, hide_next, delete_map_lec].forEach((el) => {
+    const message = `<div class="bold-text">Its</div>`;
+    [current_card,next_card,map_current_card].forEach((el) => {
       if (el) {
         el.style.display = "";
         el.innerHTML = message;
@@ -366,7 +366,7 @@ function showClassStatus(data) {
   // 2. Weekday but no lectures scheduled
   if (!Array.isArray(data) || data.length === 0) {
     const message = `<div class="bold-text">No Classes Scheduled</div>`;
-    [hide_current, hide_next, delete_map_lec].forEach((el) => {
+    [map_current_card,next_card,current_card].forEach((el) => {
       if (el) {
         el.style.display = "";
         el.innerHTML = message;
@@ -375,186 +375,239 @@ function showClassStatus(data) {
     return;
   }
 
-  // Current Card Elements
-  const currentClassNameEl = document.getElementById("current-class-sub");
-  const currentStartTimeEl = document.getElementById("current-class-starttime");
-  const currentEndTimeEl = document.getElementById("current-class-endtime");
-  const currentProfessorEl = document.getElementById(
-    "current-class-professor-name",
-  );
-  const roomNoEl = document.getElementById("room_no");
-  const departmentEl = document.getElementById("Department");
+  
+    // getting  current time
+  const currenttime_s = now.getHours() * 60 + now.getMinutes();
 
-  // Next Card Elements
-  const nextSubEl = document.getElementById("next-sub");
-  const nextStartTimeEl = document.getElementById("next-start-time");
-  const nextEndTimeEl = document.getElementById("next-end-time");
-  const nextProfessorEl = document.getElementById("next-class-professor");
-  const nextRoomEl = document.getElementById("next-room");
-  const nextDepartmentEl = document.getElementById("next-depa");
-
-  const currentHour = now.getHours() * 60 + now.getMinutes();
-
-  // Active / Upcoming detection
-  const currenttokan = data.findIndex((lecture) => {
+  // Active 
+     const currenttokan = data.findIndex((lecture) => {
     const start = toMinutes(lecture.start_time);
     const end = toMinutes(lecture.end_time);
-    return currentHour >= start && currentHour <= end;
+    return currenttime_s >= start && currenttime_s < end;
   });
-
-  const upcoming_class = data.findIndex((lecture) => {
+  // upcoming class
+    const upcoming_class = data.findIndex((lecture) => {
     const start = toMinutes(lecture.start_time);
-    return start > currentHour && start - currentHour <= 30;
+    return start > currenttime_s ;
   });
 
-  // Morning Window Check (9:30 AM - 10:30 AM / 570 - 630 mins)
-  if (currentHour >= 570 && currentHour < 630) {
+     if (currenttime_s >= 1020 || currenttime_s < 540) {
+        if (current_card) {
+          current_card.innerHTML = `<div class="bold-text"> No classes </div>`
+        }
+        if (next_card) {
+          next_card.innerHTML = `<div class="bold-text"> NO classes </div>`
+          
+        }
+
+
+    
+     }else if (currenttime_s >= 540 && currenttime_s < 630) {
     const first_class = data[0];
 
-    if (hide_current && delete_map_lec) {
-      hide_current.style.display = "none";
-    }
+      if (first_class && current_card) {
+      current_card.innerHTML= `<div class="bold-text">Class starting soon </div>` ;
+       }
 
-    if (hide_next && first_class) {
-      hide_next.style.display = "";
-      if (nextSubEl) nextSubEl.innerText = first_class.subject_code;
-      if (nextStartTimeEl)
-        nextStartTimeEl.innerText = formatTime(first_class.start_time);
-      if (nextEndTimeEl)
-        nextEndTimeEl.innerText = formatTime(first_class.end_time);
-      if (nextProfessorEl) nextProfessorEl.innerText = first_class.faculty_code;
-      if (nextRoomEl) nextRoomEl.innerText = first_class.room;
-      if (nextDepartmentEl)
-        nextDepartmentEl.innerText = getdep(first_class.room).department;
-    }
-  }
+      if(next_card && first_class) {
+      next_card.innerHTML = `
+    <div class="card-description">
+        <div class="bold-text" id="next-sub">
+            ${first_class.subject_code}
+        </div>
 
-  // Active lecture rendering
-  if (currenttokan !== -1) {
-    const current_class = data[currenttokan];
-    const next_tokan = currenttokan + 1;
-    const next_class = data[next_tokan];
+        <div class="small-text">
+            <span id="next-start-time">${formatTime(first_class.start_time)}</span>
+            <span id="delet-hyphen">-</span>
+            <span id="next-end-time">${formatTime(first_class.end_time)}</span>
+        </div>
+    </div>
 
-    updateMapImage(current_class.room);
+    <div class="card-description">
+        <div class="bold-text" id="next-class-professor-label">
+            Professor
+        </div>
 
-    if (delete_map_lec) {
-      delete_map_lec.style.display = "";
-      delete_map_lec.innerHTML = `
-        <span class="map-lec-subprof">
-          <h1 id="current-map-sub">${current_class.subject_code}</h1>
-          <h1 id="current-map-professor">${current_class.faculty_code}</h1>
-        </span>
-        <span class="map-lec-timeroom">
-          <span class="map-lec-sub">
-            <p class="bold-text" id="current-map-time">${formatTime(current_class.start_time)}</p>
-          </span>
-          <span class="map-lec-sub">
-            <p class="bold-text">|</p>
-          </span>
-          <span class="map-lec-sub">
-            <p class="bold-text" id="current-map-room">${current_class.room}</p>
-          </span>
-        </span>
-      `;
-    }
+        <div class="small-text" id="next-class-professor">
+            ${first_class.faculty_code}
+        </div>
+    </div>
 
-    if (hide_current) hide_current.style.display = "";
-    if (currentClassNameEl)
-      currentClassNameEl.innerText = current_class.subject_code;
-    if (currentStartTimeEl)
-      currentStartTimeEl.innerText = formatTime(current_class.start_time);
-    if (currentEndTimeEl)
-      currentEndTimeEl.innerText = formatTime(current_class.end_time);
-    if (currentProfessorEl)
-      currentProfessorEl.innerText = current_class.faculty_code;
-    if (roomNoEl) roomNoEl.innerText = current_class.room;
-    if (departmentEl)
-      departmentEl.innerText = getdep(current_class.room).department;
+    <div class="location-des" id="next-location">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" height="1.1em"
+            viewBox="0 0 16 16">
+            <title>location</title>
+            <path fill="#450D5F"
+                d="M8 1a6 6 0 0 1 6 6c0 2.874-3.097 6.016-4.84 7.558-.67.59-1.65.59-2.32 0C5.098 13.016 2 9.874 2 7a6 6 0 0 1 6-6m0 1a5 5 0 0 0-5 5c0 1.108.614 2.395 1.57 3.683.933 1.258 2.087 2.377 2.934 3.126.29.256.702.256.992 0c.847-.749 2-1.867 2.935-3.126C12.386 9.395 13 8.108 13 7a5 5 0 0 0-5-5m0 2.75a2.25 2.25 0 1 1 0 4.5a2.25 2.25 0 0 1 0-4.5m0 1a1.25 1.25 0 1 0 0 2.5a1.25 1.25 0 0 0 0-2.5" />
+        </svg>
 
-    if (hide_next) {
-      hide_next.style.display = "";
-      if (next_class) {
-        if (nextSubEl) nextSubEl.innerText = next_class.subject_code;
-        if (nextStartTimeEl)
-          nextStartTimeEl.innerText = formatTime(next_class.start_time);
-        if (nextEndTimeEl)
-          nextEndTimeEl.innerText = formatTime(next_class.end_time);
-        if (nextProfessorEl)
-          nextProfessorEl.innerText = next_class.faculty_code;
-        if (nextRoomEl) nextRoomEl.innerText = next_class.room;
-        if (nextDepartmentEl)
-          nextDepartmentEl.innerText = getdep(next_class.room).department;
-      } else {
-        hide_next.innerHTML = `<div class="bold-text">No Class Right Now</div>`;
+        <span id="next-room">${first_class.room}</span>
+        <span id="next-depa">${getdep(first_class.room).department}</span>
+    </div>
+       `;
       }
-    } else {
-      // Break / Free / Lunch conditions
-      const lunchstart = toMinutes("12:30");
-      const lunchend = toMinutes("13:00");
-      const islunchtime = currentHour >= lunchstart && currentHour < lunchend;
 
-      if (islunchtime) {
-        if (hide_current) {
-          hide_current.style.display = "";
-          hide_current.innerHTML = `<div class="map-lunchbreak">Its Lunch Time 🍛</div>`;
-        }
-        if (delete_map_lec) {
-          delete_map_lec.innerHTML = `<div class="map-lunchbreak">Its Lunch Time 🍛</div>`;
-        }
 
-        if (hide_next) {
-          hide_next.style.display = "";
-          if (upcoming_class !== -1) {
-            const next_class = data[upcoming_class];
-            if (nextSubEl) nextSubEl.innerText = next_class.subject_code;
-            if (nextStartTimeEl)
-              nextStartTimeEl.innerText = formatTime(next_class.start_time);
-            if (nextEndTimeEl)
-              nextEndTimeEl.innerText = formatTime(next_class.end_time);
-            if (nextProfessorEl)
-              nextProfessorEl.innerText = next_class.faculty_code;
-            if (nextRoomEl) nextRoomEl.innerText = next_class.room;
-            if (nextDepartmentEl)
-              nextDepartmentEl.innerText = getdep(next_class.room).department;
-          } else {
-            hide_next.innerHTML = `<div class="bold-text">No More Classes Today</div>`;
+     // if current class  start
+     }  else if (currenttokan !== -1){
+      const current_class = data[currenttokan];
+          if(current_class && current_card){
+            current_card.innerHTML = `
+                             <div class="card-description" id="current-class-sub-div">
+            <div class="bold-text" id="current-class-sub">
+                ${current_class.subject_code}
+            </div>
+
+            <div class="small-text" id="current-class-time">
+                <span id="current-class-starttime">
+                    ${formatTime(current_class.start_time)}
+                </span>
+                <span id="delet-hyphen">-</span>
+                <span id="current-class-endtime">
+                    ${formatTime(current_class.end_time)}
+                </span>
+            </div>
+        </div>
+        <div class="card-description">
+            <div class="bold-text" id="current-class-professor-label">
+                Professor
+            </div>
+            <div class="small-text" id="current-class-professor-name">
+                ${current_class.faculty_code}
+            </div>
+        </div>
+        <div class="location-des" id="current-location">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                width="1.1em"
+                height="1.1em"
+                viewBox="0 0 16 16">
+                <title>location</title>
+                <path fill="#450D5F"
+                    d="M8 1a6 6 0 0 1 6 6c0 2.874-3.097 6.016-4.84 7.558c-.67.59-1.65.59-2.32 0C5.098 13.016 2 9.874 2 7a6 6 0 0 1 6-6m0 1a5 5 0 0 0-5 5c0 1.108.614 2.395 1.57 3.683c.933 1.258 2.087 2.377 2.934 3.126c.29.256.702.256.992 0c.847-.749 2-1.867 2.935-3.126C12.386 9.395 13 8.108 13 7a5 5 0 0 0-5-5m0 2.75a2.25 2.25 0 1 1 0 4.5a2.25 2.25 0 0 1 0-4.5m0 1a1.25 1.25 0 1 0 0 2.5a1.25 1.25 0 0 0 0-2.5" />
+            </svg>
+            <span id="room_no">
+                ${current_class.room}
+            </span>
+            <span id="Department">
+                ${getdep(current_class.room).department}
+            </span>
+        </div>
+            `
           }
-        }
-      } else if (upcoming_class !== -1) {
-        if (hide_current) {
-          hide_current.style.display = "";
-          hide_current.innerHTML = `<div class="bold-text">Break / Free Period</div>`;
-        }
 
-        if (hide_next) {
-          hide_next.style.display = "";
-          const next_class = data[upcoming_class];
-          if (nextSubEl) nextSubEl.innerText = next_class.subject_code;
-          if (nextStartTimeEl)
-            nextStartTimeEl.innerText = formatTime(next_class.start_time);
-          if (nextEndTimeEl)
-            nextEndTimeEl.innerText = formatTime(next_class.end_time);
-          if (nextProfessorEl)
-            nextProfessorEl.innerText = next_class.faculty_code;
-          if (nextRoomEl) nextRoomEl.innerText = next_class.room;
-          if (nextDepartmentEl)
-            nextDepartmentEl.innerText = getdep(next_class.room).department;
-        }
-      } else {
-        if (hide_current) {
-          hide_current.style.display = "";
-          hide_current.innerHTML = `<div class="bold-text">No Class Right Now</div>`;
-        }
-        if (hide_next) {
-          hide_next.style.display = "";
-          hide_next.innerHTML = `<div class="bold-text">No Class Right Now</div>`;
-        }
-        if (delete_map_lec) {
-          delete_map_lec.innerHTML = `<div class="bold-text">No Class Right Now</div>`;
-        }
-      }
+         const next_tokan = currenttokan + 1;
+          const next_class = data[next_tokan]
+          if (next_class && next_card ) {
+            next_card.innerHTML = `
+              <div class="card-description" id="current-class-sub-div">
+            <div class="bold-text" id="current-class-sub">
+                ${next_class.subject_code}
+            </div>
+
+            <div class="small-text" id="current-class-time">
+                <span id="current-class-starttime">
+                    ${formatTime(next_class.start_time)}
+                </span>
+                <span id="delet-hyphen">-</span>
+                <span id="current-class-endtime">
+                    ${formatTime(next_class.end_time)}
+                </span>
+            </div>
+        </div>
+        <div class="card-description">
+            <div class="bold-text" id="current-class-professor-label">
+                Professor
+            </div>
+            <div class="small-text" id="current-class-professor-name">
+                ${next_class.faculty_code}
+            </div>
+        </div>
+        <div class="location-des" id="current-location">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                width="1.1em"
+                height="1.1em"
+                viewBox="0 0 16 16">
+                <title>location</title>
+                <path fill="#450D5F"
+                    d="M8 1a6 6 0 0 1 6 6c0 2.874-3.097 6.016-4.84 7.558c-.67.59-1.65.59-2.32 0C5.098 13.016 2 9.874 2 7a6 6 0 0 1 6-6m0 1a5 5 0 0 0-5 5c0 1.108.614 2.395 1.57 3.683c.933 1.258 2.087 2.377 2.934 3.126c.29.256.702.256.992 0c.847-.749 2-1.867 2.935-3.126C12.386 9.395 13 8.108 13 7a5 5 0 0 0-5-5m0 2.75a2.25 2.25 0 1 1 0 4.5a2.25 2.25 0 0 1 0-4.5m0 1a1.25 1.25 0 1 0 0 2.5a1.25 1.25 0 0 0 0-2.5" />
+            </svg>
+            <span id="room_no">
+                ${next_class.room}
+            </span>
+            <span id="Department">
+                ${getdep(next_class.room).department}
+            </span>
+        </div>
+            `
+          }else{
+            next_card.innerHTML = `<div class="bold-text">Class starting soon </div>`;
+          }
+       }
+       else{
+        const startlunch = 12*60 + 30;
+        const endlunch  =  13*60;
+        const itslunch = currenttime_s >= startlunch && currenttime_s < endlunch;
+        if (itslunch) {
+        current_card.innerHTML = `<div class="bold-text">Its lunch time 🍚 </div>`
+           
+       }else if(upcoming_class !== -1 ){
+        
+        const next_class = data[upcoming_class];
+                 if(next_card && next_class)
+                 {
+                  next_card.innerHTML = `
+                          <div class="card-description" id="current-class-sub-div">
+            <div class="bold-text" id="current-class-sub">
+                ${next_class.subject_code}
+            </div>
+
+            <div class="small-text" id="current-class-time">
+                <span id="current-class-starttime">
+                    ${formatTime(next_class.start_time)}
+                </span>
+                <span id="delet-hyphen">-</span>
+                <span id="current-class-endtime">
+                    ${formatTime(next_class.end_time)}
+                </span>
+            </div>
+        </div>
+        <div class="card-description">
+            <div class="bold-text" id="current-class-professor-label">
+                Professor
+            </div>
+            <div class="small-text" id="current-class-professor-name">
+                ${next_class.faculty_code}
+            </div>
+        </div>
+        <div class="location-des" id="current-location">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                width="1.1em"
+                height="1.1em"
+                viewBox="0 0 16 16">
+                <title>location</title>
+                <path fill="#450D5F"
+                    d="M8 1a6 6 0 0 1 6 6c0 2.874-3.097 6.016-4.84 7.558c-.67.59-1.65.59-2.32 0C5.098 13.016 2 9.874 2 7a6 6 0 0 1 6-6m0 1a5 5 0 0 0-5 5c0 1.108.614 2.395 1.57 3.683c.933 1.258 2.087 2.377 2.934 3.126c.29.256.702.256.992 0c.847-.749 2-1.867 2.935-3.126C12.386 9.395 13 8.108 13 7a5 5 0 0 0-5-5m0 2.75a2.25 2.25 0 1 1 0 4.5a2.25 2.25 0 0 1 0-4.5m0 1a1.25 1.25 0 1 0 0 2.5a1.25 1.25 0 0 0 0-2.5" />
+            </svg>
+            <span id="room_no">
+                ${next_class.room}
+            </span>
+            <span id="Department">
+                ${getdep(next_class.room).department}
+            </span>
+        </div>
+                  `
+                 }
+          }else{
+            if (current_card) {
+                current_card.innerHTML = `<div class="bold-text"> No more class today </div>`
+            }
+            if (next_card) {
+              next_card.innerHTML = `<div class="bold-text"> No more class today</div>`
+              
+            }
+          }  
     }
-  }
+   
 }
 // Render dynamic lecture list for the day
 function showTodayLectures(data) {
@@ -584,23 +637,6 @@ function showTodayLectures(data) {
     .join("");
 }
 
-// Render student greeting, initials, and date
-function showStudentHeader(data) {
-  const now = new Date();
-
-  const studentName = data[0]?.name || "Student";
-
-  const dateEl = document.getElementById("date");
-
-  if (dateEl) {
-    dateEl.textContent = `Today, ${now.getDate()} ${now.toLocaleString(
-      "en-US",
-      {
-        month: "short",
-      },
-    )}`;
-  }
-}
 async function loadStudentName() {
   try {
     const response = await apiFetch("/student-info", { method: "GET" });
@@ -624,6 +660,25 @@ async function loadStudentName() {
     console.error("Name loading error:", error);
   }
 }
+
+// Render student greeting, initials, and date
+function showStudentHeader(data) {
+  const now = new Date();
+
+  const studentName = data[0]?.name || "Student";
+
+  const dateEl = document.getElementById("date");
+
+  if (dateEl) {
+    dateEl.textContent = `Today, ${now.getDate()} ${now.toLocaleString(
+      "en-US",
+      {
+        month: "short",
+      },
+    )}`;
+  }
+}
+
 
 // Primary presentation coordinator for timetable
 function showTimetable(data) {
@@ -684,7 +739,7 @@ function showSchedule(schedule) {
     timeZone: "Asia/Kolkata",
   });
 
-  if (!schedule || schedule.length < 0) {
+  if (!Array.isArray(schedule) || schedule.length === 0) {
     container.innerHTML = `<div class="schedule-empty">No classes scheduled</div>`;
     return;
   }
@@ -786,7 +841,7 @@ async function loadSchedule() {
   else if (today === "Friday") fri();
   else {
     const container = document.getElementById("lecture-container");
-    if (!container) {
+    if (container) {
       container.innerHTML = `<div class="schedule-empty">No classes today</div>`;
     }
   }
@@ -1260,7 +1315,7 @@ function chekupcominglecture() {
     const diff = start - getcurrentmin;
     const lectureKey = `${todayDate}_${lecture.subject_code}_${lecture.start_time}`;
 
-    if (diff > 0 && diff <= 10 && !notifiedLectures.has(lectureKey)) {
+    if (diff > 0 && diff <= 30 && !notifiedLectures.has(lectureKey)) {
       sendnotification(lecture);
       notifiedLectures.add(lectureKey);
     }
@@ -1375,7 +1430,11 @@ if (dateEl) {
   dateEl.textContent = `Today, ${now.getDate()} ${now.toLocaleString("en-US", { month: "short" })}`;
 }
 }
-
+facultytimetabel.sort(
+    (a, b) =>
+        toMinutes(a.start_time) -
+        toMinutes(b.start_time)
+);
 
 
 // Fetch teacher timetable data
@@ -1395,6 +1454,7 @@ async function teachertimetabel() {
     console.log("Timetable data:", data);
 
     facultytimetabel = Array.isArray(data.timetabel) ? data.timetabel : [];
+
 
     // Trigger status calculation once data arrives
     showteacherdata();
@@ -1457,7 +1517,7 @@ function showteacherdata() {
   const current_lec_index = facultytimetabel.findIndex((lecture) => {
     const start = toMinutes(lecture.start_time);
     const end = toMinutes(lecture.end_time);
-    return currentTime >= start && currentTime <= end;
+    return currentTime >= start && currentTime < end;
   });
 
   // --------------------------------------------------------
