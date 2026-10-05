@@ -137,12 +137,14 @@ section {
   display: grid;
   place-items: center;
   color: #fff;
+  border-radius: 50%;
+  background-color: #0e101c44;
 }
 
 #initial {
-  color: #fff;
-  font-size: 1.05rem;
-  font-weight: 800;
+  color: var(--nav-bg);
+  font-size: 1.5rem;
+  font-weight: 550;
 }
 
 .title {
@@ -1709,6 +1711,14 @@ body.dark-theme .about-us,
 body.dark-theme .login-div,
 body.dark-theme .register-div {
   border-color: transparent;
+}
+
+body.dark-theme #initial{
+  color: white;
+}
+body.dark-theme .profile-pic{
+  border: 0.5px solid var(--nav-bg);
+  background-color: #0e101c44;
 }
 
 
