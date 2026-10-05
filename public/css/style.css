@@ -41,6 +41,7 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-width: none;
 }
 
 body {
@@ -57,6 +58,13 @@ body {
     "Segoe UI",
     sans-serif;
   overflow-x: hidden;
+  scrollbar-width: none;
+
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
 main {
@@ -106,7 +114,7 @@ section {
 .seperation-line {
   border: 0;
   height: 1px;
-  background: var(--line);
+  background: rgba(255, 255, 255, 0.1);
   margin: 18px 0;
 }
 
@@ -137,12 +145,14 @@ section {
   display: grid;
   place-items: center;
   color: #fff;
+  border-radius: 50%;
+  background-color: #0e101c44;
 }
 
 #initial {
-  color: #fff;
-  font-size: 1.05rem;
-  font-weight: 800;
+  color: var(--nav-bg);
+  font-size: 1.35rem;
+  font-weight: 700;
 }
 
 .title {
@@ -369,7 +379,7 @@ section {
   padding: 17px;
   border-radius: var(--radius-xl);
   background: var(--surface);
-  color: var(--text);
+  /* color: var(--text); */
   border: 1px solid var(--line);
 }
 
@@ -396,7 +406,8 @@ section {
   min-height: 68px;
   padding: 12px 14px;
   border-radius: var(--radius-md);
-  background: var(--surface-2);
+  /* background: var(--surface-2); */
+  background-color: var(--pri);
   border: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
@@ -413,18 +424,18 @@ section {
 .lecture-div> :last-child {
   align-items: flex-end;
   justify-content: center;
-  color: var(--text);
+  /* color: var(--text); */
   font-size: 0.78rem;
   font-weight: 750;
 }
 
 .lecture-div .bold-text {
-  color: var(--text);
+  /* color: var(--text); */
 }
 
-.lecture-div .small-text {
+/* .lecture-div .small-text {
   color: var(--muted);
-}
+} */
 
 /* =========================================================
    MAP (INTERACTIVE & CONTAINER)
@@ -564,7 +575,7 @@ section {
 }
 
 .map-lec-timeroom {
-  background-color: rgb(244, 210, 72);
+  background-color: var(--pri);
   border-radius: 15px;
   padding: 20px 20px;
   display: flex;
@@ -624,7 +635,7 @@ section {
   height: 7vh;
   margin: 5px auto;
   padding: 0 10px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(58, 56, 56, 0.397);
   border-radius: 10px;
   background: var(--surface-2);
   color: var(--text);
@@ -681,7 +692,8 @@ section {
 
 .day {
   min-height: 48px;
-  border: 1px solid var(--line);
+  /* border: 1px solid var(--line); */
+  border: 0px;
   border-radius: 14px;
   background: var(--surface);
   color: var(--muted);
@@ -1709,6 +1721,15 @@ body.dark-theme .about-us,
 body.dark-theme .login-div,
 body.dark-theme .register-div {
   border-color: transparent;
+}
+
+body.dark-theme #initial {
+  color: white;
+}
+
+body.dark-theme .profile-pic {
+  border: 0.5px solid var(--nav-bg);
+  background-color: #636da240;
 }
 
 
