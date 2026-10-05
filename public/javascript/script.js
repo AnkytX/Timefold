@@ -437,6 +437,8 @@ function showClassStatus(data) {
 
     updateMapImage(current_class.room);
 
+// Map leccture container contents
+
     if (delete_map_lec) {
       delete_map_lec.style.display = "";
       delete_map_lec.innerHTML = `
