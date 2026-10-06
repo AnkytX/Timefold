@@ -305,7 +305,7 @@ app.get("/exametimetabel",async (req,res) => {
 
                  const pool = await sql.connect(dbConfig)
                  const  exametimetabel  = await pool.request()
-                 .input("semister".sql.varchar , semester)
+                 .input("semister".sql.int , semester)
                  .query(`
                    SELECT
                     exam_id,

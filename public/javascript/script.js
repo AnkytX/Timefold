@@ -355,6 +355,7 @@ function showClassStatus(data) {
     //light
     const green = document.getElementById('green');
     const grey = document.getElementById('grey');
+    const grey_next = document.getElementById('grey-next');
     const orange = document.getElementById('orange');
 
   // 1. Weekend check (runs even if data is [])
@@ -473,6 +474,7 @@ function showClassStatus(data) {
      // if current class  start
      }  else if (currenttokan !== -1){
       grey.style.display = "none"
+      grey_next.style.display = "none"
       const current_class = data[currenttokan];
         if (map_current_card) {
           map_current_card.innerHTML = ` <span class="map-lec-subprof">
@@ -539,7 +541,7 @@ function showClassStatus(data) {
          const next_tokan = currenttokan + 1;
           const next_class = data[next_tokan]
           if (next_class && next_card ) {
-            grey.style.display = "none"
+            
             next_card.innerHTML = `
               <div class="card-description" id="current-class-sub-div">
             <div class="bold-text" id="current-class-sub">
@@ -590,10 +592,53 @@ function showClassStatus(data) {
         const endlunch  =  13*60;
         const itslunch = currenttime_s >= startlunch && currenttime_s < endlunch;
         if (itslunch) {
+          const next_tokan = currenttokan + 1;
+          const next_class = data[next_tokan]
               green.style.display = "none"
         current_card.innerHTML = `<div class="bold-text">Its Lunch Time 🍚 </div>`
         map_current_card.innerHTML =`<div class="bold-text">Its Lunch Time 🍚 </div>`
-           
+             if (next_card && next_class) {
+               next_card.innerHTML = `<div class="card-description" id="current-class-sub-div">
+            <div class="bold-text" id="current-class-sub">
+                ${next_class.subject_code}
+            </div>
+
+            <div class="small-text" id="current-class-time">
+                <span id="current-class-starttime">
+                    ${formatTime(next_class.start_time)}
+                </span>
+                <span id="delet-hyphen">-</span>
+                <span id="current-class-endtime">
+                    ${formatTime(next_class.end_time)}
+                </span>
+            </div>
+        </div>
+        <div class="card-description">
+            <div class="bold-text" id="current-class-professor-label">
+                Professor
+            </div>
+            <div class="small-text" id="current-class-professor-name">
+                ${next_class.faculty_code}
+            </div>
+        </div>
+        <div class="location-des" id="current-location">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                width="1.1em"
+                height="1.1em"
+                viewBox="0 0 16 16">
+                <title>location</title>
+                <path fill="#450D5F"
+                    d="M8 1a6 6 0 0 1 6 6c0 2.874-3.097 6.016-4.84 7.558c-.67.59-1.65.59-2.32 0C5.098 13.016 2 9.874 2 7a6 6 0 0 1 6-6m0 1a5 5 0 0 0-5 5c0 1.108.614 2.395 1.57 3.683c.933 1.258 2.087 2.377 2.934 3.126c.29.256.702.256.992 0c.847-.749 2-1.867 2.935-3.126C12.386 9.395 13 8.108 13 7a5 5 0 0 0-5-5m0 2.75a2.25 2.25 0 1 1 0 4.5a2.25 2.25 0 0 1 0-4.5m0 1a1.25 1.25 0 1 0 0 2.5a1.25 1.25 0 0 0 0-2.5" />
+            </svg>
+            <span id="room_no">
+                ${next_class.room}
+            </span>
+            <span id="Department">
+                ${getdep(next_class.room).department}
+            </span>
+        </div>`
+             }
+
        }else if(upcoming_class !== -1 ){
         
         const next_class = data[upcoming_class];
