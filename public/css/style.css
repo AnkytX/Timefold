@@ -1,6 +1,6 @@
 :root {
-  --bg: #1b1c1f;
-  --surface: #212125d1;
+  --bg: #161719;
+  --surface: #242428d1;
   --surface-2: #3031363f;
   --surface-3: #394cad;
 
@@ -852,6 +852,12 @@ section {
   font-weight: 750;
   cursor: pointer;
   margin-right: 7px;
+}
+
+#save-changes:active,
+#logout:active {
+  transform: scale(0.985) !important;
+  transition: transform 0.08s ease !important;
 }
 
 #save-changes {
