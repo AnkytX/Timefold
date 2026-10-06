@@ -295,7 +295,7 @@ TimeFold was developed collaboratively by three team members, with each member r
 |-------------|------|----------------|
 | **Piyush Dubey** | Frontend Developer | UI/UX design, responsive layouts, frontend development, and user interactions |
 | **Ankit Shah** | Backend Developer | Server-side development, API integration, authentication, and backend logic |
-| **Satish Rout** | Database Developer | Database design, SQL queries, data management, and database integration |
+| **Shatish Rout** | Database Developer | Database design, SQL queries, data management, and database integration |
 
 ### 🧩 Areas of Contribution
 
