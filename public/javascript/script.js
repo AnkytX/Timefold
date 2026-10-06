@@ -333,7 +333,7 @@ function showNotice(notices) {
       card.innerHTML = `
         <div class="notice-container">
           <div style="display: flex; justify-content: left; gap: 5px; align-items: baseline;">
-            <h2 style="margin: 0; font-size: 1.1rem;">ATTENTION</h2>
+            <h2 style="margin: 0; font-size: 1.1rem;">Notice</h2>
             <span style="color: var(--muted, #666); font-size: 0.85rem; font-weight: 600;">
               ${item.faculty_code || item.faculty_name || "Unknown Faculty"}
             </span>
