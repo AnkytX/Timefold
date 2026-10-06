@@ -17,7 +17,7 @@ const notifiedLectures = new Set();
 const MAP_URLS = {
   "Mining Department": "public/assets/images/minning.svg",
   "Civil Department": "public/assets/images/civil.svg",
-  Workshop: "public/assets/images/workshop.svg",
+  "Workshop": "public/assets/images/workshop.svg",
   "Library Department": "public/assets/images/library.svg",
   "Electrical Department": "public/assets/images/electrical.svg",
   "Mechanical Department": "public/assets/images/mechanical.svg",
@@ -539,6 +539,7 @@ function showClassStatus(data) {
          const next_tokan = currenttokan + 1;
           const next_class = data[next_tokan]
           if (next_class && next_card ) {
+            grey.style.display = "none"
             next_card.innerHTML = `
               <div class="card-description" id="current-class-sub-div">
             <div class="bold-text" id="current-class-sub">

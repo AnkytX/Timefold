@@ -275,6 +275,68 @@ res.json({
   }
 });
 
+app.get("/exametimetabel",async (req,res) => {
+  try {
+      if (!req.session.enroll_no) {
+        return res.json({
+          success:false,
+          message :"please login first"
+        })
+        
+      }
+      const enroll_no = req.session.enroll_no;
+     
+      
+
+    const yearCode = enroll_no.substring(0, 2);
+
+        let semester;
+
+        if (yearCode === "25") {
+          
+            semester = 3;
+        } else if (yearCode === "26") {
+            semester = 1;
+        } else {
+            return res.status(400).json({
+                message: "Unable to determine semester"
+            });
+        }
+
+                 const pool = await sql.connect(dbConfig)
+                 const  exametimetabel  = await pool.request()
+                 .input("semister".sql.varchar , semester)
+                 .query(`
+                   SELECT
+                    exam_id,
+                    exam_date,
+                    day_name,
+                    semester,
+                    subject_code,
+                    subject_name,
+                    start_time,
+                    end_time,
+                    room_block_a,
+                    room_block_b,
+                    academic_year,
+                    exam_name
+                FROM exam_time_table
+                WHERE semester = @semester
+                ORDER BY exam_date, start_time`);
+                res.json({
+                  semister :semester,
+                  exametimetabel : exametimetabel.recordset
+                });
+  } catch (error) {
+      console.error("Exam timetable error:", error);
+
+        res.status(500).json({
+            message: "Failed to fetch exam timetable"
+        });
+  }
+  
+})
+
 //REGISTRATION
 
 app.post("/register", async (req, res) => {
