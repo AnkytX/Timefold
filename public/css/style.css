@@ -258,6 +258,7 @@ section {
 }
 
 @keyframes signalGlow {
+
   /* Normal — no glow */
   0% {
     box-shadow: 0 0 0 var(--green);
@@ -1356,6 +1357,8 @@ input:focus::placeholder {
   font-weight: 800;
   display: block;
   transition: transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
   cursor: pointer;
 }
 
@@ -1668,12 +1671,18 @@ input:focus::placeholder {
 
 @media (hover: none) and (pointer: coarse) {
 
+  /* Remove hover effects on touch devices */
   .nav-button:hover,
   #save-changes:hover,
-  #logout:hover,
-  .login-button:hover,
-  .register-button:hover {
+  #logout:hover {
     transform: none;
+  }
+
+  /* KEEP press/click effect on Login & Register */
+  .login-button:active,
+  .register-button:active {
+    transform: scale(0.95) !important;
+    transition: transform 0.08s ease !important;
   }
 }
 
