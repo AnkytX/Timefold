@@ -176,7 +176,7 @@ app.post("/teacherlogin", async (req, res) => {
       return res.json({
         success: true,
         message: "Teacher login successful",
-       faculty_name: req.session.faculty_name,
+        faculty_name: req.session.faculty_name,
       });
     });
   } catch (error) {
@@ -203,7 +203,7 @@ app.get("/teacherinfo", (req, res) => {
     faculty_name: req.session.faculty_name,
     faculty_code: req.session.faculty_name,
   });
-}); 
+});
 
 // fetch name and show
 app.get("/student-info", (req, res) => {
@@ -241,7 +241,7 @@ app.get("/teachertimetabel", async (req, res) => {
     const result = await pool
       .request()
       .input("faculty_login_id", sql.VarChar, faculty_login_id)
-      .input("Day" ,sql.VarChar,Day).query(`
+      .input("Day", sql.VarChar, Day).query(`
          SELECT
     t.day,
     CONVERT(VARCHAR(5), t.start_time, 108) AS start_time,
@@ -262,11 +262,10 @@ WHERE f.faculty_login_id = @faculty_login_id
 AND t.day = LOWER(@Day)
 ORDER BY t.start_time;
         `);
-res.json({
-  success:true,
-  timetabel: result.recordset
-});
-
+    res.status(200).json({
+      success: true,
+      timetabel: result.recordset,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -275,67 +274,49 @@ res.json({
   }
 });
 
-app.get("/exametimetabel",async (req,res) => {
+app.get("/exametimetabel", async (req, res) => {
   try {
-      if (!req.session.enroll_no) {
-        return res.json({
-          success:false,
-          message :"please login first"
-        })
-        
-      }
-      const enroll_no = req.session.enroll_no;
-     
-      
+    if (!req.session.enroll_no) {
+      return res.json({
+        success: false,
+        message: "please login first",
+      });
+    }
+    const enroll_no = req.session.enroll_no;
 
-    const yearCode = enroll_no.substring(0, 2);
-
-        let semester;
-
-        if (yearCode === "25") {
-          
-            semester = 3;
-        } else if (yearCode === "26") {
-            semester = 1;
-        } else {
-            return res.status(400).json({
-                message: "Unable to determine semester"
-            });
-        }
-
-                 const pool = await sql.connect(dbConfig)
-                 const  exametimetabel  = await pool.request()
-                 .input("semister".sql.int , semester)
-                 .query(`
+    const pool = await sql.connect(dbConfig);
+    const exametimetabel = await pool
+      .request()
+      .input("enroll_no", sql.VarChar, enroll_no).query(`
                    SELECT
-                    exam_id,
-                    exam_date,
-                    day_name,
-                    semester,
-                    subject_code,
-                    subject_name,
-                    start_time,
-                    end_time,
-                    room_block_a,
-                    room_block_b,
-                    academic_year,
-                    exam_name
-                FROM exam_time_table
-                WHERE semester = @semester
-                ORDER BY exam_date, start_time`);
-                res.json({
-                  semister :semester,
-                  exametimetabel : exametimetabel.recordset
-                });
-  } catch (error) {
-      console.error("Exam timetable error:", error);
+    e.exam_date,
+    e.start_time,
+    
+    e.subject_code,
+    e.subject_name,
 
-        res.status(500).json({
-            message: "Failed to fetch exam timetable"
-        });
+    e.semester
+FROM exam_time_table e
+WHERE e.semester =
+    CASE
+        WHEN LEFT(@enroll_no, 2) = '25' THEN 3
+        WHEN LEFT(@enroll_no, 2) = '26' THEN 1
+        ELSE NULL
+    END
+ORDER BY e.exam_date, e.start_time;`);
+    res.json({
+      success:true,
+      enroll_no :enroll_no,
+      exametimetabel: exametimetabel.recordset,
+    });
+  } catch (error) {
+    console.error("Exam timetable error:", error);
+
+    res.status(500).json({
+      message: "Failed to fetch exam timetable",
+    });
   }
-  
-})
+});
 
 //REGISTRATION
 
@@ -809,6 +790,6 @@ app.get("/student/notices", async (req, res) => {
 
 const PORT = process.env.PORT || 8000;
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on port http://localhost:${PORT}`);
 });

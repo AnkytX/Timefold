@@ -11,7 +11,7 @@ let tuesdaySchedule = [];
 let wednesdaySchedule = [];
 let thursdaySchedule = [];
 let fridaySchedule = [];
-
+ const API_URL = "timefold-production-4783.up.railway.app";
 const notifiedLectures = new Set();
 
 const MAP_URLS = {
@@ -153,6 +153,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadnotice();
     await loadStudentName();
     await mon();
+    await exametimetabel()
     setInterval(chekupcominglecture, 60000);
   }
 });
@@ -178,6 +179,25 @@ async function fetchTimetable() {
     console.error("Error loading timetable:", error);
     return [];
   }
+}
+
+// fetch exame time tabel
+async function exametimetabel() {
+  try {
+      const result = await fetch("/exametimetabel",{
+        method: "GET",
+        credentials:"include"
+
+      })
+      if (!result || !result.ok) {
+        throw new Error(`HTTP error! status: ${result?.status}`)
+      }
+      const exametimetabel = await result.json();
+      return exameshedule = exametimetabel.dta || [];
+  } catch (error) {
+      console.error(error);
+  }
+  
 }
 
 // Fetch full weekly schedule records
