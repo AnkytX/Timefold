@@ -5,7 +5,10 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-
+app.use(cors({
+    origin: "",
+    credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("trust proxy", 1);
@@ -17,7 +20,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: false, //process.env.NODE_ENV === "production",
+      secure: true, //process.env.NODE_ENV === "production",
       maxAge: 7 * 24 * 60 * 60 * 1000,
       sameSite: "lax",
     },
@@ -25,10 +28,7 @@ app.use(
 );
 
 
-app.use(cors({
-    origin: "",
-    credentials: true
-}));
+
 // TEST LOGOUT
 
 app.use(express.static("public"));
