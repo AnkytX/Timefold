@@ -26,9 +26,9 @@
 }
 
 body:not(.dark-theme) {
-  --bg: #eeeee8;
-  --surface: #ffffff;
-  --surface-2: #ececee;
+  --bg: #ffffff;
+  --surface: #f5f6f8;
+  --surface-2: #e6e6ea;
   --surface-3: #e2e3e6;
   --text: #16171a;
   --muted: #70727a;
@@ -2065,9 +2065,9 @@ body.dark-theme .profile-pic {
 
     background: linear-gradient(
         90deg,
-        var(--surface-2) 25%,
+        var(--surface) 25%,
         var(--surface-3) 50%,
-        var(--surface-2) 75%
+        var(--surface) 75%
     );
 
     background-size: 200% 100%;
