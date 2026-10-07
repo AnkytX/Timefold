@@ -23,6 +23,75 @@
 </head>
 
 <body style="margin: 0px;">
+    <!-- =========================================================
+     TIMEFOLD LOGIN FULL SKELETON
+     ========================================================= -->
+
+    <div id="auth-skeleton" class="auth-skeleton">
+
+        <div class="auth-skeleton-main-div">
+
+            <!-- ================= LOGIN TITLE ================= -->
+
+            <div class="auth-skeleton-title">
+
+                <!-- TimeFold Logo / Title -->
+                <div class="auth-skeleton-title-sub-div">
+
+                    <div class="auth-skeleton-logo"></div>
+
+                </div>
+
+                <!-- Character Image -->
+                <!-- <div class="auth-skeleton-character"></div> -->
+
+            </div>
+
+
+            <!-- ================= LOGIN CARD ================= -->
+
+            <div class="auth-skeleton-card">
+
+                <!-- Login Heading -->
+                <div class="auth-skeleton-heading"></div>
+
+
+                <!-- Student / Teacher Toggle -->
+                <div class="auth-skeleton-toggle">
+
+                    <div class="auth-skeleton-toggle-button"></div>
+
+                    <div class="auth-skeleton-toggle-button"></div>
+
+                </div>
+
+
+                <!-- Enrollment Number -->
+                <div class="auth-skeleton-field"></div>
+
+
+                <!-- Password -->
+                <div class="auth-skeleton-field"></div>
+
+
+                <!-- Batch -->
+                <div class="auth-skeleton-field"></div>
+
+
+                <!-- Register Link -->
+                <div class="auth-skeleton-link"></div>
+
+
+                <!-- Login Button -->
+                <div class="auth-skeleton-button"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= END LOGIN SKELETON ================= -->
     <main>
 
         <!-- 
@@ -150,6 +219,19 @@
 
 </body>
 <script>
+
+    function hideAuthSkeleton() {
+        const skeleton = document.getElementById("auth-skeleton");
+
+        if (skeleton) {
+            skeleton.remove();
+        }
+    }
+
+    window.addEventListener("load", function () {
+        hideAuthSkeleton();
+    });
+
     // teacher  login data to server
 
 
