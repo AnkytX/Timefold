@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Fetch user's active timetable
 async function fetchTimetable() {
   try {
-    const response = await apiFetch("/fetch", { method: "GET" });
+    const response = await apiFetch(`${API_URL}/fetch`, { method: "GET" });
     if (!response || !response.ok)
       throw new Error(`HTTP error! status: ${response?.status}`);
 
@@ -210,9 +210,9 @@ async function fetchTimetable() {
 // fetch exame time tabel
 async function exametimetabel() {
   try {
-    const result = await fetch("/exametimetabel", {
-      method: "GET",
-      credentials: "include"
+      const result = await fetch("/exametimetabel",{
+        method: "GET",
+        credentials:"include"
 
     })
     if (!result || !result.ok) {
@@ -229,7 +229,7 @@ async function exametimetabel() {
 // Fetch full weekly schedule records
 async function fetchSchedule() {
   try {
-    const response = await apiFetch("/fetch-schedule", { method: "GET" });
+    const response = await apiFetch(`${API_URL}/fetch-schedule`, { method: "GET" });
     if (!response || !response.ok)
       throw new Error(`HTTP error! status: ${response?.status}`);
 
@@ -269,7 +269,7 @@ async function notice() {
 
   // 2. Submit data to server
   try {
-    const response = await apiFetch("/notice", {
+    const response = await apiFetch(`${API_URL}/notice`, {
       method: "POST",
       body: JSON.stringify({
         Sem: parseInt(Sem, 10),
@@ -298,7 +298,7 @@ async function notice() {
 }
 async function fetchNotices() {
   try {
-    const response = await apiFetch("/student/notices", { method: "GET" });
+    const response = await apiFetch(`${API_URL}/student/notices`, { method: "GET" });
     if (!response || !response.ok) return null;
     return await response.json();
   } catch (error) {
@@ -779,7 +779,7 @@ function showTodayLectures(data) {
 
 async function loadStudentName() {
   try {
-    const response = await apiFetch("/student-info", { method: "GET" });
+    const response = await apiFetch(`${API_URL}/student-info`, { method: "GET" });
     if (!response || !response.ok) return;
 
     const result = await response.json();
@@ -1351,7 +1351,7 @@ async function savepassward() {
   }
 
   try {
-    const response = await apiFetch("/password", {
+    const response = await apiFetch(`${API_URL}/password`, {
       method: "POST",
       body: JSON.stringify({ password }),
     });

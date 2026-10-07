@@ -1,7 +1,7 @@
 const express = require("express");
 const sql = require("mssql");
 const session = require("express-session");
-
+const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
@@ -23,6 +23,12 @@ app.use(
     },
   }),
 );
+
+
+app.use(cors({
+    origin: "",
+    credentials: true
+}));
 // TEST LOGOUT
 
 app.use(express.static("public"));
@@ -59,6 +65,7 @@ async function connectDatabase() {
     console.error(error.message);
   }
 }
+
 
 connectDatabase();
 
