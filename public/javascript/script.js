@@ -311,9 +311,9 @@ async function loadnotice() {
   const noticeResult = await fetchNotices();
   if (!noticeResult) return;
 
-  console.log("Server response:", noticeResult);
+ 
   notice_data = noticeResult.notices || [];
-  console.log("Notice data:", notice_data);
+ 
 
   showNotice(notice_data);
 }
@@ -1385,7 +1385,7 @@ async function savename() {
   }
 
   try {
-    const response = await apiFetch("/name", {
+    const response = await apiFetch(`${API_URL}/name`, {
       method: "POST",
       body: JSON.stringify({ Name }),
     });
@@ -1407,7 +1407,7 @@ async function savename() {
 
 async function logout() {
   try {
-    const response = await apiFetch("/logout", { method: "GET" });
+    const response = await apiFetch(`${API_URL}/logout`, { method: "GET" });
     if (!response) return;
     const result = await response.json();
 
@@ -1541,7 +1541,7 @@ let facultytimetabel = [];
 // Fetch teacher name and display greeting
 async function teachername() {
   try {
-    const response = await fetch("/teacherinfo", {
+    const response = await fetch(`${API_URL}/teacherinfo`, {
       method: "GET",
       credentials: "include",
     });
@@ -1580,7 +1580,7 @@ facultytimetabel.sort(
 // Fetch teacher timetable data
 async function teachertimetabel() {
   try {
-    const response = await fetch("/teachertimetabel", {
+    const response = await fetch(`${API_URL}/teachertimetabel`, {
       method: "GET",
       credentials: "include",
     });
@@ -1758,6 +1758,26 @@ function showteacherdata() {
     if (current_div) {
       if (islunchbreak) {
         current_div.innerHTML = `<div class="map-lunchbreak">Its Lunch Time 🍛</div>`;
+        if (next_class) {
+          next_div.innerHTML = `
+          <div class="card-left-section" id="teacher-next-class">
+            <div class="card-description">
+              <div class="bold-text">${next_class.subject_code}</div>
+              <div class="small-text">${formatTime(next_class.start_time)} - ${formatTime(next_class.end_time)}</div>
+            </div>
+            <div class="card-description">
+              <div class="bold-text">Sem ${next_class.sem}</div>
+              <div class="small-text">${nextBatches}</div>
+            </div>
+            <div class="location-des">
+              <span>Room ${next_class.room}</span> | <span>${getdep(next_class.room).department}</span>
+            </div>
+          </div>
+          <div class="card-right-section">
+            <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/next-class-tr.svg">
+          </div>`;
+        }
+        
       } else {
         current_div.innerHTML = `
           <div class="card-left-section">
