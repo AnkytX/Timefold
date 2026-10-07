@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadSchedule();
     await loadnotice();
     await loadStudentName();
-    await mon();
+
     await exametimetabel()
     setInterval(chekupcominglecture, 60000);
     hideTimefoldSkeleton();
