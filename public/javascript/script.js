@@ -210,7 +210,7 @@ async function fetchTimetable() {
 // fetch exame time tabel
 async function exametimetabel() {
   try {
-      const result = await fetch("/exametimetabel",{
+      const result = await fetch(`${API_URL}/exametimetabel`,{
         method: "GET",
         credentials:"include"
 
