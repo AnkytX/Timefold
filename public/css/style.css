@@ -1246,6 +1246,7 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
   color: var(--text);
   border: none;
   /* border: 0.5px solid var(--line); */
+  background-color: var(--surface-2);
   border-radius: 50px;
   font-size: 1rem;
   display: block;
