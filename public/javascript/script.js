@@ -28,7 +28,7 @@ let tuesdaySchedule = [];
 let wednesdaySchedule = [];
 let thursdaySchedule = [];
 let fridaySchedule = [];
-const API_URL = "timefold-production-4783.up.railway.app";
+const API_URL = "https://timefold-production-4783.up.railway.app";
 const notifiedLectures = new Set();
 
 const MAP_URLS = {

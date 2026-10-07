@@ -5,7 +5,10 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-
+app.use(cors({
+    origin: "https://timefold-public.vercel.app",
+    credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("trust proxy", 1);
@@ -19,7 +22,7 @@ app.use(
       httpOnly: true,
       secure: true, //process.env.NODE_ENV === "production",
       maxAge: 7 * 24 * 60 * 60 * 1000,
-      sameSite: "lax",
+      sameSite: "none",
     },
   }),
 );
