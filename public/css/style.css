@@ -1812,7 +1812,7 @@ body.dark-theme .profile-pic {
 }
 
 .map-lec-subprof {
-  width: 100%;
+  width: 97%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1831,7 +1831,7 @@ body.dark-theme .profile-pic {
 }
 
 #current-map-professor {
-  font-size: clamp(0.95rem, 2vw, 1.3rem);
+  font-size: clamp(1.25rem, 2.8vw, 2rem);
   text-align: right;
   white-space: nowrap;
 }
