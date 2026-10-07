@@ -349,7 +349,7 @@ function showNotice(notices) {
       container.appendChild(card);
     });
   } else {
-    container.innerHTML = `<p style="text-align: center; color: var(--muted, #888); margin-top: 2rem;">No notices today</p>`;
+    container.innerHTML = `<p style="text-align: center; color: var(--muted, #888); margin-top: 2rem;">No Notices Today</p>`;
   }
 }
 

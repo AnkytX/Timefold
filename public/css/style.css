@@ -26,7 +26,7 @@
 }
 
 body:not(.dark-theme) {
-  --bg: #f2f2f0;
+  --bg: #eeeee8;
   --surface: #ffffff;
   --surface-2: #ececee;
   --surface-3: #e2e3e6;
@@ -244,13 +244,13 @@ section {
 .signal-heading-container {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 9px;
   margin-bottom: 11px;
 }
 
 .green-signal {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   background: rgb(19, 234, 19);
   border-radius: 50%;
 
@@ -288,15 +288,15 @@ section {
 
 
 .orange-signal {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background-color: rgba(255, 166, 0, 0.81);
 }
 
 .grey-signal {
-  width: 10px;
-  height: 10px;
+  width: 7.5px;
+  height: 7.5px;
   outline: 0.5px solid rgb(74, 70, 70);
   border-radius: 50%;
   background-color: rgba(111, 107, 107, 0.901);
