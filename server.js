@@ -1,14 +1,10 @@
 const express = require("express");
 const sql = require("mssql");
 const session = require("express-session");
-const cors = require("cors");
+
 require("dotenv").config();
 
 const app = express();
-app.use(cors({
-    origin: "https://timefold-public.vercel.app",
-    credentials: true
-}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("trust proxy", 1);
@@ -20,9 +16,9 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: true, //process.env.NODE_ENV === "production",
+      secure: false, //process.env.NODE_ENV === "production",
       maxAge: 7 * 24 * 60 * 60 * 1000,
-      sameSite: "none",
+      sameSite: "lax",
     },
   }),
 );
@@ -571,6 +567,7 @@ app.post("/password", async (req, res) => {
   try {
     const enroll_no = req.session.enroll_no;
 
+    // Check login
     if (!enroll_no) {
       return res.status(401).json({
         success: false,
@@ -580,6 +577,7 @@ app.post("/password", async (req, res) => {
 
     const { password } = req.body;
 
+    // Check empty password
     if (!password || password.trim() === "") {
       return res.status(400).json({
         success: false,
@@ -587,54 +585,47 @@ app.post("/password", async (req, res) => {
       });
     }
 
-    const pool = await sql.connect(dbConfig);
+    const newPassword = password.trim();
 
-    // Teacher password change
-    // const result = await pool
-    //   .request()
-    //   .input("password_hash", sql.VarChar(50), password.trim())
-    //   .input("faculty_id", sql.Int, faculty_id)
-    //   .query(`
-    //     UPDATE dbo.faculty
-    //     SET password_hash = @password_hash
-    //     WHERE faculty_id = @faculty_id
-    //   `);
-
-    if (result.rowsAffected[0] === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Faculty record not found." });
-    }
-
-    // Student password change
-    if (password.length > 8) {
+    // Maximum 8 characters
+    if (newPassword.length > 8) {
       return res.status(400).json({
         success: false,
         message: "Password cannot exceed 8 characters.",
       });
     }
 
+    // Connect database
+    const pool = await sql.connect(dbConfig);
+
+    // Update student password
     const result = await pool
       .request()
-      .input("passwd", sql.VarChar(8), password.trim())
-      .input("Enroll_no", sql.VarChar(12), enroll_no).query(`
-          UPDATE dbo.login
-          SET passwd = @passwd
-          WHERE Enroll_no = @Enroll_no
-        `);
+      .input("passwd", sql.VarChar(8), newPassword)
+      .input("Enroll_no", sql.VarChar(12), enroll_no)
+      .query(`
+        UPDATE dbo.login
+        SET passwd = @passwd
+        WHERE Enroll_no = @Enroll_no
+      `);
 
+    // Student not found
     if (result.rowsAffected[0] === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Student record not found." });
+      return res.status(404).json({
+        success: false,
+        message: "Student record not found.",
+      });
     }
 
+    // Success
     res.json({
       success: true,
       message: "Password updated successfully!",
     });
+
   } catch (error) {
     console.error("Password update error:", error);
+
     res.status(500).json({
       success: false,
       message: "Failed to update password. Please try again.",

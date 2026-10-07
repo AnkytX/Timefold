@@ -552,7 +552,41 @@
     </main>
 
     <script src="javascript/script.js"></script>
+ <script>
+    async function savepassward() {
+  const passwordInputEl = document.getElementById("password-input");
+  if (!passwordInputEl) {
+    console.error("Input element #password-input not found in DOM");
+    return;
+  }
 
+  const password = passwordInputEl.value.trim();
+  if (!password) {
+    alert("Please enter password first");
+    return;
+  }
+
+  try {
+    const response = await apiFetch(`/password`, {
+      method: "POST",
+      body: JSON.stringify({ password }),
+    });
+
+    if (!response) return;
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      alert("Password updated successfully!");
+      passwordInputEl.value = "";
+    } else {
+      alert(data.message || "Failed to update password");
+    }
+  } catch (error) {
+    console.error("Error updating password:", error);
+    alert("Server error, please try again later.");
+  }
+}
+ </script>
 </body>
 
 </html>

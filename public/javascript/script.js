@@ -28,20 +28,19 @@ let tuesdaySchedule = [];
 let wednesdaySchedule = [];
 let thursdaySchedule = [];
 let fridaySchedule = [];
-const API_URL = "https://timefold-production-4783.up.railway.app";
+
 const notifiedLectures = new Set();
 
 const MAP_URLS = {
-  "Mining Department": "public/assets/images/minning.svg",
-  "Civil Department": "public/assets/images/civil.svg",
-  "Workshop": "public/assets/images/workshop.svg",
-  "Library Department": "public/assets/images/library.svg",
-  "Electrical Department": "public/assets/images/electrical.svg",
-  "Mechanical Department": "public/assets/images/mechanical.svg",
+  "Mining Department": "/assets/images/minning.svg",
+  "Civil Department": "/assets/images/civil.svg",
+  "Workshop": "/assets/images/workshop.svg",
+  "Library Department": "/assets/images/library.svg",
+  "Electrical Department": "/assets/images/electrical.svg",
+  "Mechanical Department": "/assets/images/mechanical.svg",
 };
 
-const DEFAULT_MAP = "public/assets/images/no-lecture.svg";
-
+const DEFAULT_MAP = "/assets/images/no-lecture.svg";
 // ========================================================
 // 2. HELPER FUNCTIONS
 // ========================================================
@@ -187,7 +186,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Fetch user's active timetable
 async function fetchTimetable() {
   try {
-    const response = await apiFetch(`${API_URL}/fetch`, { method: "GET" });
+    const response = await apiFetch(`/fetch`, { method: "GET" });
     if (!response || !response.ok)
       throw new Error(`HTTP error! status: ${response?.status}`);
 
@@ -210,7 +209,7 @@ async function fetchTimetable() {
 // fetch exame time tabel
 async function exametimetabel() {
   try {
-      const result = await fetch(`${API_URL}/exametimetabel`,{
+      const result = await fetch(`/exametimetabel`,{
         method: "GET",
         credentials:"include"
 
@@ -229,7 +228,7 @@ async function exametimetabel() {
 // Fetch full weekly schedule records
 async function fetchSchedule() {
   try {
-    const response = await apiFetch(`${API_URL}/fetch-schedule`, { method: "GET" });
+    const response = await apiFetch(`/fetch-schedule`, { method: "GET" });
     if (!response || !response.ok)
       throw new Error(`HTTP error! status: ${response?.status}`);
 
@@ -269,7 +268,7 @@ async function notice() {
 
   // 2. Submit data to server
   try {
-    const response = await apiFetch(`${API_URL}/notice`, {
+    const response = await apiFetch(`/notice`, {
       method: "POST",
       body: JSON.stringify({
         Sem: parseInt(Sem, 10),
@@ -298,7 +297,7 @@ async function notice() {
 }
 async function fetchNotices() {
   try {
-    const response = await apiFetch(`${API_URL}/student/notices`, { method: "GET" });
+    const response = await apiFetch(`/student/notices`, { method: "GET" });
     if (!response || !response.ok) return null;
     return await response.json();
   } catch (error) {
@@ -522,6 +521,7 @@ function showClassStatus(data) {
     grey.style.display = "none"
     grey_next.style.display = "none"
     const current_class = data[currenttokan];
+    updateMapImage(current_class.room);
     if (map_current_card) {
       map_current_card.innerHTML = ` <span class="map-lec-subprof">
           <h1 id="current-map-sub">${current_class.subject_code}</h1>
@@ -779,7 +779,7 @@ function showTodayLectures(data) {
 
 async function loadStudentName() {
   try {
-    const response = await apiFetch(`${API_URL}/student-info`, { method: "GET" });
+    const response = await apiFetch(`/student-info`, { method: "GET" });
     if (!response || !response.ok) return;
 
     const result = await response.json();
@@ -1337,39 +1337,7 @@ function initMapGestures() {
 // 9. ACCOUNT
 // ========================================================
 
-async function savepassward() {
-  const passwordInputEl = document.getElementById("password-input");
-  if (!passwordInputEl) {
-    console.error("Input element #password-input not found in DOM");
-    return;
-  }
 
-  const password = passwordInputEl.value.trim();
-  if (!password) {
-    alert("Please enter password first");
-    return;
-  }
-
-  try {
-    const response = await apiFetch(`${API_URL}/password`, {
-      method: "POST",
-      body: JSON.stringify({ password }),
-    });
-
-    if (!response) return;
-    const data = await response.json();
-
-    if (response.ok && data.success) {
-      alert("Password updated successfully!");
-      passwordInputEl.value = "";
-    } else {
-      alert(data.message || "Failed to update password");
-    }
-  } catch (error) {
-    console.error("Error updating password:", error);
-    alert("Server error, please try again later.");
-  }
-}
 
 async function savename() {
   const nameinput = document.getElementById("Name");
@@ -1385,7 +1353,7 @@ async function savename() {
   }
 
   try {
-    const response = await apiFetch(`${API_URL}/name`, {
+    const response = await apiFetch(`/name`, {
       method: "POST",
       body: JSON.stringify({ Name }),
     });
@@ -1407,7 +1375,7 @@ async function savename() {
 
 async function logout() {
   try {
-    const response = await apiFetch(`${API_URL}/logout`, { method: "GET" });
+    const response = await apiFetch(`/logout`, { method: "GET" });
     if (!response) return;
     const result = await response.json();
 
@@ -1541,7 +1509,7 @@ let facultytimetabel = [];
 // Fetch teacher name and display greeting
 async function teachername() {
   try {
-    const response = await fetch(`${API_URL}/teacherinfo`, {
+    const response = await fetch(`/teacherinfo`, {
       method: "GET",
       credentials: "include",
     });
@@ -1580,7 +1548,7 @@ facultytimetabel.sort(
 // Fetch teacher timetable data
 async function teachertimetabel() {
   try {
-    const response = await fetch(`${API_URL}/teachertimetabel`, {
+    const response = await fetch(`/teachertimetabel`, {
       method: "GET",
       credentials: "include",
     });
