@@ -585,8 +585,9 @@ section {
   justify-content: space-between;
   align-items: center;
   color: rgba(255, 255, 255, 0.92);
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 650;
+  gap: 15px;
   flex-direction: column;
   height: 16vh;
 }
