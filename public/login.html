@@ -23,6 +23,17 @@
 </head>
 
 <body style="margin: 0px;">
+
+
+    <!-- Login Loading Overlay -->
+    <div id="login-loader" class="login-loader" aria-hidden="true">
+        <div class="login-loader-content">
+            <div class="login-loader-spinner"></div>
+            <div class="login-loader-text">Logging in...</div>
+        </div>
+    </div>
+
+
     <!-- =========================================================
      TIMEFOLD LOGIN FULL SKELETON
      ========================================================= -->
@@ -220,6 +231,32 @@
 </body>
 <script>
 
+    // ------------------------------------------------------------------------------------------------------------------
+    // Buffer animation
+    // ------------------------------------------------------------------------------------------------------------------
+
+    function showLoginLoader() {
+        const loader = document.getElementById("login-loader");
+
+        if (loader) {
+            loader.classList.add("active");
+            loader.setAttribute("aria-hidden", "false");
+        }
+    }
+
+    function hideLoginLoader() {
+        const loader = document.getElementById("login-loader");
+
+        if (loader) {
+            loader.classList.remove("active");
+            loader.setAttribute("aria-hidden", "true");
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------
+    // SKELETON LOADING ANIMATION
+    // ------------------------------------------------------------------------------------------------------------------
+
     function hideAuthSkeleton() {
         const skeleton = document.getElementById("auth-skeleton");
 
@@ -255,6 +292,7 @@
 
         }
         try {
+            showLoginLoader();
             const res = await fetch("/teacherlogin", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -344,6 +382,7 @@
         }
 
         try {
+            showLoginLoader();
             const response = await fetch("/login", {
                 method: "POST",
                 headers: {

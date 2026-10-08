@@ -2031,16 +2031,16 @@ body.dark-theme .profile-pic {
    =========================================================================================================================================================== */
 
 #timefold-skeleton {
-    position: fixed;
-    inset: 0;
-    z-index: 99999;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
 
-    background: var(--bg);
+  background: var(--bg);
 
-    overflow: hidden;
+  overflow: hidden;
 
-    opacity: 1;
-    visibility: visible;
+  opacity: 1;
+  visibility: visible;
 
 }
 
@@ -2048,9 +2048,9 @@ body.dark-theme .profile-pic {
 /* Hide skeleton */
 
 #timefold-skeleton.tf-skeleton-hide {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 
@@ -2058,34 +2058,32 @@ body.dark-theme .profile-pic {
    SHIMMER
    ========================================================= */
 
-#timefold-skeleton .tf-skeleton-header > *,
-#timefold-skeleton .tf-skeleton-content > *,
-#timefold-skeleton .tf-skeleton-class-card > *,
-#timefold-skeleton .tf-skeleton-today > *,
-#timefold-skeleton .tf-skeleton-nav > * {
+#timefold-skeleton .tf-skeleton-header>*,
+#timefold-skeleton .tf-skeleton-content>*,
+#timefold-skeleton .tf-skeleton-class-card>*,
+#timefold-skeleton .tf-skeleton-today>*,
+#timefold-skeleton .tf-skeleton-nav>* {
 
-    background: linear-gradient(
-        90deg,
-        var(--surface-2) 25%,
-        var(--surface-3) 50%,
-        var(--surface-2) 75%
-    );
+  background: linear-gradient(90deg,
+      var(--surface-2) 25%,
+      var(--surface-3) 50%,
+      var(--surface-2) 75%);
 
-    background-size: 200% 100%;
+  background-size: 200% 100%;
 
-    animation: tfSkeletonShimmer 2.5s ease-in-out infinite;
+  animation: tfSkeletonShimmer 2.5s ease-in-out infinite;
 }
 
 
 @keyframes tfSkeletonShimmer {
 
-    0% {
-        background-position: 200% 0;
-    }
+  0% {
+    background-position: 200% 0;
+  }
 
-    100% {
-        background-position: -200% 0;
-    }
+  100% {
+    background-position: -200% 0;
+  }
 
 }
 
@@ -2095,43 +2093,43 @@ body.dark-theme .profile-pic {
    ========================================================= */
 
 .tf-skeleton-header {
-    position: fixed;
+  position: fixed;
 
-    top: 0;
-    left: 50%;
+  top: 0;
+  left: 50%;
 
-    transform: translateX(-50%);
+  transform: translateX(-50%);
 
-    width: min(calc(100% - 36px), 760px);
-    height: 76px;
+  width: min(calc(100% - 36px), 760px);
+  height: 76px;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    padding: 12px 2px;
+  padding: 12px 2px;
 }
 
 
 /* Profile */
 
 .tf-skeleton-profile {
-    width: 48px;
-    height: 48px;
+  width: 48px;
+  height: 48px;
 
-    border-radius: 50%;
+  border-radius: 50%;
 
-    flex-shrink: 0;
+  flex-shrink: 0;
 }
 
 
 /* Logo */
 
 .tf-skeleton-logo {
-    width: 135px;
-    height: 38px;
+  width: 135px;
+  height: 38px;
 
-    border-radius: 10px;
+  border-radius: 10px;
 }
 
 
@@ -2141,46 +2139,46 @@ body.dark-theme .profile-pic {
 
 .tf-skeleton-content {
 
-    width: min(calc(100% - 36px), 700px);
+  width: min(calc(100% - 36px), 700px);
 
-    margin: 0 auto;
+  margin: 0 auto;
 
-    padding-top: 100px;
-    padding-bottom: 120px;
+  padding-top: 100px;
+  padding-bottom: 120px;
 }
 
 
 /* Greeting */
 
 .tf-skeleton-greeting {
-    width: 250px;
-    height: 35px;
+  width: 250px;
+  height: 35px;
 
-    border-radius: 8px;
+  border-radius: 8px;
 
-    margin-bottom: 9px;
+  margin-bottom: 9px;
 }
 
 
 .tf-skeleton-date {
-    width: 100px;
-    height: 13px;
+  width: 100px;
+  height: 13px;
 
-    border-radius: 5px;
+  border-radius: 5px;
 
-    margin-bottom: 18px;
+  margin-bottom: 18px;
 }
 
 
 /* Separation line */
 
 .tf-skeleton-line {
-    width: 100%;
-    height: 1px;
+  width: 100%;
+  height: 1px;
 
-    margin-bottom: 14px;
+  margin-bottom: 14px;
 
-    border-radius: 5px;
+  border-radius: 5px;
 }
 
 
@@ -2190,16 +2188,16 @@ body.dark-theme .profile-pic {
 
 .tf-skeleton-class-card {
 
-    width: 100%;
-    min-height: 185px;
+  width: 100%;
+  min-height: 185px;
 
-    border-radius: var(--radius-xl);
+  border-radius: var(--radius-xl);
 
-    margin-bottom: 12px;
+  margin-bottom: 12px;
 
-    padding: 17px 18px;
+  padding: 17px 18px;
 
-    overflow: hidden;
+  overflow: hidden;
 }
 
 
@@ -2207,12 +2205,12 @@ body.dark-theme .profile-pic {
 
 .tf-skeleton-heading {
 
-    width: 110px;
-    height: 14px;
+  width: 110px;
+  height: 14px;
 
-    border-radius: 5px;
+  border-radius: 5px;
 
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 
@@ -2220,15 +2218,15 @@ body.dark-theme .profile-pic {
 
 .tf-skeleton-card-content {
 
-    min-height: 125px;
+  min-height: 125px;
 
-    border-radius: var(--radius-md);
+  border-radius: var(--radius-md);
 
-    display: flex;
+  display: flex;
 
-    align-items: flex-end;
+  align-items: flex-end;
 
-    justify-content: space-between;
+  justify-content: space-between;
 }
 
 
@@ -2236,28 +2234,28 @@ body.dark-theme .profile-pic {
 
 .tf-skeleton-big {
 
-    width: 150px;
-    height: 30px;
+  width: 150px;
+  height: 30px;
 
-    border-radius: 7px;
+  border-radius: 7px;
 
-    margin-bottom: 12px;
+  margin-bottom: 12px;
 }
 
 
 .tf-skeleton-small {
 
-    width: 120px;
-    height: 11px;
+  width: 120px;
+  height: 11px;
 
-    border-radius: 5px;
+  border-radius: 5px;
 
-    margin-bottom: 7px;
+  margin-bottom: 7px;
 }
 
 
 .tf-skeleton-small.short {
-    width: 80px;
+  width: 80px;
 }
 
 
@@ -2265,10 +2263,10 @@ body.dark-theme .profile-pic {
 
 .tf-skeleton-character {
 
-    width: 120px;
-    height: 125px;
+  width: 120px;
+  height: 125px;
 
-    border-radius: 50% 50% 10px 10px;
+  border-radius: 50% 50% 10px 10px;
 }
 
 
@@ -2278,15 +2276,15 @@ body.dark-theme .profile-pic {
 
 .tf-skeleton-today {
 
-    width: 100%;
+  width: 100%;
 
-    padding: 17px 10px;
+  padding: 17px 10px;
 
-    margin-top: 12px;
+  margin-top: 12px;
 
-    border-radius: var(--radius-xl);
+  border-radius: var(--radius-xl);
 
-    background: var(--surface);
+  background: var(--surface);
 }
 
 
@@ -2294,12 +2292,12 @@ body.dark-theme .profile-pic {
 
 .tf-skeleton-today-title {
 
-    width: 80px;
-    height: 22px;
+  width: 80px;
+  height: 22px;
 
-    border-radius: 6px;
+  border-radius: 6px;
 
-    margin: 0 8px 18px;
+  margin: 0 8px 18px;
 }
 
 
@@ -2307,12 +2305,12 @@ body.dark-theme .profile-pic {
 
 .tf-skeleton-lecture {
 
-    width: 100%;
-    height: 68px;
+  width: 100%;
+  height: 68px;
 
-    border-radius: var(--radius-md);
+  border-radius: var(--radius-md);
 
-    margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 
 
@@ -2322,24 +2320,24 @@ body.dark-theme .profile-pic {
 
 .tf-skeleton-nav {
 
-    position: fixed;
+  position: fixed;
 
-    bottom: 10px;
-    left: 50%;
+  bottom: 10px;
+  left: 50%;
 
-    transform: translateX(-50%);
+  transform: translateX(-50%);
 
-    width: min(calc(100% - 36px), 700px);
-    height: 65px;
+  width: min(calc(100% - 36px), 700px);
+  height: 65px;
 
-    border-radius: 34px;
+  border-radius: 34px;
 
-    display: flex;
+  display: flex;
 
-    align-items: center;
-    justify-content: space-around;
+  align-items: center;
+  justify-content: space-around;
 
-    padding: 6px;
+  padding: 6px;
 }
 
 
@@ -2347,10 +2345,10 @@ body.dark-theme .profile-pic {
 
 .tf-skeleton-nav-item {
 
-    width: 50px;
-    height: 50px;
+  width: 50px;
+  height: 50px;
 
-    border-radius: 50%;
+  border-radius: 50%;
 }
 
 
@@ -2360,13 +2358,13 @@ body.dark-theme .profile-pic {
 
 @media (max-width: 800px) {
 
-    .tf-skeleton-content {
-        width: calc(100% - 32px);
-    }
+  .tf-skeleton-content {
+    width: calc(100% - 32px);
+  }
 
-    .tf-skeleton-header {
-        width: calc(100% - 32px);
-    }
+  .tf-skeleton-header {
+    width: calc(100% - 32px);
+  }
 
 }
 
@@ -2377,93 +2375,93 @@ body.dark-theme .profile-pic {
 
 @media (max-width: 600px) {
 
-    .tf-skeleton-header {
+  .tf-skeleton-header {
 
-        width: calc(100% - 23px);
-        height: 70px;
-    }
-
-
-    .tf-skeleton-profile {
-
-        width: 44px;
-        height: 44px;
-    }
+    width: calc(100% - 23px);
+    height: 70px;
+  }
 
 
-    .tf-skeleton-logo {
+  .tf-skeleton-profile {
 
-        width: 120px;
-        height: 34px;
-    }
-
-
-    .tf-skeleton-content {
-
-        width: calc(100% - 28px);
-
-        padding-top: 92px;
-    }
+    width: 44px;
+    height: 44px;
+  }
 
 
-    .tf-skeleton-greeting {
+  .tf-skeleton-logo {
 
-        width: 200px;
-        height: 30px;
-    }
-
-
-    .tf-skeleton-class-card {
-
-        min-height: 175px;
-
-        padding: 15px;
-
-        border-radius: 23px;
-    }
+    width: 120px;
+    height: 34px;
+  }
 
 
-    .tf-skeleton-card-content {
+  .tf-skeleton-content {
 
-        min-height: 120px;
-    }
+    width: calc(100% - 28px);
 
-
-    .tf-skeleton-big {
-
-        width: 125px;
-        height: 26px;
-    }
+    padding-top: 92px;
+  }
 
 
-    .tf-skeleton-character {
+  .tf-skeleton-greeting {
 
-        width: 100px;
-        height: 110px;
-    }
-
-
-    .tf-skeleton-today {
-
-        border-radius: 23px;
-    }
+    width: 200px;
+    height: 30px;
+  }
 
 
-    .tf-skeleton-nav {
+  .tf-skeleton-class-card {
 
-        width: calc(100% - 28px);
+    min-height: 175px;
 
-        height: 65px;
+    padding: 15px;
 
-        bottom: 10px;
-    }
+    border-radius: 23px;
+  }
 
 
-    .tf-skeleton-nav-item {
+  .tf-skeleton-card-content {
 
-        width: 50px;
-        height: 50px;
-    }
+    min-height: 120px;
+  }
+
+
+  .tf-skeleton-big {
+
+    width: 125px;
+    height: 26px;
+  }
+
+
+  .tf-skeleton-character {
+
+    width: 100px;
+    height: 110px;
+  }
+
+
+  .tf-skeleton-today {
+
+    border-radius: 23px;
+  }
+
+
+  .tf-skeleton-nav {
+
+    width: calc(100% - 28px);
+
+    height: 65px;
+
+    bottom: 10px;
+  }
+
+
+  .tf-skeleton-nav-item {
+
+    width: 50px;
+    height: 50px;
+  }
 
 }
 
@@ -2474,32 +2472,32 @@ body.dark-theme .profile-pic {
 
 @media (max-width: 380px) {
 
-    .tf-skeleton-content {
-        width: calc(100% - 22px);
-    }
+  .tf-skeleton-content {
+    width: calc(100% - 22px);
+  }
 
 
-    .tf-skeleton-class-card {
-        min-height: 165px;
-    }
+  .tf-skeleton-class-card {
+    min-height: 165px;
+  }
 
 
-    .tf-skeleton-character {
+  .tf-skeleton-character {
 
-        width: 85px;
-        height: 95px;
-    }
-
-
-    .tf-skeleton-big {
-        width: 105px;
-    }
+    width: 85px;
+    height: 95px;
+  }
 
 
-    .tf-skeleton-nav {
+  .tf-skeleton-big {
+    width: 105px;
+  }
 
-        width: calc(100% - 20px);
-    }
+
+  .tf-skeleton-nav {
+
+    width: calc(100% - 20px);
+  }
 
 }
 
@@ -2514,26 +2512,26 @@ body.dark-theme .profile-pic {
    ========================================================= */
 
 #auth-skeleton {
-    position: fixed;
-    inset: 0;
+  position: fixed;
+  inset: 0;
 
-    z-index: 99999;
+  z-index: 99999;
 
-    width: 100%;
-    min-height: 100vh;
+  width: 100%;
+  min-height: 100vh;
 
-    box-sizing: border-box;
+  box-sizing: border-box;
 
-    background: var(--bg);
+  background: var(--bg);
 
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 
-    overflow-x: hidden;
-    overflow-y: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 
-    padding: 25px 18px;
+  padding: 25px 18px;
 }
 
 
@@ -2542,13 +2540,13 @@ body.dark-theme .profile-pic {
    ========================================================= */
 
 .auth-skeleton-main-div {
-    width: min(100% - 36px, 430px);
+  width: min(100% - 36px, 430px);
 
-    margin: 0 auto;
+  margin: 0 auto;
 
-    padding-top: 0;
+  padding-top: 0;
 
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 
@@ -2558,14 +2556,14 @@ body.dark-theme .profile-pic {
    ========================================================= */
 
 .auth-skeleton-title {
-    position: relative;
+  position: relative;
 
-    width: 100%;
-    height: 180px;
+  width: 100%;
+  height: 180px;
 
-    margin: 45px auto 0;
+  margin: 45px auto 0;
 
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 
@@ -2573,7 +2571,7 @@ body.dark-theme .profile-pic {
    matching your real register title */
 
 #auth-skeleton.register-skeleton .auth-skeleton-title {
-    margin-top: 25px;
+  margin-top: 25px;
 }
 
 
@@ -2582,14 +2580,14 @@ body.dark-theme .profile-pic {
    ========================================================= */
 
 .auth-skeleton-title-sub-div {
-    position: relative;
+  position: relative;
 
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    height: 45px;
+  height: 45px;
 
-    z-index: 2;
+  z-index: 2;
 }
 
 
@@ -2598,10 +2596,10 @@ body.dark-theme .profile-pic {
 */
 
 .auth-skeleton-logo {
-    width: 145px;
-    height: 42px;
+  width: 145px;
+  height: 42px;
 
-    border-radius: 8px;
+  border-radius: 8px;
 }
 
 
@@ -2610,17 +2608,17 @@ body.dark-theme .profile-pic {
    ========================================================= */
 
 .auth-skeleton-character {
-    position: absolute;
+  position: absolute;
 
-    right: 0;
-    bottom: 0;
+  right: 0;
+  bottom: 0;
 
-    width: 48%;
-    height: 180px;
+  width: 48%;
+  height: 180px;
 
-    border-radius: 18px 18px 0 0;
+  border-radius: 18px 18px 0 0;
 
-    overflow: hidden;
+  overflow: hidden;
 }
 
 
@@ -2629,19 +2627,19 @@ body.dark-theme .profile-pic {
    ========================================================= */
 
 .auth-skeleton-card {
-    position: relative;
+  position: relative;
 
-    width: 100%;
+  width: 100%;
 
-    padding: 22px;
+  padding: 22px;
 
-    box-sizing: border-box;
+  box-sizing: border-box;
 
-    border-radius: var(--radius-xl);
+  border-radius: var(--radius-xl);
 
-    background: var(--surface);
+  background: var(--surface);
 
-    border: 1px solid var(--line);
+  border: 1px solid var(--line);
 }
 
 
@@ -2650,12 +2648,12 @@ body.dark-theme .profile-pic {
    ========================================================= */
 
 .auth-skeleton-heading {
-    width: 105px;
-    height: 34px;
+  width: 105px;
+  height: 34px;
 
-    margin-bottom: 18px;
+  margin-bottom: 18px;
 
-    border-radius: 8px;
+  border-radius: 8px;
 }
 
 
@@ -2664,32 +2662,32 @@ body.dark-theme .profile-pic {
    ========================================================= */
 
 .auth-skeleton-toggle {
-    width: 100%;
-    height: 60px;
+  width: 100%;
+  height: 60px;
 
-    padding: 5px;
+  padding: 5px;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    box-sizing: border-box;
+  box-sizing: border-box;
 
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 
-    border-radius: 50px;
+  border-radius: 50px;
 
-    background: var(--surface-2);
+  background: var(--surface-2);
 
-    border: 1px solid var(--line);
+  border: 1px solid var(--line);
 }
 
 
 .auth-skeleton-toggle-button {
-    width: 49%;
-    height: 50px;
+  width: 49%;
+  height: 50px;
 
-    border-radius: 50px;
+  border-radius: 50px;
 }
 
 
@@ -2698,14 +2696,14 @@ body.dark-theme .profile-pic {
    ========================================================= */
 
 .auth-skeleton-field {
-    width: 100%;
-    height: 50px;
+  width: 100%;
+  height: 50px;
 
-    margin-top: 10px;
+  margin-top: 10px;
 
-    box-sizing: border-box;
+  box-sizing: border-box;
 
-    border-radius: 50px;
+  border-radius: 50px;
 }
 
 
@@ -2714,21 +2712,21 @@ body.dark-theme .profile-pic {
    ========================================================= */
 
 .auth-skeleton-name-row {
-    width: 100%;
+  width: 100%;
 
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    gap: 8px;
+  gap: 8px;
 
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 
 .auth-skeleton-name-row .auth-skeleton-field {
-    width: calc((100% - 8px) / 2);
+  width: calc((100% - 8px) / 2);
 
-    flex: 0 0 calc((100% - 8px) / 2);
+  flex: 0 0 calc((100% - 8px) / 2);
 }
 
 
@@ -2737,12 +2735,12 @@ body.dark-theme .profile-pic {
    ========================================================= */
 
 .auth-skeleton-password-message {
-    width: 150px;
-    height: 13px;
+  width: 150px;
+  height: 13px;
 
-    margin: 10px auto 0;
+  margin: 10px auto 0;
 
-    border-radius: 5px;
+  border-radius: 5px;
 }
 
 
@@ -2751,12 +2749,12 @@ body.dark-theme .profile-pic {
    ========================================================= */
 
 .auth-skeleton-link {
-    width: 190px;
-    height: 16px;
+  width: 190px;
+  height: 16px;
 
-    margin-top: 20px;
+  margin-top: 20px;
 
-    border-radius: 6px;
+  border-radius: 6px;
 }
 
 
@@ -2765,12 +2763,12 @@ body.dark-theme .profile-pic {
    ========================================================= */
 
 .auth-skeleton-button {
-    width: 100%;
-    height: 50px;
+  width: 100%;
+  height: 50px;
 
-    margin-top: 14px;
+  margin-top: 14px;
 
-    border-radius: 50px;
+  border-radius: 50px;
 }
 
 
@@ -2787,28 +2785,26 @@ body.dark-theme .profile-pic {
 #auth-skeleton .auth-skeleton-link,
 #auth-skeleton .auth-skeleton-button {
 
-    background: linear-gradient(
-        90deg,
-        var(--surface-2) 25%,
-        var(--surface-3) 50%,
-        var(--surface-2) 75%
-    );
+  background: linear-gradient(90deg,
+      var(--surface-2) 25%,
+      var(--surface-3) 50%,
+      var(--surface-2) 75%);
 
-    background-size: 200% 100%;
+  background-size: 200% 100%;
 
-    animation: authSkeletonShimmer 1.4s ease-in-out infinite;
+  animation: authSkeletonShimmer 1.4s ease-in-out infinite;
 }
 
 
 @keyframes authSkeletonShimmer {
 
-    0% {
-        background-position: 200% 0;
-    }
+  0% {
+    background-position: 200% 0;
+  }
 
-    100% {
-        background-position: -200% 0;
-    }
+  100% {
+    background-position: -200% 0;
+  }
 
 }
 
@@ -2819,17 +2815,17 @@ body.dark-theme .profile-pic {
 
 @media (min-width: 601px) and (max-width: 1024px) {
 
-    #auth-skeleton {
-        padding-top: 35px;
-    }
+  #auth-skeleton {
+    padding-top: 35px;
+  }
 
-    .auth-skeleton-main-div {
-        width: min(100% - 36px, 430px);
-    }
+  .auth-skeleton-main-div {
+    width: min(100% - 36px, 430px);
+  }
 
-    .auth-skeleton-card {
-        padding: 22px;
-    }
+  .auth-skeleton-card {
+    padding: 22px;
+  }
 
 }
 
@@ -2840,66 +2836,66 @@ body.dark-theme .profile-pic {
 
 @media (max-width: 600px) {
 
-    #auth-skeleton {
-        padding: 20px 14px;
-    }
+  #auth-skeleton {
+    padding: 20px 14px;
+  }
 
 
-    .auth-skeleton-main-div {
-        width: 100%;
-        max-width: 430px;
-    }
+  .auth-skeleton-main-div {
+    width: 100%;
+    max-width: 430px;
+  }
 
 
-    .auth-skeleton-title {
-        height: 150px;
+  .auth-skeleton-title {
+    height: 150px;
 
-        margin-top: 18px;
-    }
-
-
-    .auth-skeleton-logo {
-        width: 125px;
-        height: 38px;
-    }
+    margin-top: 18px;
+  }
 
 
-    .auth-skeleton-character {
-        height: 150px;
-    }
+  .auth-skeleton-logo {
+    width: 125px;
+    height: 38px;
+  }
 
 
-    .auth-skeleton-card {
-        padding: 18px;
-    }
+  .auth-skeleton-character {
+    height: 150px;
+  }
 
 
-    .auth-skeleton-heading {
-        width: 100px;
-        height: 32px;
-
-        margin-bottom: 17px;
-    }
+  .auth-skeleton-card {
+    padding: 18px;
+  }
 
 
-    .auth-skeleton-toggle {
-        height: 58px;
-    }
+  .auth-skeleton-heading {
+    width: 100px;
+    height: 32px;
+
+    margin-bottom: 17px;
+  }
 
 
-    .auth-skeleton-toggle-button {
-        height: 48px;
-    }
+  .auth-skeleton-toggle {
+    height: 58px;
+  }
 
 
-    .auth-skeleton-field {
-        height: 50px;
-    }
+  .auth-skeleton-toggle-button {
+    height: 48px;
+  }
 
 
-    .auth-skeleton-button {
-        height: 50px;
-    }
+  .auth-skeleton-field {
+    height: 50px;
+  }
+
+
+  .auth-skeleton-button {
+    height: 50px;
+  }
 
 }
 
@@ -2910,75 +2906,75 @@ body.dark-theme .profile-pic {
 
 @media (max-width: 390px) {
 
-    #auth-skeleton {
-        padding: 15px 12px;
-    }
+  #auth-skeleton {
+    padding: 15px 12px;
+  }
 
 
-    .auth-skeleton-main-div {
-        width: 100%;
-    }
+  .auth-skeleton-main-div {
+    width: 100%;
+  }
 
 
-    .auth-skeleton-title {
-        height: 130px;
-    }
+  .auth-skeleton-title {
+    height: 130px;
+  }
 
 
-    .auth-skeleton-logo {
-        width: 110px;
-        height: 36px;
-    }
+  .auth-skeleton-logo {
+    width: 110px;
+    height: 36px;
+  }
 
 
-    .auth-skeleton-character {
-        height: 130px;
-    }
+  .auth-skeleton-character {
+    height: 130px;
+  }
 
 
-    .auth-skeleton-card {
-        padding: 17px;
-    }
+  .auth-skeleton-card {
+    padding: 17px;
+  }
 
 
-    .auth-skeleton-heading {
-        width: 95px;
-        height: 30px;
+  .auth-skeleton-heading {
+    width: 95px;
+    height: 30px;
 
-        margin-bottom: 16px;
-    }
-
-
-    .auth-skeleton-toggle {
-        height: 56px;
-    }
+    margin-bottom: 16px;
+  }
 
 
-    .auth-skeleton-toggle-button {
-        height: 46px;
-    }
+  .auth-skeleton-toggle {
+    height: 56px;
+  }
 
 
-    .auth-skeleton-field {
-        height: 48px;
-    }
+  .auth-skeleton-toggle-button {
+    height: 46px;
+  }
 
 
-    .auth-skeleton-button {
-        height: 48px;
-    }
+  .auth-skeleton-field {
+    height: 48px;
+  }
 
 
-    .auth-skeleton-name-row {
-        gap: 6px;
-    }
+  .auth-skeleton-button {
+    height: 48px;
+  }
 
 
-    .auth-skeleton-name-row .auth-skeleton-field {
-        width: calc((100% - 6px) / 2);
+  .auth-skeleton-name-row {
+    gap: 6px;
+  }
 
-        flex-basis: calc((100% - 6px) / 2);
-    }
+
+  .auth-skeleton-name-row .auth-skeleton-field {
+    width: calc((100% - 6px) / 2);
+
+    flex-basis: calc((100% - 6px) / 2);
+  }
 
 }
 
@@ -2989,55 +2985,190 @@ body.dark-theme .profile-pic {
 
 @media (max-width: 320px) {
 
-    #auth-skeleton {
-        padding: 12px 10px;
-    }
+  #auth-skeleton {
+    padding: 12px 10px;
+  }
 
 
-    .auth-skeleton-title {
-        height: 120px;
-    }
+  .auth-skeleton-title {
+    height: 120px;
+  }
 
 
-    .auth-skeleton-logo {
-        width: 95px;
-        height: 32px;
-    }
+  .auth-skeleton-logo {
+    width: 95px;
+    height: 32px;
+  }
 
 
-    .auth-skeleton-character {
-        height: 120px;
-    }
+  .auth-skeleton-character {
+    height: 120px;
+  }
 
 
-    .auth-skeleton-card {
-        padding: 15px;
-    }
+  .auth-skeleton-card {
+    padding: 15px;
+  }
 
 
-    .auth-skeleton-heading {
-        width: 88px;
-        height: 28px;
-    }
+  .auth-skeleton-heading {
+    width: 88px;
+    height: 28px;
+  }
 
 
-    .auth-skeleton-toggle {
-        height: 54px;
-    }
+  .auth-skeleton-toggle {
+    height: 54px;
+  }
 
 
-    .auth-skeleton-toggle-button {
-        height: 44px;
-    }
+  .auth-skeleton-toggle-button {
+    height: 44px;
+  }
 
 
-    .auth-skeleton-field {
-        height: 46px;
-    }
+  .auth-skeleton-field {
+    height: 46px;
+  }
 
 
-    .auth-skeleton-button {
-        height: 46px;
-    }
+  .auth-skeleton-button {
+    height: 46px;
+  }
 
+}
+
+/* =========================================================
+   LOGIN LOADING ANIMATION
+   ========================================================= */
+
+.login-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+
+  background: rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 0.2s ease,
+    visibility 0s linear 0.2s;
+}
+
+.login-loader.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+
+  transition:
+    opacity 0.2s ease,
+    visibility 0s linear 0s;
+}
+
+.login-loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  padding: 20px 24px;
+  border-radius: 18px;
+
+  background: var(--surface);
+  border: 1px solid var(--line);
+
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+
+  transform: translateY(5px) scale(0.98);
+  transition: transform 0.2s ease;
+}
+
+.login-loader.active .login-loader-content {
+  transform: translateY(0) scale(1);
+}
+
+/* Circular spinner */
+.login-loader-spinner {
+  width: clamp(30px, 6vw, 42px);
+  height: clamp(30px, 6vw, 42px);
+
+  border: clamp(3px, 0.6vw, 4px) solid rgba(180, 99, 62, 0.20);
+  border-top-color: var(--pri);
+
+  border-radius: 50%;
+
+  animation: loginLoaderSpin 0.8s linear infinite;
+}
+
+@keyframes loginLoaderSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.login-loader-text {
+  color: var(--text);
+
+  font-size: clamp(0.8rem, 2vw, 0.95rem);
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .login-loader-content {
+    gap: 10px;
+    padding: 18px 22px;
+    border-radius: 16px;
+  }
+
+  .login-loader-text {
+    font-size: 0.85rem;
+  }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+  .login-loader-content {
+    padding: 16px 20px;
+  }
+
+  .login-loader-spinner {
+    width: 30px;
+    height: 30px;
+  }
+
+  .login-loader-text {
+    font-size: 0.8rem;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .login-loader-spinner {
+    animation-duration: 1.6s;
+  }
+
+  .login-loader,
+  .login-loader-content {
+    transition-duration: 0.1s;
+  }
 }

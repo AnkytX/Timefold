@@ -23,6 +23,15 @@
 </head>
 
 <body style="margin: 0px;">
+
+    <!-- Register Loading Overlay -->
+    <div id="login-loader" class="login-loader" aria-hidden="true">
+        <div class="login-loader-content">
+            <div class="login-loader-spinner"></div>
+            <div class="login-loader-text">Creating account...</div>
+        </div>
+    </div>
+
     <!-- =========================================================
      TIMEFOLD REGISTER FULL SKELETON
      ========================================================= -->
@@ -168,8 +177,29 @@
 </body>
 
 <script>
+    // buffer animation
+    function showLoginLoader() {
+        const loader = document.getElementById("login-loader");
 
-        function hideAuthSkeleton() {
+        if (loader) {
+            loader.classList.add("active");
+            loader.setAttribute("aria-hidden", "false");
+        }
+    }
+
+    function hideLoginLoader() {
+        const loader = document.getElementById("login-loader");
+
+        if (loader) {
+            loader.classList.remove("active");
+            loader.setAttribute("aria-hidden", "true");
+        }
+    }
+
+
+    // skeleton loading page
+
+    function hideAuthSkeleton() {
         const skeleton = document.getElementById("auth-skeleton");
 
         if (skeleton) {
@@ -177,115 +207,116 @@
         }
     }
 
-        window.addEventListener("load", function () {
-            hideAuthSkeleton();
+    window.addEventListener("load", function () {
+        hideAuthSkeleton();
     });
 
 
 
 
-const password = document.getElementById("password");
-const confirmPassword = document.getElementById("confirm_password");
-const passwordMessage = document.getElementById("passwordMessage");
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirm_password");
+    const passwordMessage = document.getElementById("passwordMessage");
 
-function checkPassword() {
-if (!confirmPassword.value) {
-passwordMessage.textContent = "";
-return;
-}
+    function checkPassword() {
+        if (!confirmPassword.value) {
+            passwordMessage.textContent = "";
+            return;
+        }
 
-if (password.value !== confirmPassword.value) {
-passwordMessage.textContent = "Passwords do not match";
-passwordMessage.style.color = "red";
-} else {
-passwordMessage.textContent = "Passwords match";
-passwordMessage.style.color = "green";
-}
-}
+        if (password.value !== confirmPassword.value) {
+            passwordMessage.textContent = "Passwords do not match";
+            passwordMessage.style.color = "red";
+        } else {
+            passwordMessage.textContent = "Passwords match";
+            passwordMessage.style.color = "green";
+        }
+    }
 
-confirmPassword.addEventListener("input", checkPassword);
-password.addEventListener("input", checkPassword);
+    confirmPassword.addEventListener("input", checkPassword);
+    password.addEventListener("input", checkPassword);
 
-async function register() {
-const name = document.getElementById('name').value.trim();
-const enroll = document.getElementById('enroll').value.trim();
-const passwordVal = document.getElementById('password').value.trim();
-const confirm_password = document.getElementById('confirm_password').value.trim();
-const batch = document.getElementById('batch').value.trim();
+    async function register() {
+        const name = document.getElementById('name').value.trim();
+        const enroll = document.getElementById('enroll').value.trim();
+        const passwordVal = document.getElementById('password').value.trim();
+        const confirm_password = document.getElementById('confirm_password').value.trim();
+        const batch = document.getElementById('batch').value.trim();
 
-// 1. Check for empty fields
-if (!name || !enroll || !passwordVal || !confirm_password || !batch) {
-alert('Please enter all details');
-return;
-}
+        // 1. Check for empty fields
+        if (!name || !enroll || !passwordVal || !confirm_password || !batch) {
+            alert('Please enter all details');
+            return;
+        }
 
-// 2. Validate password match
-if (passwordVal !== confirm_password) {
-alert('Passwords do not match');
-return;
-}
+        // 2. Validate password match
+        if (passwordVal !== confirm_password) {
+            alert('Passwords do not match');
+            return;
+        }
 
-// 3. Database constraint checks (MSSQL VarChar limits)
-if (passwordVal.length > 8) {
-alert("Password cannot be more than 8 characters");
-return;
-}
+        // 3. Database constraint checks (MSSQL VarChar limits)
+        if (passwordVal.length > 8) {
+            alert("Password cannot be more than 8 characters");
+            return;
+        }
 
-if (enroll.length !== 12) {
-alert("Enrollment number must be exactly 12 digits");
-return;
-}
+        if (enroll.length !== 12) {
+            alert("Enrollment number must be exactly 12 digits");
+            return;
+        }
 
-if (name.length > 20) {
-alert("Name cannot be more than 20 characters");
-return;
-}
+        if (name.length > 20) {
+            alert("Name cannot be more than 20 characters");
+            return;
+        }
 
-try {
-const response = await fetch("/register", {
-method: "POST",
-headers: {
-"Content-Type": "application/json"
-},
-body: JSON.stringify({
-name,
-enroll,
-password: passwordVal,
-batch
-})
-});
+        try {
+            showLoginLoader();
+            const response = await fetch("/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name,
+                    enroll,
+                    password: passwordVal,
+                    batch
+                })
+            });
 
-const data = await response.json();
+            const data = await response.json();
 
-if (response.ok && data.success) {
-alert(data.message || "Registration successful!");
-window.location.href = "./login.html";
-} else {
-alert(data.message || "Registration failed");
-}
-} catch (error) {
-console.error("Registration error:", error);
-alert("Network error. Please try again.");
-}
-}
+            if (response.ok && data.success) {
+                alert(data.message || "Registration successful!");
+                window.location.href = "./login.html";
+            } else {
+                alert(data.message || "Registration failed");
+            }
+        } catch (error) {
+            console.error("Registration error:", error);
+            alert("Network error. Please try again.");
+        }
+    }
 
-// -------------------------------------------------------------------------------------------------------------
-// PASSWORD REVEAL BUTTON
-// -------------------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------------
+    // PASSWORD REVEAL BUTTON
+    // -------------------------------------------------------------------------------------------------------------
 
-function togglePassword(inputId, button) {
-const input = document.getElementById(inputId);
+    function togglePassword(inputId, button) {
+        const input = document.getElementById(inputId);
 
-if (input.type === "password") {
-input.type = "text";
-button.textContent = "🙈";
-button.setAttribute("aria-label", "Hide password");
-} else {
-input.type = "password";
-button.textContent = "👁";
-button.setAttribute("aria-label", "Show password");
-}
-}
+        if (input.type === "password") {
+            input.type = "text";
+            button.textContent = "🙈";
+            button.setAttribute("aria-label", "Hide password");
+        } else {
+            input.type = "password";
+            button.textContent = "🐵";
+            button.setAttribute("aria-label", "Show password");
+        }
+    }
 </script>
 
 </html>
