@@ -48,12 +48,17 @@ TimeFold is designed to work across:
 
 ### 🖼️ Screenshots
 
-![Log In Page](.public/readme-assets/login.jpeg)
-![Home Page](public/readme-assets/home.jpeg)
-![Map Page](public/readme-assets/map.jpeg)
-![Schedule Page](public/readme-assets/map.jpeg)
-![Notice Page](public/readme-assets/week.jpeg)
-![Setting Page](public/readme-assets/settings.jpeg)
+<p align="center">
+  <img src="public/readme-assets/login.jpeg" width="30%">
+  <img src="public/readme-assets/home.jpeg" width="30%">
+  <img src="public/readme-assets/map.jpeg" width="30%">
+</p>
+
+<p align="center">
+  <img src="public/readme-assets/week.jpeg" width="30%">
+  <img src="public/readme-assets/notice.jpeg" width="30%">
+  <img src="public/readme-assets/settings.jpeg" width="30%">
+</p>
 
 ---
 
@@ -204,14 +209,14 @@ http://localhost:3000
 TimeFold uses environment variables to keep sensitive configuration outside the source code.
 
 
-| Variable      | Description                     |
-| ------------- | ------------------------------- |
-|  PORT         | Port used by the Node.js server |
-|  DB_SERVER    | SQL Server host or IP address   |
-|  DB_PORT      | SQL Server port                 |
-|  DB_DATABASE  | Database name                   |
-|  DB_USER      | Database username               |
-|  DB_PASSWORD  | Database password               |
+| Variable    | Description                     |
+| ----------- | ------------------------------- |
+| PORT        | Port used by the Node.js server |
+| DB_SERVER   | SQL Server host or IP address   |
+| DB_PORT     | SQL Server port                 |
+| DB_DATABASE | Database name                   |
+| DB_USER     | Database username               |
+| DB_PASSWORD | Database password               |
 
 
 ---
@@ -296,11 +301,11 @@ Development will continue with the addition of new features, UI/UX improvements,
 
 TimeFold was developed collaboratively by three team members, with each member responsible for a core part of the application.
 
-| Team Member | Role | Responsibility |
-|-------------|------|----------------|
+| Team Member      | Role               | Responsibility                                                                |
+| ---------------- | ------------------ | ----------------------------------------------------------------------------- |
 | **Piyush Dubey** | Frontend Developer | UI/UX design, responsive layouts, frontend development, and user interactions |
-| **Ankit Shah** | Backend Developer | Server-side development, API integration, authentication, and backend logic |
-| **Shatish Rout** | Database Developer | Database design, SQL queries, data management, and database integration |
+| **Ankit Shah**   | Backend Developer  | Server-side development, API integration, authentication, and backend logic   |
+| **Shatish Rout** | Database Developer | Database design, SQL queries, data management, and database integration       |
 
 ### 🧩 Areas of Contribution
 
