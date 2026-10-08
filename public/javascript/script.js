@@ -108,6 +108,8 @@ function showdashboard() {
   window.location.href = "/index.html";
 }
 
+
+
 // ========================================================
 // 3. API / FETCH
 // ========================================================
@@ -638,9 +640,12 @@ function showClassStatus(data) {
     const endlunch = 13 * 60;
     const itslunch = currenttime_s >= startlunch && currenttime_s < endlunch;
     if (itslunch) {
-      const next_tokan = currenttokan + 1;
+      const next_tokan = upcoming_class;
       const next_class = data[next_tokan]
-      green.style.display = "none"
+       green.style.display = "none";
+    grey.style.display = "none";
+    grey_next.style.display = "none";
+    orange.style.display = "";
       current_card.innerHTML = `<div class="bold-text">Its Lunch Time 🍚 </div>`
       map_current_card.innerHTML = `<div class="bold-text">Its Lunch Time 🍚 </div>`
       if (next_card && next_class) {
@@ -1563,7 +1568,11 @@ async function teachertimetabel() {
 
     facultytimetabel = Array.isArray(data.timetabel) ? data.timetabel : [];
 
-
+   facultytimetabel.sort(
+  (a, b) =>
+    toMinutes(a.start_time) -
+    toMinutes(b.start_time)
+);
     // Trigger status calculation once data arrives
     showteacherdata();
   } catch (error) {
@@ -1720,7 +1729,7 @@ function showteacherdata() {
   else {
     const start_lunch = toMinutes("12:30");
     const end_lunch = toMinutes("13:00");
-    const islunchbreak = currentTime >= start_lunch && currentTime <= end_lunch;
+    const islunchbreak = currentTime >= start_lunch && currentTime < end_lunch;
 
     // Current Class Container
     if (current_div) {
@@ -1806,6 +1815,16 @@ function showteacherdata() {
     }
   }
 }
+
+setInterval(() => {
+  if (facultytimetabel.length > 0) {
+    showteacherdata();
+  }
+  if (timetableData.length > 0) {
+    showClassStatus();
+    
+  }
+}, 60000);
 // Teacher page bootstrap
 if (window.location.pathname.includes("teacher-index.html")) {
   teachername();
