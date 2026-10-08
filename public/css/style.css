@@ -3172,3 +3172,116 @@ body.dark-theme .profile-pic {
     transition-duration: 0.1s;
   }
 }
+
+/* ==============================
+   POST LOADER
+   ============================== */
+
+.post-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.28);
+
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+}
+
+.post-loader.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+
+  transition: opacity 0.2s ease, visibility 0s linear 0s;
+}
+
+.post-loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  padding: 20px 24px;
+
+  border-radius: 18px;
+
+  background: var(--surface);
+  border: 1px solid var(--line);
+
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+}
+
+.post-loader-spinner {
+  width: 40px;
+  height: 40px;
+
+  border: 4px solid rgba(180, 99, 62, 0.20);
+  border-top-color: var(--pri);
+
+  border-radius: 50%;
+
+  animation: postLoaderSpin 0.8s linear infinite;
+}
+
+@keyframes postLoaderSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.post-loader-text {
+  color: var(--text);
+
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  .post-loader-content {
+    gap: 10px;
+    padding: 18px 22px;
+    border-radius: 16px;
+  }
+
+  .post-loader-spinner {
+    width: 34px;
+    height: 34px;
+  }
+
+  .post-loader-text {
+    font-size: 0.85rem;
+  }
+}
+
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .post-loader-spinner {
+    animation-duration: 1.5s;
+  }
+}

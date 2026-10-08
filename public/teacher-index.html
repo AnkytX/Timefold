@@ -256,7 +256,7 @@
                         <input style="margin-top: 8px;" id="notice" type="text" placeholder="Write Your Message....">
                     </div>
                     <div class="post-button">
-                        <button class="post" onclick="notice()">Post</button>
+                        <button class="post" id="post-button" onclick="notice()">Post</button>
                     </div>
                 </div>
 
@@ -432,6 +432,14 @@
 
     </main>
 
+    <!-- POST LOADER -->
+    <div id="post-loader" class="post-loader" aria-hidden="true">
+        <div class="post-loader-content">
+            <div class="post-loader-spinner"></div>
+            <div class="post-loader-text">Posting...</div>
+        </div>
+    </div>
+
     <script src="javascript/script.js"></script>
     <script>
 
@@ -502,6 +510,97 @@
                 alert("Unable to logout. Please try again.");
             }
         }
+
+        /* ==============================
+   POST LOADER
+   ============================== */
+
+        function showPostLoader() {
+            const loader = document.getElementById("post-loader");
+
+            if (loader) {
+                loader.classList.add("active");
+                loader.setAttribute("aria-hidden", "false");
+            }
+        }
+
+        function hidePostLoader() {
+            const loader = document.getElementById("post-loader");
+
+            if (loader) {
+                loader.classList.remove("active");
+                loader.setAttribute("aria-hidden", "true");
+            }
+        }
+
+
+        /* ==============================
+           WATCH EXISTING NOTICE FUNCTION
+           ============================== */
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const postButton = document.getElementById("post-button");
+
+            if (!postButton) {
+                return;
+            }
+
+            postButton.addEventListener("click", function () {
+
+                const sem = document.getElementById("Sem")?.value.trim();
+                const batch = document.getElementById("batch")?.value.trim();
+                const message = document.getElementById("notice")?.value.trim();
+
+                /*
+                 * Do not show loader if validation fails.
+                 */
+
+                if (!sem || !batch || !message) {
+                    return;
+                }
+
+                /*
+                 * Show loader for valid submission.
+                 */
+
+                showPostLoader();
+
+                /*
+                 * Wait for the existing notice() function
+                 * to finish its request.
+                 */
+
+                const checkNotice = setInterval(function () {
+
+                    /*
+                     * The existing notice() function clears
+                     * the message after successful posting.
+                     */
+
+                    const currentMessage =
+                        document.getElementById("notice")?.value.trim();
+
+                    if (!currentMessage) {
+                        clearInterval(checkNotice);
+                        hidePostLoader();
+                    }
+
+                }, 100);
+
+                /*
+                 * Safety timeout so the loader can never
+                 * remain stuck forever.
+                 */
+
+                setTimeout(function () {
+                    clearInterval(checkNotice);
+                    hidePostLoader();
+                }, 15000);
+
+            });
+
+        });
 
     </script>
 
