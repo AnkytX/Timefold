@@ -1378,7 +1378,11 @@ async function reqnotification() {
   if (Notification.permission === "default") {
     const permission = await Notification.requestPermission();
 
-    console.log("Notification permission:", permission);
+    if (permission == "granted") {
+      alert("You will be notified 10 minutes before the class.")
+    
+      
+    }
 
     
   }
