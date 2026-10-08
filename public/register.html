@@ -300,9 +300,13 @@
                 alert(data.message || "Registration successful!");
                 window.location.href = "./login.html";
             } else {
+                hideLoginLoader();
                 alert(data.message || "Registration failed");
             }
         } catch (error) {
+            hideLoginLoader();
+
+
             console.error("Registration error:", error);
             alert("Network error. Please try again.");
         }
@@ -326,75 +330,7 @@
         }
     }
 
-    // Logout buffer animation
-
-    function showLogoutLoader() {
-        const loader = document.getElementById("logout-loader");
-
-        if (loader) {
-            loader.classList.add("active");
-            loader.setAttribute("aria-hidden", "false");
-        }
-    }
-
-    function hideLogoutLoader() {
-        const loader = document.getElementById("logout-loader");
-
-        if (loader) {
-            loader.classList.remove("active");
-            loader.setAttribute("aria-hidden", "true");
-        }
-    }
-
-    async function logout() {
-        const logoutButton = document.getElementById("logout");
-
-        try {
-            showLogoutLoader();
-
-            if (logoutButton) {
-                logoutButton.disabled = true;
-            }
-
-            const response = await apiFetch("/logout", {
-                method: "GET"
-            });
-
-            if (!response) {
-                hideLogoutLoader();
-
-                if (logoutButton) {
-                    logoutButton.disabled = false;
-                }
-
-                return;
-            }
-
-            const result = await response.json();
-
-            if (result.success) {
-                showlogin();
-            } else {
-                hideLogoutLoader();
-
-                if (logoutButton) {
-                    logoutButton.disabled = false;
-                }
-
-                alert(result.message);
-            }
-
-        } catch (error) {
-            hideLogoutLoader();
-
-            if (logoutButton) {
-                logoutButton.disabled = false;
-            }
-
-            console.error("Logout error:", error);
-            alert("Unable to logout. Please try again.");
-        }
-    }
+    
 
 </script>
 

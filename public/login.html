@@ -311,6 +311,8 @@
             }
         } catch (err) {
             hideLoginLoader();
+
+            
             console.log(err);
             alert("Unable to connect to server");
         }
@@ -426,6 +428,8 @@
 
         } catch (error) {
             hideLoginLoader();
+
+            
             console.error("Login error:", error);
             alert("Unable to connect to server.");
         }
