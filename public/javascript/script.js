@@ -1816,15 +1816,8 @@ function showteacherdata() {
   }
 }
 
-setInterval(() => {
-  if (facultytimetabel.length > 0) {
-    showteacherdata();
-  }
-  if (timetableData.length > 0) {
-    showClassStatus();
-    
-  }
-}, 60000);
+
+  
 // Teacher page bootstrap
 if (window.location.pathname.includes("teacher-index.html")) {
   teachername();
