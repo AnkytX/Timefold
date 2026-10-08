@@ -3,7 +3,6 @@
    ========================================================= */
 
 function hideTimefoldSkeleton() {
-
   const skeleton = document.getElementById("timefold-skeleton");
 
   if (!skeleton) return;
@@ -34,7 +33,7 @@ const notifiedLectures = new Set();
 const MAP_URLS = {
   "Mining Department": "/assets/images/minning.svg",
   "Civil Department": "/assets/images/civil.svg",
-  "Workshop": "/assets/images/workshop.svg",
+  Workshop: "/assets/images/workshop.svg",
   "Library Department": "/assets/images/library.svg",
   "Electrical Department": "/assets/images/electrical.svg",
   "Mechanical Department": "/assets/images/mechanical.svg",
@@ -108,8 +107,6 @@ function showdashboard() {
   window.location.href = "/index.html";
 }
 
-
-
 // ========================================================
 // 3. API / FETCH
 // ========================================================
@@ -170,14 +167,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadnotice();
     await loadStudentName();
 
-    await exametimetabel()
+    await exametimetabel();
     setInterval(chekupcominglecture, 60000);
     hideTimefoldSkeleton();
   }
 
   // ================= TEACHER PAGE =================
   if (isTeacherPage) {
-
     await teachername();
     await teachertimetabel();
 
@@ -211,20 +207,18 @@ async function fetchTimetable() {
 // fetch exame time tabel
 async function exametimetabel() {
   try {
-      const result = await fetch(`/exametimetabel`,{
-        method: "GET",
-        credentials:"include"
-
-    })
+    const result = await fetch(`/exametimetabel`, {
+      method: "GET",
+      credentials: "include",
+    });
     if (!result || !result.ok) {
-      throw new Error(`HTTP error! status: ${result?.status}`)
+      throw new Error(`HTTP error! status: ${result?.status}`);
     }
     const exametimetabel = await result.json();
-    return exameshedule = exametimetabel.dta || [];
+    return (exameshedule = exametimetabel.dta || []);
   } catch (error) {
     console.error(error);
   }
-
 }
 
 // Fetch full weekly schedule records
@@ -312,9 +306,7 @@ async function loadnotice() {
   const noticeResult = await fetchNotices();
   if (!noticeResult) return;
 
- 
   notice_data = noticeResult.notices || [];
- 
 
   showNotice(notice_data);
 }
@@ -334,17 +326,17 @@ function showNotice(notices) {
   // 1. Strictly keep only valid notices posted within the last 24 hours
   const activeNotices = Array.isArray(notices)
     ? notices.filter((item) => {
-      const noticeDate =
-        item.notice_time || item.created_at || item.timestamp;
+        const noticeDate =
+          item.notice_time || item.created_at || item.timestamp;
 
-      const noticeTime = new Date(noticeDate).getTime();
-      if (isNaN(noticeTime)) return false;
+        const noticeTime = new Date(noticeDate).getTime();
+        if (isNaN(noticeTime)) return false;
 
-      const age = now - noticeTime;
+        const age = now - noticeTime;
 
-      // Must be in the past (age >= -60000ms grace for clock drift) and 12 hours
-      return age >= -60000 && age <= TWENTY_FOUR_HOURS;
-    })
+        // Must be in the past (age >= -60000ms grace for clock drift) and 12 hours
+        return age >= -60000 && age <= TWENTY_FOUR_HOURS;
+      })
     : [];
 
   // 2. Clear old content
@@ -392,24 +384,24 @@ function showClassStatus(data) {
   });
 
   // Section Containers
-  const current_card = document.getElementById("delete-current-class") ||
+  const current_card =
+    document.getElementById("delete-current-class") ||
     document.getElementById("delet-current-class");
 
   const next_card = document.getElementById("delete-next-class");
   const map_current_card = document.getElementById("map-lec");
 
-
   //light
-  const green = document.getElementById('green');
-  const grey = document.getElementById('grey');
-  const grey_next = document.getElementById('grey-next');
-  const orange = document.getElementById('orange');
+  const green = document.getElementById("green");
+  const grey = document.getElementById("grey");
+  const grey_next = document.getElementById("grey-next");
+  const orange = document.getElementById("orange");
 
   // 1. Weekend check (runs even if data is [])
   if (dayName === "Sunday" || dayName === "Saturday") {
     if (green && orange) {
-      green.style.display = "none"
-      orange.style.display = "none"
+      green.style.display = "none";
+      orange.style.display = "none";
     }
     const message = `<div class="bold-text">Its</div>`;
     [current_card, next_card, map_current_card].forEach((el) => {
@@ -423,8 +415,8 @@ function showClassStatus(data) {
 
   // 2. Weekday but no lectures scheduled
   if (!Array.isArray(data) || data.length === 0) {
-    green.style.display = "none"
-    orange.style.display = "none"
+    green.style.display = "none";
+    orange.style.display = "none";
     const message = `<div class="bold-text">No Classes Scheduled</div>`;
     [map_current_card, next_card, current_card].forEach((el) => {
       if (el) {
@@ -435,11 +427,10 @@ function showClassStatus(data) {
     return;
   }
 
-
   // getting  current time
   const currenttime_s = now.getHours() * 60 + now.getMinutes();
 
-  // Active 
+  // Active
   const currenttokan = data.findIndex((lecture) => {
     const start = toMinutes(lecture.start_time);
     const end = toMinutes(lecture.end_time);
@@ -450,33 +441,25 @@ function showClassStatus(data) {
     const start = toMinutes(lecture.start_time);
     return start > currenttime_s;
   });
-
+  // for 5pm to 10 am
   if (currenttime_s >= 1020 || currenttime_s < 540) {
-    orange.style.display = "none"
-    green.style.display = "none"
+    orange.style.display = "none";
+    green.style.display = "none";
     if (current_card) {
-
-
-      current_card.innerHTML = `<div class="bold-text"> No Classes </div>`
-      map_current_card.innerHTML = `<div class="bold-text"> No Classes </div>`
+      current_card.innerHTML = `<div class="bold-text"> No Classes </div>`;
+      map_current_card.innerHTML = `<div class="bold-text"> No Classes </div>`;
     }
     if (next_card) {
-
-
-      next_card.innerHTML = `<div class="bold-text"> No Classes </div>`
-
+      next_card.innerHTML = `<div class="bold-text"> No Classes </div>`;
     }
-
-
-
   } else if (currenttime_s >= 540 && currenttime_s < 630) {
-    green.style.display = "none"
-    orange.style.display = "none"
+    green.style.display = "none";
+    orange.style.display = "none";
     const first_class = data[0];
 
     if (first_class && current_card) {
       current_card.innerHTML = `<div class="bold-text">Class Starting Soon </div>`;
-      map_current_card.innerHTML = `<div class="bold-text">Class Starting Soon </div>`
+      map_current_card.innerHTML = `<div class="bold-text">Class Starting Soon </div>`;
     }
 
     if (next_card && first_class) {
@@ -517,11 +500,10 @@ function showClassStatus(data) {
        `;
     }
 
-
     // if current class  start
   } else if (currenttokan !== -1) {
-    grey.style.display = "none"
-    grey_next.style.display = "none"
+    grey.style.display = "none";
+    grey_next.style.display = "none";
     const current_class = data[currenttokan];
     updateMapImage(current_class.room);
     if (map_current_card) {
@@ -539,8 +521,7 @@ function showClassStatus(data) {
           <span class="map-lec-sub">
             <p class="bold-text" id="current-map-room">${current_class.room}</p>
           </span>
-        </span>`
-
+        </span>`;
     }
     if (current_class && current_card) {
       current_card.innerHTML = `
@@ -583,13 +564,12 @@ function showClassStatus(data) {
                 ${getdep(current_class.room).department}
             </span>
         </div>
-            `
+            `;
     }
 
     const next_tokan = currenttokan + 1;
-    const next_class = data[next_tokan]
+    const next_class = data[next_tokan];
     if (next_class && next_card) {
-
       next_card.innerHTML = `
               <div class="card-description" id="current-class-sub-div">
             <div class="bold-text" id="current-class-sub">
@@ -630,24 +610,23 @@ function showClassStatus(data) {
                 ${getdep(next_class.room).department}
             </span>
         </div>
-            `
+            `;
     } else {
       next_card.innerHTML = `<div class="bold-text">No More Class Today </div>`;
     }
-  }
-  else {
+  } else {
     const startlunch = 12 * 60 + 30;
     const endlunch = 13 * 60;
     const itslunch = currenttime_s >= startlunch && currenttime_s < endlunch;
     if (itslunch) {
       const next_tokan = upcoming_class;
-      const next_class = data[next_tokan]
-       green.style.display = "none";
-    grey.style.display = "none";
-    grey_next.style.display = "none";
-    orange.style.display = "";
-      current_card.innerHTML = `<div class="bold-text">Its Lunch Time 🍚 </div>`
-      map_current_card.innerHTML = `<div class="bold-text">Its Lunch Time 🍚 </div>`
+      const next_class = data[next_tokan];
+      green.style.display = "none";
+      grey.style.display = "none";
+      grey_next.style.display = "none";
+      orange.style.display = "";
+      current_card.innerHTML = `<div class="bold-text">Its Lunch Time 🍚 </div>`;
+      map_current_card.innerHTML = `<div class="bold-text">Its Lunch Time 🍚 </div>`;
       if (next_card && next_class) {
         next_card.innerHTML = `<div class="card-description" id="current-class-sub-div">
             <div class="bold-text" id="current-class-sub">
@@ -687,11 +666,9 @@ function showClassStatus(data) {
             <span id="Department">
                 ${getdep(next_class.room).department}
             </span>
-        </div>`
+        </div>`;
       }
-
     } else if (upcoming_class !== -1) {
-
       const next_class = data[upcoming_class];
       if (next_card && next_class) {
         next_card.innerHTML = `
@@ -734,25 +711,22 @@ function showClassStatus(data) {
                 ${getdep(next_class.room).department}
             </span>
         </div>
-                  `
+                  `;
       }
     } else {
-      green.style.display = "none"
-      orange.style.display = "none"
+      green.style.display = "none";
+      orange.style.display = "none";
       if (current_card) {
-        current_card.innerHTML = `<div class="bold-text"> No More Class Today </div>`
+        current_card.innerHTML = `<div class="bold-text"> No More Class Today </div>`;
       }
       if (next_card) {
-        next_card.innerHTML = `<div class="bold-text"> No More Class Today</div>`
-
+        next_card.innerHTML = `<div class="bold-text"> No More Class Today</div>`;
       }
       if (map_current_card) {
-        map_current_card.innerHTML = `<div class="bold-text"> No More Class Today</div>`
-
+        map_current_card.innerHTML = `<div class="bold-text"> No More Class Today</div>`;
       }
     }
   }
-
 }
 // Render dynamic lecture list for the day
 function showTodayLectures(data) {
@@ -823,7 +797,6 @@ function showStudentHeader(data) {
     )}`;
   }
 }
-
 
 // Primary presentation coordinator for timetable
 function showTimetable(data) {
@@ -1342,8 +1315,6 @@ function initMapGestures() {
 // 9. ACCOUNT
 // ========================================================
 
-
-
 async function savename() {
   const nameinput = document.getElementById("Name");
   if (!nameinput) {
@@ -1400,14 +1371,42 @@ async function logout() {
 
 async function reqnotification() {
   if (!("Notification" in window)) {
-    console.log("Browser does not support notification");
+    console.log("Browser does not support notifications");
     return;
   }
+
   if (Notification.permission === "default") {
-    await Notification.requestPermission();
+    const permission = await Notification.requestPermission();
+
+    console.log("Notification permission:", permission);
+
+    
   }
 }
 
+
+
+function chekupcominglecture() {
+  if (!Array.isArray(timetableData) || timetableData.length === 0) return;
+
+  const current = new Date();
+  // const getcurrentmin = 10 * 60 + 20; 
+  const getcurrentmin = current.getHours()*60 + current.getMinutes();
+  const todayDate = current.toDateString();
+
+  timetableData.forEach((lecture) => {
+    const start = toMinutes(lecture.start_time);
+    const diff = start - getcurrentmin;
+
+    const lectureKey =
+      `${todayDate}_${lecture.subject_code}_${lecture.start_time}`;
+
+    if (diff >= 9 && diff <= 10 && !notifiedLectures.has(lectureKey)) {
+      sendnotification(lecture);
+      notifiedLectures.add(lectureKey);
+    }
+  });
+}
 function sendnotification(lecture) {
   if (Notification.permission !== "granted") return;
 
@@ -1417,23 +1416,6 @@ function sendnotification(lecture) {
   });
 }
 
-function chekupcominglecture() {
-  if (!Array.isArray(timetableData) || timetableData.length === 0) return;
-  const current = new Date();
-  const getcurrentmin = current.getHours() * 60 + current.getMinutes();
-  const todayDate = current.toDateString();
-
-  timetableData.forEach((lecture) => {
-    const start = toMinutes(lecture.start_time);
-    const diff = start - getcurrentmin;
-    const lectureKey = `${todayDate}_${lecture.subject_code}_${lecture.start_time}`;
-
-    if (diff > 0 && diff <= 30 && !notifiedLectures.has(lectureKey)) {
-      sendnotification(lecture);
-      notifiedLectures.add(lectureKey);
-    }
-  });
-}
 
 // ========================================================
 // 5. NAVIGATION + THEME
@@ -1544,11 +1526,8 @@ async function teachername() {
   }
 }
 facultytimetabel.sort(
-  (a, b) =>
-    toMinutes(a.start_time) -
-    toMinutes(b.start_time)
+  (a, b) => toMinutes(a.start_time) - toMinutes(b.start_time),
 );
-
 
 // Fetch teacher timetable data
 async function teachertimetabel() {
@@ -1568,11 +1547,9 @@ async function teachertimetabel() {
 
     facultytimetabel = Array.isArray(data.timetabel) ? data.timetabel : [];
 
-   facultytimetabel.sort(
-  (a, b) =>
-    toMinutes(a.start_time) -
-    toMinutes(b.start_time)
-);
+    facultytimetabel.sort(
+      (a, b) => toMinutes(a.start_time) - toMinutes(b.start_time),
+    );
     // Trigger status calculation once data arrives
     showteacherdata();
   } catch (error) {
@@ -1597,9 +1574,6 @@ async function teachertimetabel() {
 // const n_batch = document.getElementById("next-class-batch");
 // const n_room_no = document.getElementById("Tn_room_no");
 // const n_Department = document.getElementById("Tn_Department");
-
-
-
 
 // Compute active lecture
 function showteacherdata() {
@@ -1636,66 +1610,155 @@ function showteacherdata() {
     const end = toMinutes(lecture.end_time);
     return currentTime >= start && currentTime < end;
   });
+  // check for  upcoming  lcture
+  const upcmming_lec_index = facultytimetabel.findIndex((lecture) => {
+    const start = toMinutes(lecture.start_time);
+    return start > currentTime;
+  });
 
-  // --------------------------------------------------------
-  // Case 2a: An active class is currently going on
-  // --------------------------------------------------------
-  if (current_lec_index !== -1) {
-    const lecture_now = facultytimetabel[current_lec_index];
 
-    // Combine batch names for the active class (e.g. "CP1, CP2")
-    const currentBatches = [
-      ...new Set(
-        facultytimetabel
-          .filter((l) => l.start_time === lecture_now.start_time)
-          .map((l) => l.batch),
-      ),
-    ].join(", ");
+  if (currentTime >= 1020 || currentTime < 540) {
+    current_div.innerHTML = `<div class="bold-text"> No Classes </div>`;
+    next_div.innerHTML = `<div class="bold-text"> No Classes </div>`;
+  } else if (currentTime >= 540 && currentTime < 630) {
+    const first_class = facultytimetabel[0];
+      const currentBatche = [
+    ...new Set(
+      facultytimetabel
+        .filter((l) => l.start_time === first_class.start_time)
+        .map((l) => l.batch),
+    ),
+  ].join(", ");
 
-    // Look for a lecture that begins AFTER the active class ends
-    const next_lec = facultytimetabel.findIndex((lecture) => {
-      return toMinutes(lecture.start_time) >= toMinutes(lecture_now.end_time);
-    });
+      
 
-    const next_class = next_lec !== -1 ? facultytimetabel[next_lec] : null;
-
-    // Render Current Class
-    if (current_div) {
-      current_div.innerHTML = `
+    if (first_class && current_div) {
+      current_div.innerHTML = `<div class="bold-text">Class Starting Soon </div>`;
+    }
+    if (next_div && first_class) {
+      next_div.innerHTML = `<div class="card-left-section" id="teacher-next-class">
+            <div class="card-description">
+              <div class="bold-text">${first_class.subject_code}</div>
+              <div class="small-text">${formatTime(first_class.start_time)} - ${formatTime(first_class.end_time)}</div>
+            </div>
+            <div class="card-description">
+              <div class="bold-text">Sem ${first_class.sem}</div>
+              <div class="small-text">${currentBatche}</div>
+            </div>
+            <div class="location-des">
+              <span>Room ${first_class.room}</span> | <span>${getdep(first_class.room).department}</span>
+            </div>
+          </div>
+          <div class="card-right-section">
+            <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/next-class-tr.svg">
+          </div>`;
+    }
+  }else if (current_lec_index !== -1){
+    const first_class = facultytimetabel[current_lec_index]
+     const currentBatche = [
+    ...new Set(
+      facultytimetabel
+        .filter((l) => l.start_time === first_class.start_time)
+        .map((l) => l.batch),
+    ),
+  ].join(", ");
+    if (current_div && first_class) {
+       current_div.innerHTML = `
         <div class="card-left-section" id="teacher-current-class">
           <div class="card-description" id="current-class-sub-div">
-            <div class="bold-text" id="current-class-subject">${lecture_now.subject_code}</div>
+            <div class="bold-text" id="current-class-subject">${first_class.subject_code}</div>
             <div class="small-text" id="current-class-time">
-              <span>${formatTime(lecture_now.start_time)}</span> - <span>${formatTime(lecture_now.end_time)}</span>
+              <span>${formatTime(first_class.start_time)}</span> - <span>${formatTime(first_class.end_time)}</span>
             </div>
           </div>
           <div class="card-description">
-            <div class="bold-text">Sem ${lecture_now.sem}</div>
-            <div class="small-text">${currentBatches}</div>
+            <div class="bold-text">Sem ${first_class.sem}</div>
+            <div class="small-text">${currentBatche}</div>
           </div>
           <div class="location-des">
-            <span>Room ${lecture_now.room}</span> | <span>${getdep(lecture_now.room).department}</span>
+            <span>Room ${first_class.room}</span> | <span>${getdep(first_class.room).department}</span>
           </div>
         </div>
         <div class="card-right-section">
           <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/current-class-tr.svg">
-        </div>`;
+        </div>`
+      
     }
 
-    // Render Next Class:
-    // If the teacher has only 1 class, next_class will be null -> Shows "No More Classes Today"
-    if (next_div) {
-      if (next_class) {
-        const nextBatches = [
+    const next_class = facultytimetabel[upcmming_lec_index];
+     
+    if (next_class && next_div ) {
+      const nextBatches = [
+    ...new Set(
+      facultytimetabel
+        .filter((l) => l.start_time === next_class.start_time)
+        .map((l) => l.batch),
+    ),
+  ].join(", ");
+      next_div.innerHTML = `<div class="card-left-section" id="teacher-next-class">
+            <div class="card-description">
+              <div class="bold-text">${next_class.subject_code}</div>
+              <div class="small-text">${formatTime(next_class.start_time)} - ${formatTime(next_class.end_time)}</div>
+            </div>
+            <div class="card-description">
+              <div class="bold-text">Sem ${next_class.sem}</div>
+              <div class="small-text">${nextBatches}</div>
+            </div>
+            <div class="location-des">
+              <span>Room ${next_class.room}</span> | <span>${getdep(next_class.room).department}</span>
+            </div>
+          </div>
+          <div class="card-right-section">
+            <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/next-class-tr.svg">
+          </div>`;
+      
+    }else {
+      next_div.innerHTML = `<div class="bold-text">No More Class Today </div>`
+    }
+  }else{
+    const startlunch = 12 * 60 + 30;
+    const endlunch = 13 * 60;
+    const itslunch = currentTime >=startlunch && currentTime < endlunch;
+    if (itslunch) {
+      const next_token = upcmming_lec_index
+      const  next_class =  facultytimetabel[next_token];
+      
+      current_div.innerHTML = `<div class="bold-text">Its Lunch Time 🍚 </div>`
+      
+      if (next_div && next_class) {
+         const nextBatches = [
+    ...new Set(
+      facultytimetabel
+        .filter((l) => l.start_time === next_class.start_time)
+        .map((l) => l.batch),
+    ),
+  ].join(", ");
+        next_div.innerHTML = `<div class="card-left-section" id="teacher-next-class">
+            <div class="card-description">
+              <div class="bold-text">${next_class.subject_code}</div>
+              <div class="small-text">${formatTime(next_class.start_time)} - ${formatTime(next_class.end_time)}</div>
+            </div>
+            <div class="card-description">
+              <div class="bold-text">Sem ${next_class.sem}</div>
+              <div class="small-text">${nextBatches}</div>
+            </div>
+            <div class="location-des">
+              <span>Room ${next_class.room}</span> | <span>${getdep(next_class.room).department}</span>
+            </div>
+          </div>
+          <div class="card-right-section">
+            <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/next-class-tr.svg">
+          </div>`;
+      }else if (upcmming_lec_index !== -1){
+        const next_class = facultytimetabel[upcmming_lec_index]
+          const nextBatches = [
           ...new Set(
             facultytimetabel
               .filter((l) => l.start_time === next_class.start_time)
               .map((l) => l.batch),
           ),
         ].join(", ");
-
-        next_div.innerHTML = `
-          <div class="card-left-section" id="teacher-next-class">
+        next_div.innerHTML = `<div class="card-left-section" id="teacher-next-class">
             <div class="card-description">
               <div class="bold-text">${next_class.subject_code}</div>
               <div class="small-text">${formatTime(next_class.start_time)} - ${formatTime(next_class.end_time)}</div>
@@ -1711,115 +1774,41 @@ function showteacherdata() {
           <div class="card-right-section">
             <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/next-class-tr.svg">
           </div>`;
-      } else {
-        // Only 1 class was scheduled, or this was the final class of the day
-        next_div.innerHTML = `
-          <div class="card-left-section">
-            <div class="bold-text">No More Classes Today</div>
-          </div>
-          <div class="card-right-section">
-            <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/next-class-tr.svg">
-          </div>`;
+      }else{
+        if (current_div) {
+        current_div.innerHTML = `<div class="bold-text"> No More Class Today </div>`;
+      }
+      if (next_div) {
+        next_div.innerHTML = `<div class="bold-text"> No More Class Today</div>`;
+      }
+      
       }
     }
   }
-  // --------------------------------------------------------
-  // Case 2b: No active lecture right now
-  // --------------------------------------------------------
-  else {
-    const start_lunch = toMinutes("12:30");
-    const end_lunch = toMinutes("13:00");
-    const islunchbreak = currentTime >= start_lunch && currentTime < end_lunch;
-
-    // Current Class Container
-    if (current_div) {
-      if (islunchbreak) {
-        current_div.innerHTML = `<div class="map-lunchbreak">Its Lunch Time 🍛</div>`;
-        if (next_class) {
-          next_div.innerHTML = `
-          <div class="card-left-section" id="teacher-next-class">
-            <div class="card-description">
-              <div class="bold-text">${next_class.subject_code}</div>
-              <div class="small-text">${formatTime(next_class.start_time)} - ${formatTime(next_class.end_time)}</div>
-            </div>
-            <div class="card-description">
-              <div class="bold-text">Sem ${next_class.sem}</div>
-              <div class="small-text">${nextBatches}</div>
-            </div>
-            <div class="location-des">
-              <span>Room ${next_class.room}</span> | <span>${getdep(next_class.room).department}</span>
-            </div>
-          </div>
-          <div class="card-right-section">
-            <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/next-class-tr.svg">
-          </div>`;
-        }
-        
-      } else {
-        current_div.innerHTML = `
-          <div class="card-left-section">
-            <div class="bold-text">No Class Right Now</div>
-          </div>
-          <div class="card-right-section">
-            <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/current-class-tr.svg">
-          </div>`;
-      }
-    }
-
-    // Look for the first upcoming class starting after currentTime
-    const next_lec = facultytimetabel.findIndex((lecture) => {
-      return toMinutes(lecture.start_time) > currentTime;
-    });
-
-    const next_class = next_lec !== -1 ? facultytimetabel[next_lec] : null;
-
-
-    // Shows that upcoming class!
-    // If after the teacher's single class has finished -> Shows "No More Classes Today"
-    if (next_div) {
-      if (next_class) {
-        const nextBatches = [
-          ...new Set(
-            facultytimetabel
-              .filter((l) => l.start_time === next_class.start_time)
-              .map((l) => l.batch),
-          ),
-        ].join(", ");
-
-        next_div.innerHTML = `
-          <div class="card-left-section" id="teacher-next-class">
-            <div class="card-description">
-              <div class="bold-text">${next_class.subject_code}</div>
-              <div class="small-text">${formatTime(next_class.start_time)} - ${formatTime(next_class.end_time)}</div>
-            </div>
-            <div class="card-description">
-              <div class="bold-text">Sem ${next_class.sem}</div>
-              <div class="small-text">${nextBatches}</div>
-            </div>
-            <div class="location-des">
-              <span>Room ${next_class.room}</span> | <span>${getdep(next_class.room).department}</span>
-            </div>
-          </div>
-          <div class="card-right-section">
-            <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/next-class-tr.svg">
-          </div>`;
-      } else {
-        next_div.innerHTML = `
-          <div class="card-left-section">
-            <div class="bold-text">No More Classes Today</div>
-          </div>
-          <div class="card-right-section">
-            <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/next-class-tr.svg">
-          </div>`;
-      }
-    }
-  }
-}
-
 
   
-// Teacher page bootstrap
-if (window.location.pathname.includes("teacher-index.html")) {
-  teachername();
-  teachertimetabel();
 }
+
+// Teacher page bootstrap
+
+if (isTeacherPage) {
+   teachername();
+   teachertimetabel();
+
+  setInterval(() => {
+    showteacherdata();
+  }, 60000);
+
+} else {
+  initTimetable();
+
+  setInterval(() => {
+    if (timetableData.length > 0) {
+      showClassStatus(timetableData);
+    }
+
+    chekupcominglecture();
+  }, 60000);
+}
+
+hideTimefoldSkeleton();
