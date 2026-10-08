@@ -24,6 +24,15 @@
 
 <body>
 
+    <!-- Logout Loading Overlay -->
+    <div id="logout-loader" class="login-loader" aria-hidden="true">
+        <div class="login-loader-content">
+            <div class="login-loader-spinner"></div>
+            <div class="login-loader-text">Logging out...</div>
+        </div>
+    </div>
+
+
     <!-- -------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
                                                 SKELETON LOADER
@@ -92,7 +101,7 @@
 
         <!-- Bottom navigation -->
         <div class="tf-skeleton-nav">
-            
+
         </div>
 
     </div>
@@ -552,41 +561,113 @@
     </main>
 
     <script src="javascript/script.js"></script>
- <script>
-    async function savepassward() {
-  const passwordInputEl = document.getElementById("password-input");
-  if (!passwordInputEl) {
-    console.error("Input element #password-input not found in DOM");
-    return;
-  }
+    <script>
+        async function savepassward() {
+            const passwordInputEl = document.getElementById("password-input");
+            if (!passwordInputEl) {
+                console.error("Input element #password-input not found in DOM");
+                return;
+            }
 
-  const password = passwordInputEl.value.trim();
-  if (!password) {
-    alert("Please enter password first");
-    return;
-  }
+            const password = passwordInputEl.value.trim();
+            if (!password) {
+                alert("Please enter password first");
+                return;
+            }
 
-  try {
-    const response = await apiFetch(`/password`, {
-      method: "POST",
-      body: JSON.stringify({ password }),
-    });
+            try {
+                const response = await apiFetch(`/password`, {
+                    method: "POST",
+                    body: JSON.stringify({ password }),
+                });
 
-    if (!response) return;
-    const data = await response.json();
+                if (!response) return;
+                const data = await response.json();
 
-    if (response.ok && data.success) {
-      alert("Password updated successfully!");
-      passwordInputEl.value = "";
-    } else {
-      alert(data.message || "Failed to update password");
-    }
-  } catch (error) {
-    console.error("Error updating password:", error);
-    alert("Server error, please try again later.");
-  }
-}
- </script>
+                if (response.ok && data.success) {
+                    alert("Password updated successfully!");
+                    passwordInputEl.value = "";
+                } else {
+                    alert(data.message || "Failed to update password");
+                }
+            } catch (error) {
+                console.error("Error updating password:", error);
+                alert("Server error, please try again later.");
+            }
+        }
+
+        // Buffer animation for log out button
+        function showLogoutLoader() {
+            const loader = document.getElementById("logout-loader");
+
+            if (loader) {
+                loader.classList.add("active");
+                loader.setAttribute("aria-hidden", "false");
+            }
+        }
+
+        function hideLogoutLoader() {
+            const loader = document.getElementById("logout-loader");
+
+            if (loader) {
+                loader.classList.remove("active");
+                loader.setAttribute("aria-hidden", "true");
+            }
+        }
+
+        async function logout() {
+            const logoutButton = document.getElementById("logout");
+
+            try {
+                // Show loading animation immediately
+                showLogoutLoader();
+
+                // Prevent multiple clicks
+                if (logoutButton) {
+                    logoutButton.disabled = true;
+                }
+
+                const response = await apiFetch("/logout", {
+                    method: "GET"
+                });
+
+                if (!response) {
+                    hideLogoutLoader();
+
+                    if (logoutButton) {
+                        logoutButton.disabled = false;
+                    }
+
+                    return;
+                }
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showlogin();
+                } else {
+                    hideLogoutLoader();
+
+                    if (logoutButton) {
+                        logoutButton.disabled = false;
+                    }
+
+                    alert(result.message);
+                }
+
+            } catch (error) {
+                hideLogoutLoader();
+
+                if (logoutButton) {
+                    logoutButton.disabled = false;
+                }
+
+                console.error("Logout error:", error);
+                alert("Unable to logout. Please try again.");
+            }
+        }
+
+    </script>
 </body>
 
 </html>
