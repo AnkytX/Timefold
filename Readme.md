@@ -48,12 +48,17 @@ TimeFold is designed to work across:
 
 ### 🖼️ Screenshots
 
-![Log In Page](https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/login.jpeg)
-![Home Page](https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/home.jpeg)
-![Map Page](https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/map.jpeg)
-![Schedule Page](https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/week.jpeg)
-![Notice Page](https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/notice.jpeg)
-![Setting Page](https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/setting.jpeg)
+<p align="center">
+  <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/login.jpeg" width="30%">
+  <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/home.jpeg" width="30%">
+  <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/map.jpeg" width="30%">
+</p>
+
+<p align="center">
+  <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/week.jpeg" width="30%">
+  <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/notice.jpeg" width="30%">
+  <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/setting.jpeg" width="30%">
+</p>
 
 ---
 
