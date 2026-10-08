@@ -48,7 +48,7 @@ TimeFold is designed to work across:
 
 ### 🖼️ Screenshots
 
-![Log In Page](public/readme-assets/login.jpeg)
+![Log In Page](.public/readme-assets/login.jpeg)
 ![Home Page](public/readme-assets/home.jpeg)
 ![Map Page](public/readme-assets/map.jpeg)
 ![Schedule Page](public/readme-assets/map.jpeg)
