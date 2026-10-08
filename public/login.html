@@ -306,9 +306,11 @@
                 alert(data.message);
                 window.location.href = "/teacher-index.html"; // Teacher dashboard
             } else {
+                hideLoginLoader();
                 alert(data.message || "Login failed");
             }
         } catch (err) {
+            hideLoginLoader();
             console.log(err);
             alert("Unable to connect to server");
         }
@@ -418,10 +420,12 @@
                 window.location.href = "/index.html";
 
             } else {
+                hideLoginLoader();
                 alert(data.message || "Login failed");
             }
 
         } catch (error) {
+            hideLoginLoader();
             console.error("Login error:", error);
             alert("Unable to connect to server.");
         }
