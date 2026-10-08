@@ -48,17 +48,12 @@ TimeFold is designed to work across:
 
 ### 🖼️ Screenshots
 
-<p align="center">
-  <img src="public/readme-assets/login.jpeg" width="30%">
-  <img src="public/readme-assets/home.jpeg" width="30%">
-  <img src="public/readme-assets/map.jpeg" width="30%">
-</p>
-
-<p align="center">
-  <img src="public/readme-assets/week.jpeg" width="30%">
-  <img src="public/readme-assets/notice.jpeg" width="30%">
-  <img src="public/readme-assets/settings.jpeg" width="30%">
-</p>
+![Log In Page](https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/login.jpeg)
+![Home Page](https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/home.jpeg)
+![Map Page](https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/map.jpeg)
+![Schedule Page](https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/week.jpeg)
+![Notice Page](https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/notice.jpeg)
+![Setting Page](https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/readme-assets/setting.jpeg)
 
 ---
 
@@ -209,14 +204,14 @@ http://localhost:3000
 TimeFold uses environment variables to keep sensitive configuration outside the source code.
 
 
-| Variable    | Description                     |
-| ----------- | ------------------------------- |
-| PORT        | Port used by the Node.js server |
-| DB_SERVER   | SQL Server host or IP address   |
-| DB_PORT     | SQL Server port                 |
-| DB_DATABASE | Database name                   |
-| DB_USER     | Database username               |
-| DB_PASSWORD | Database password               |
+| Variable      | Description                     |
+| ------------- | ------------------------------- |
+|  PORT         | Port used by the Node.js server |
+|  DB_SERVER    | SQL Server host or IP address   |
+|  DB_PORT      | SQL Server port                 |
+|  DB_DATABASE  | Database name                   |
+|  DB_USER      | Database username               |
+|  DB_PASSWORD  | Database password               |
 
 
 ---
@@ -301,11 +296,11 @@ Development will continue with the addition of new features, UI/UX improvements,
 
 TimeFold was developed collaboratively by three team members, with each member responsible for a core part of the application.
 
-| Team Member      | Role               | Responsibility                                                                |
-| ---------------- | ------------------ | ----------------------------------------------------------------------------- |
+| Team Member | Role | Responsibility |
+|-------------|------|----------------|
 | **Piyush Dubey** | Frontend Developer | UI/UX design, responsive layouts, frontend development, and user interactions |
-| **Ankit Shah**   | Backend Developer  | Server-side development, API integration, authentication, and backend logic   |
-| **Shatish Rout** | Database Developer | Database design, SQL queries, data management, and database integration       |
+| **Ankit Shah** | Backend Developer | Server-side development, API integration, authentication, and backend logic |
+| **Shatish Rout** | Database Developer | Database design, SQL queries, data management, and database integration |
 
 ### 🧩 Areas of Contribution
 
