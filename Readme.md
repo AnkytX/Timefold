@@ -48,7 +48,12 @@ TimeFold is designed to work across:
 
 ### 🖼️ Screenshots
 
-![TimeFold Dashboard](./public/images/screenshots/dashboard.png)
+![Log In Page](public/readme-assets/login.jpeg)
+![Home Page](public/readme-assets/home.jpeg)
+![Map Page](public/readme-assets/map.jpeg)
+![Schedule Page](public/readme-assets/map.jpeg)
+![Notice Page](public/readme-assets/week.jpeg)
+![Setting Page](public/readme-assets/settings.jpeg)
 
 ---
 
@@ -164,13 +169,13 @@ npm install
 Create a .env file in the root directory of the project.
 
 ```bash
-PORT=3000
 
 DB_SERVER=your-server
-DB_PORT=1433
+DB_PORT=your-server-port
 DB_DATABASE=your-database
 DB_USER=your-username
 DB_PASSWORD=your-password
+
 ```
 Replace the values with your own database configuration.
 
