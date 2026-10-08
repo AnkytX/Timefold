@@ -185,9 +185,9 @@
                                 <div class="orange-signal" id="orange"></div>
                                 <div class="grey-signal" id="grey-next"></div>
                                 <h2>
-                                    Next Class  
+                                    Next Class
                                 </h2>
-                                <button onclick="reqnotification()">🔔</button>
+                                <button class="next-notification" onclick="reqnotification()"></button>
                             </span>
 
                             <div class="card-sub-div">
@@ -667,6 +667,16 @@
                 alert("Unable to logout. Please try again.");
             }
         }
+
+        document.querySelectorAll(".next-notification").forEach(button => {
+            button.addEventListener("click", () => {
+                setTimeout(() => {
+                    if ("vibrate" in navigator) {
+                        navigator.vibrate(300);
+                    }
+                }, 200);
+            });
+        });
 
     </script>
 </body>

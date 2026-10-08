@@ -388,6 +388,66 @@ section {
   left: 0;
 }
 
+.next-notification {
+  background: #524579ad;
+  color: #392f50;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0px 5px 2px 5px;
+  /* margin-top: 2px; */
+  align-items: center;
+  text-align: center;
+  box-shadow: 0px 2px 6px 0px rgb(58 53 73 / 66%);
+  /* border: 1px solid rgba(114, 85, 148, 0.55); */
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+
+/* Create the bell separately */
+.next-notification::before {
+  content: "🔔";
+  display: inline-block;
+  color: initial;
+}
+
+/* Shake ONLY the bell */
+.next-notification:active::before {
+  animation: bellShake 0.6s ease;
+}
+
+@keyframes bellShake {
+  0% {
+    transform: rotate(0);
+  }
+
+  15% {
+    transform: rotate(12deg);
+  }
+
+  30% {
+    transform: rotate(-12deg);
+  }
+
+  45% {
+    transform: rotate(9deg);
+  }
+
+  60% {
+    transform: rotate(-7deg);
+  }
+
+  75% {
+    transform: rotate(4deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
+}
+
 /* =========================================================
    TODAY & LECTURES LIST
    ========================================================= */
