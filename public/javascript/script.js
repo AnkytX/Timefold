@@ -1516,9 +1516,15 @@ async function teachername() {
     if (data.success && data.faculty_name) {
       faculty_name = data.faculty_name;
       const greetingFaculty = document.getElementById("greeting-faculty");
+      const firstletter = document.getElementById("T_initial");
       if (greetingFaculty) {
-        greetingFaculty.innerText = `Hello , ${faculty_name} Sir`;
+        greetingFaculty.innerText = `Hello , ${faculty_name} `;
       }
+
+      if (firstletter ) {
+        firstletter.textContent = faculty_name.trim().charAt(0).toUpperCase();
+      }
+
     }
   } catch (error) {
     console.error("API Error in teachername:", error);
@@ -1529,6 +1535,7 @@ async function teachername() {
     dateEl.textContent = `Today, ${now.getDate()} ${now.toLocaleString("en-US", { month: "short" })}`;
   }
 }
+
 facultytimetabel.sort(
   (a, b) => toMinutes(a.start_time) - toMinutes(b.start_time),
 );
@@ -1737,6 +1744,9 @@ function showteacherdata() {
         .map((l) => l.batch),
     ),
   ].join(", ");
+  if (next_div && next_class) {
+    
+  
         next_div.innerHTML = `<div class="card-left-section" id="teacher-next-class">
             <div class="card-description">
               <div class="bold-text">${next_class.subject_code}</div>
@@ -1753,6 +1763,7 @@ function showteacherdata() {
           <div class="card-right-section">
             <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/next-class-tr.svg">
           </div>`;
+  }
       }else if (upcmming_lec_index !== -1){
         const next_class = facultytimetabel[upcmming_lec_index]
           const nextBatches = [
@@ -1762,6 +1773,9 @@ function showteacherdata() {
               .map((l) => l.batch),
           ),
         ].join(", ");
+        if (next_div && next_class) {
+          
+        
         next_div.innerHTML = `<div class="card-left-section" id="teacher-next-class">
             <div class="card-description">
               <div class="bold-text">${next_class.subject_code}</div>
@@ -1778,6 +1792,7 @@ function showteacherdata() {
           <div class="card-right-section">
             <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/next-class-tr.svg">
           </div>`;
+        }
       }else{
         if (current_div) {
         current_div.innerHTML = `<div class="bold-text"> No More Class Today </div>`;
