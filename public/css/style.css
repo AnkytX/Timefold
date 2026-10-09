@@ -389,20 +389,13 @@ section {
 }
 
 .next-notification {
-  background: #524579ad;
-  color: #392f50;
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 0px 5px 2px 5px;
-  /* margin-top: 2px; */
-  align-items: center;
-  text-align: center;
-  box-shadow: 0px 2px 6px 0px rgb(58 53 73 / 66%);
-  /* border: 1px solid rgba(114, 85, 148, 0.55); */
-  border: none;
-  border-radius: 7px;
-  cursor: pointer;
-  transition: 0.2s ease;
+  font-size: 0.8rem;
+  background-color: #62548a;
+  border: 0.5px solid #625689;
+  box-shadow: 0px 2px 10px rgba(1, 1, 1, 0.28);
+  border-radius: 10px;
+  padding: 3px 10px;
+  animation: bellShake 0.2s;
 }
 
 
@@ -436,7 +429,7 @@ section {
   }
 
   60% {
-    transform: rotate(-7deg);
+    transform: rotate(-9deg);
   }
 
   75% {
