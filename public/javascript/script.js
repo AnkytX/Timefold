@@ -399,11 +399,12 @@ function showClassStatus(data) {
 
   // 1. Weekend check (runs even if data is [])
   if (dayName === "Sunday" || dayName === "Saturday") {
+    mon();
     if (green && orange) {
       green.style.display = "none";
       orange.style.display = "none";
     }
-    const message = `<div class="bold-text">Its</div>`;
+    const message = `<div class="bold-text">No Classes Today </div>`;
     [current_card, next_card, map_current_card].forEach((el) => {
       if (el) {
         el.style.display = "";
