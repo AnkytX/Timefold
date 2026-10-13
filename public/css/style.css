@@ -2,6 +2,7 @@
   --bg: #161719;
   --surface: #242428d1;
   --surface-2: #3031363f;
+  --input-bg: #3031363f;
   --surface-3: #35363a;
 
   --text: #f7f7f8;
@@ -29,6 +30,7 @@ body:not(.dark-theme) {
   --bg: #ffffff;
   --surface: #f5f6f8;
   --surface-2: #e6e6ea;
+  --input-bg: #ffffff;
   --surface-3: #b9babe;
   --text: #16171a;
   --muted: #70727a;
@@ -680,7 +682,7 @@ section {
   padding: 0 10px;
   border: 1px solid rgba(58, 56, 56, 0.397);
   border-radius: 10px;
-  background: var(--surface-2);
+  background: var(--input-bg);
   color: var(--text);
 }
 
@@ -846,7 +848,7 @@ section {
   padding: 0 14px;
   border: 1px solid var(--line);
   border-radius: 14px;
-  background: var(--surface-2);
+  background: var(--input-bg);
   color: var(--text);
 }
 
@@ -857,7 +859,7 @@ section {
   padding: 0 14px;
   border: 1px solid var(--line);
   border-radius: 14px;
-  background: var(--surface-2);
+  background: var(--input-bg);
   color: var(--text);
 }
 
@@ -1328,7 +1330,7 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
   padding: 0 14px;
   border: 1px solid var(--line);
   border-radius: 50px;
-  background: #ffffff;
+  background: var(--input-bg);
   color: var(--text);
   font-size: 0.9rem;
 }
@@ -1430,14 +1432,14 @@ input:focus::placeholder {
   background-color: var(--surface);
   border-radius: var(--radius-xl);
   border: 1px solid var(--line);
-  padding: 40px 30px;
+  padding: 30px 35px;
 }
 
-/* .forgot-password-popup>h1{
-  font-size: ;
-} */
+.fp-left-section>h1{
+  font-size: 2.5rem;
+}
 
-.forgot-password-popup>p {
+.fp-left-section>p {
   font-size: 0.9rem;
   font-weight: 500;
   margin: 10px 0px 0px;
