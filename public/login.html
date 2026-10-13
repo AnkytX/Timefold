@@ -117,7 +117,7 @@
                 <img class="login-img" src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/studying.svg">
             </div>
             <div class="login-div">
-                <h1 style="color: var(--purple-ink);">Log In</h1>
+                <h1>Log In</h1>
                 <div class="form-content">
                     <div class="student-teacher-toggle">
                         <button class="student-teacher-toggle-button student-btn active-login-btn"
@@ -147,6 +147,10 @@
                                 </button>
                             </div>
 
+                            <div class="forgot-password" id="forgot-password">
+                                Forgot password?
+                            </div>
+
                             <div class="input-div">
                                 <input type="text" id="batch" placeholder="Batch" required>
                             </div>
@@ -155,7 +159,7 @@
 
                         <div class="reg-link">
                             Haven't Register Yet? <a
-                                style="text-decoration: none; font-size: 1rem; font-weight: 700; text-decoration: underline; align-items: center; width: 15vw; color: var(--purple-ink);"
+                                style="text-decoration: none; font-size: 1rem; font-weight: 700; text-decoration: underline; align-items: center; width: 15vw;"
                                 href="register.html">Register here</a>
                         </div>
                         <br>
@@ -226,7 +230,28 @@
 
         </div>
 
+        <div class="forgot-password-popup">
+            <div class="fp-left-section">
+                <h1>
+                    Forgot password?
+                </h1>
+                <p>No worries! Timefold's team is in your service.</p>
+                <div class="forgot-pass-inputs">
+                    <input class="input" type="text" placeholder="Email">
+                    <input class="input" type="text" placeholder="Enrollment Number">
+                    <button class="forgot-button"
+                        style="width: 27.5vw; border-radius: 50px; padding: 0px 10px; height: 7vh;" type="button">
+                        Get Password
+                    </button>
+                </div>
+            </div>
+            <div class="fp-right-section">
+                <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/forgot-pass.svg">
+            </div>
+        </div>
     </main>
+
+
 
 </body>
 <script>
@@ -312,7 +337,7 @@
         } catch (err) {
             hideLoginLoader();
 
-            
+
             console.log(err);
             alert("Unable to connect to server");
         }
@@ -429,7 +454,7 @@
         } catch (error) {
             hideLoginLoader();
 
-            
+
             console.error("Login error:", error);
             alert("Unable to connect to server.");
         }

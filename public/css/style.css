@@ -297,9 +297,9 @@ section {
 .grey-signal {
   width: 7.5px;
   height: 7.5px;
-  outline: 0.5px solid rgb(74, 70, 70);
+  outline: 0.5px solid rgb(45, 45, 45);
   border-radius: 50%;
-  background-color: rgba(111, 107, 107, 0.901);
+  background-color: rgba(111, 107, 107, 0.368);
 }
 
 .next {
@@ -390,56 +390,22 @@ section {
 
 .next-notification {
   font-size: 0.8rem;
-  background-color: #62548a;
-  border: 0.5px solid #625689;
-  box-shadow: 0px 2px 10px rgba(1, 1, 1, 0.28);
-  border-radius: 10px;
-  padding: 3px 10px;
-  animation: bellShake 0.2s;
+  font-weight: 500;
+  color: white;
+  outline: 0.1px solid white;
+  border: none;
+  background-color: inherit;
+  border-radius: 15px;
+  padding: 4px 10px;
+  cursor: pointer;
+  animation: bellShake 1s ease-in-out;
 }
 
-
-/* Create the bell separately */
-.next-notification::before {
-  content: "🔔";
-  display: inline-block;
-  color: initial;
+.next-notification:active {
+  transform: scaleX(0.95);
+  transform: translateY(0.5px);
 }
 
-/* Shake ONLY the bell */
-.next-notification:active::before {
-  animation: bellShake 0.6s ease;
-}
-
-@keyframes bellShake {
-  0% {
-    transform: rotate(0);
-  }
-
-  15% {
-    transform: rotate(12deg);
-  }
-
-  30% {
-    transform: rotate(-12deg);
-  }
-
-  45% {
-    transform: rotate(9deg);
-  }
-
-  60% {
-    transform: rotate(-9deg);
-  }
-
-  75% {
-    transform: rotate(4deg);
-  }
-
-  100% {
-    transform: rotate(0);
-  }
-}
 
 /* =========================================================
    TODAY & LECTURES LIST
@@ -1355,13 +1321,14 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
 .faculty_id,
 .faculty_password,
 #confirm_password,
-#Sem {
+#Sem,
+.input {
   width: 100%;
   height: 50px;
   padding: 0 14px;
   border: 1px solid var(--line);
   border-radius: 50px;
-  background: var(--surface-2);
+  background: #ffffff;
   color: var(--text);
   font-size: 0.9rem;
 }
@@ -1402,7 +1369,8 @@ input:focus::placeholder {
 }
 
 .login-button,
-.register-button {
+.register-button,
+.forgot-button {
   width: 100% !important;
   max-width: 100% !important;
   min-width: 0;
@@ -1424,7 +1392,8 @@ input:focus::placeholder {
 }
 
 .login-button:active,
-.register-button:active {
+.register-button:active,
+.forgot-button:active {
   transform: scale(0.985);
 }
 
@@ -1435,7 +1404,60 @@ input:focus::placeholder {
   font-size: 0.72rem;
 }
 
+.forgot-password {
+  text-decoration: underline;
+  color: var(--pri);
+  text-align: right;
+  margin-top: 10px;
+  padding: 0px 15px;
+  width: 100%;
+  font-size: 0.98rem;
+  font-weight: 700;
+  cursor: pointer;
+}
 
+/* FORGOT PASSWORD POP UP CARD */
+
+.forgot-password-popup {
+
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+
+  width: fit-content;
+  height: fit-content;
+  margin: 10px auto;
+  background-color: var(--surface);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--line);
+  padding: 40px 30px;
+}
+
+/* .forgot-password-popup>h1{
+  font-size: ;
+} */
+
+.forgot-password-popup>p {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 10px 0px 0px;
+}
+
+.forgot-pass-inputs {
+  padding: 20px 0px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 15px;
+}
+
+
+
+.forgot-password-popup img{
+  height: 280px;
+  margin: 0;
+  padding: 0;
+}
 
 /* =========================================================
    MEDIA QUERIES: DESKTOP (800px+)
@@ -1787,7 +1809,7 @@ body:not(.dark-theme) #batch,
 body:not(.dark-theme) #password,
 body:not(.dark-theme) #enroll,
 body:not(.dark-theme) #confirm_password {
-  background: #f0f0f2;
+  background: #ffffff;
   color: #16171a;
 }
 
