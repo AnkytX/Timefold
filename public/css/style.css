@@ -9,7 +9,6 @@
   --muted: #a9abb2;
   --line: rgba(255, 255, 255, 0.033);
 
-
   --pri: #b4633e;
   --sec: #43395e;
 
@@ -68,7 +67,6 @@ body {
     sans-serif;
   overflow-x: hidden;
   scrollbar-width: none;
-
 }
 
 html::-webkit-scrollbar,
@@ -260,7 +258,6 @@ section {
 }
 
 @keyframes signalGlow {
-
   /* Normal — no glow */
   0% {
     box-shadow: 0 0 0 var(--green);
@@ -287,7 +284,6 @@ section {
     box-shadow: 0 0 0 var(--green);
   }
 }
-
 
 .orange-signal {
   width: 8px;
@@ -408,7 +404,6 @@ section {
   transform: translateY(0.5px);
 }
 
-
 /* =========================================================
    TODAY & LECTURES LIST
    ========================================================= */
@@ -429,7 +424,6 @@ section {
   font-weight: 750;
   letter-spacing: -0.02em;
 }
-
 
 .lectures,
 .schedule-list {
@@ -455,14 +449,14 @@ section {
   align-items: center;
 }
 
-.lecture-div>div {
+.lecture-div > div {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 3px;
 }
 
-.lecture-div> :last-child {
+.lecture-div > :last-child {
   align-items: flex-end;
   justify-content: center;
   /* color: var(--text); */
@@ -601,7 +595,7 @@ section {
   /* background-color: red; */
 }
 
-.map-lecture>span {
+.map-lecture > span {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -667,13 +661,12 @@ section {
   border: 1px solid var(--line);
 }
 
-.notice-container>span {
+.notice-container > span {
   display: flex;
   text-align: end;
   align-items: baseline;
   gap: 10px;
 }
-
 
 .message input {
   width: 100%;
@@ -703,7 +696,6 @@ section {
   display: flex;
   flex-direction: row-reverse;
 }
-
 
 .teacher-nav:has(.nav-button-div:nth-child(1).current-page)::before {
   left: calc(9px + ((100% - 18px) / 6) - 27px);
@@ -837,7 +829,7 @@ section {
   border: 1px solid var(--line);
 }
 
-.main-setting>div:first-child {
+.main-setting > div:first-child {
   padding-bottom: 7px;
 }
 
@@ -862,7 +854,6 @@ section {
   background: var(--input-bg);
   color: var(--text);
 }
-
 
 #save-changes,
 #logout {
@@ -907,7 +898,6 @@ section {
 .theme-setting-text .small-text {
   margin-top: 2px;
 }
-
 
 .theme-toggle-wrap {
   display: flex;
@@ -1025,11 +1015,9 @@ body.dark-theme #theme-toggle::after {
   transform: rotate(90deg);
 }
 
-
 /* =========================================================
    BOTTOM NAVIGATION
    ========================================================= */
-
 
 nav {
   position: fixed;
@@ -1068,7 +1056,6 @@ nav {
   cursor: pointer;
   position: relative;
   z-index: 3;
-
 }
 
 /* Active button */
@@ -1140,7 +1127,6 @@ nav {
   fill: #000000;
 }
 
-
 /* The wrapper remains in the HTML because JS and :has()
    use .nav-button-div.current-page. It has no visual styling. */
 /* 
@@ -1178,7 +1164,6 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
   left: calc(5px + (100% - 10px) / 6 - 30px + ((100% - 10px) / 3) * 2);
 }
 
-
 /* =========================================================
    LOGIN & REGISTER FORM
    ========================================================= */
@@ -1189,7 +1174,7 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
   padding-top: 25px;
 }
 
-.title-sub-div>img {
+.title-sub-div > img {
   height: 45px;
   display: block;
 }
@@ -1251,7 +1236,6 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
   font-size: 0.9rem;
 }
 
-
 .student-teacher-toggle-button.active-login-btn {
   background: var(--pri) !important;
   color: #fff;
@@ -1274,8 +1258,6 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
   transition: 0.2s ease;
   cursor: pointer;
 }
-
-
 
 .form-content {
   width: 100%;
@@ -1348,13 +1330,13 @@ input:focus::placeholder {
   color: transparent;
 }
 
-.register-div form>.input-div:first-child {
+.register-div form > .input-div:first-child {
   display: flex;
   gap: 8px;
 }
 
-.register-div form>.input-div:first-child #name,
-.register-div form>.input-div:first-child #enroll {
+.register-div form > .input-div:first-child #name,
+.register-div form > .input-div:first-child #enroll {
   width: calc((100% - 8px) / 2) !important;
   flex: 0 0 calc((100% - 8px) / 2);
   min-width: 0;
@@ -1366,7 +1348,7 @@ input:focus::placeholder {
   font-weight: 600;
 }
 
-.reg-link>a {
+.reg-link > a {
   color: var(--pri) !important;
 }
 
@@ -1419,27 +1401,46 @@ input:focus::placeholder {
 }
 
 /* FORGOT PASSWORD POP UP CARD */
+/* Full-screen overlay */
 
-.forgot-password-popup {
+/* Full-screen blur overlay */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
 
-  display: flex;
-  justify-content: center;
-  gap: 50px;
+    justify-content: center;
+    align-items: center;
 
-  width: fit-content;
-  height: fit-content;
-  margin: 10px auto;
-  background-color: var(--surface);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--line);
-  padding: 30px 35px;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
-.fp-left-section>h1{
+/* Actual popup stays sharp */
+.forgot-password-popup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+
+    width: fit-content;
+    height: fit-content;
+    margin: 0;
+    padding: 30px 35px;
+
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 5px 20px #0005;
+}
+
+.fp-left-section > h1 {
   font-size: 2.5rem;
 }
 
-.fp-left-section>p {
+.fp-left-section > p {
   font-size: 0.9rem;
   font-weight: 500;
   margin: 10px 0px 0px;
@@ -1453,9 +1454,7 @@ input:focus::placeholder {
   gap: 15px;
 }
 
-
-
-.forgot-password-popup img{
+.forgot-password-popup img {
   height: 280px;
   margin: 0;
   padding: 0;
@@ -1466,7 +1465,6 @@ input:focus::placeholder {
    ========================================================= */
 
 @media (min-width: 800px) {
-
   .hero-first-div,
   .today {
     max-width: 760px;
@@ -1565,7 +1563,7 @@ input:focus::placeholder {
     padding-left: 12px;
   }
 
-  .map-lecture>span {
+  .map-lecture > span {
     font-size: 0.78rem;
   }
 
@@ -1644,7 +1642,7 @@ input:focus::placeholder {
     z-index: 2;
   }
 
-  .title-sub-div>img {
+  .title-sub-div > img {
     height: 42px;
     max-width: 100%;
     object-fit: contain;
@@ -1723,7 +1721,7 @@ input:focus::placeholder {
     margin-top: 15px !important;
   }
 
-  .title-sub-div>img {
+  .title-sub-div > img {
     height: 36px;
   }
 
@@ -1739,12 +1737,12 @@ input:focus::placeholder {
     padding: 17px;
   }
 
-  .register-div form>.input-div:first-child {
+  .register-div form > .input-div:first-child {
     gap: 6px;
   }
 
-  .register-div form>.input-div:first-child #name,
-  .register-div form>.input-div:first-child #enroll {
+  .register-div form > .input-div:first-child #name,
+  .register-div form > .input-div:first-child #enroll {
     width: calc((100% - 6px) / 2) !important;
     flex-basis: calc((100% - 6px) / 2);
   }
@@ -1755,7 +1753,6 @@ input:focus::placeholder {
    ========================================================= */
 
 @media (hover: none) and (pointer: coarse) {
-
   /* Remove hover effects on touch devices */
   .nav-button:hover,
   #save-changes:hover,
@@ -1772,7 +1769,6 @@ input:focus::placeholder {
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {
@@ -1828,7 +1824,6 @@ body.dark-theme .register-div {
   border-color: transparent;
 }
 
-
 body.dark-theme #initial {
   color: white;
 }
@@ -1837,7 +1832,6 @@ body.dark-theme .profile-pic {
   border: 0.5px solid var(--nav-bg);
   background-color: #636da240;
 }
-
 
 /* =========================================================
    RESPONSIVE MAP LECTURE CARD
@@ -1880,7 +1874,7 @@ body.dark-theme .profile-pic {
   gap: 12px;
 }
 
-.map-lecture>span {
+.map-lecture > span {
   width: 100%;
   height: auto;
   min-height: 0;
@@ -1993,7 +1987,7 @@ body.dark-theme .profile-pic {
     gap: 9px;
   }
 
-  .map-lecture>span {
+  .map-lecture > span {
     width: 100%;
   }
 
@@ -2118,9 +2112,7 @@ body.dark-theme .profile-pic {
 
   opacity: 1;
   visibility: visible;
-
 }
-
 
 /* Hide skeleton */
 
@@ -2130,30 +2122,28 @@ body.dark-theme .profile-pic {
   pointer-events: none;
 }
 
-
 /* =========================================================
    SHIMMER
    ========================================================= */
 
-#timefold-skeleton .tf-skeleton-header>*,
-#timefold-skeleton .tf-skeleton-content>*,
-#timefold-skeleton .tf-skeleton-class-card>*,
-#timefold-skeleton .tf-skeleton-today>*,
-#timefold-skeleton .tf-skeleton-nav>* {
-
-  background: linear-gradient(90deg,
-      var(--surface-2) 25%,
-      var(--surface-3) 50%,
-      var(--surface-2) 75%);
+#timefold-skeleton .tf-skeleton-header > *,
+#timefold-skeleton .tf-skeleton-content > *,
+#timefold-skeleton .tf-skeleton-class-card > *,
+#timefold-skeleton .tf-skeleton-today > *,
+#timefold-skeleton .tf-skeleton-nav > * {
+  background: linear-gradient(
+    90deg,
+    var(--surface-2) 25%,
+    var(--surface-3) 50%,
+    var(--surface-2) 75%
+  );
 
   background-size: 200% 100%;
 
   animation: tfSkeletonShimmer 2.5s ease-in-out infinite;
 }
 
-
 @keyframes tfSkeletonShimmer {
-
   0% {
     background-position: 200% 0;
   }
@@ -2161,9 +2151,7 @@ body.dark-theme .profile-pic {
   100% {
     background-position: -200% 0;
   }
-
 }
-
 
 /* =========================================================
    HEADER
@@ -2187,7 +2175,6 @@ body.dark-theme .profile-pic {
   padding: 12px 2px;
 }
 
-
 /* Profile */
 
 .tf-skeleton-profile {
@@ -2199,7 +2186,6 @@ body.dark-theme .profile-pic {
   flex-shrink: 0;
 }
 
-
 /* Logo */
 
 .tf-skeleton-logo {
@@ -2209,13 +2195,11 @@ body.dark-theme .profile-pic {
   border-radius: 10px;
 }
 
-
 /* =========================================================
    CONTENT
    ========================================================= */
 
 .tf-skeleton-content {
-
   width: min(calc(100% - 36px), 700px);
 
   margin: 0 auto;
@@ -2223,7 +2207,6 @@ body.dark-theme .profile-pic {
   padding-top: 100px;
   padding-bottom: 120px;
 }
-
 
 /* Greeting */
 
@@ -2236,7 +2219,6 @@ body.dark-theme .profile-pic {
   margin-bottom: 9px;
 }
 
-
 .tf-skeleton-date {
   width: 100px;
   height: 13px;
@@ -2245,7 +2227,6 @@ body.dark-theme .profile-pic {
 
   margin-bottom: 18px;
 }
-
 
 /* Separation line */
 
@@ -2258,13 +2239,11 @@ body.dark-theme .profile-pic {
   border-radius: 5px;
 }
 
-
 /* =========================================================
    CLASS CARDS
    ========================================================= */
 
 .tf-skeleton-class-card {
-
   width: 100%;
   min-height: 185px;
 
@@ -2277,11 +2256,9 @@ body.dark-theme .profile-pic {
   overflow: hidden;
 }
 
-
 /* Heading */
 
 .tf-skeleton-heading {
-
   width: 110px;
   height: 14px;
 
@@ -2290,11 +2267,9 @@ body.dark-theme .profile-pic {
   margin-bottom: 20px;
 }
 
-
 /* Card content */
 
 .tf-skeleton-card-content {
-
   min-height: 125px;
 
   border-radius: var(--radius-md);
@@ -2306,11 +2281,9 @@ body.dark-theme .profile-pic {
   justify-content: space-between;
 }
 
-
 /* Main text */
 
 .tf-skeleton-big {
-
   width: 150px;
   height: 30px;
 
@@ -2319,9 +2292,7 @@ body.dark-theme .profile-pic {
   margin-bottom: 12px;
 }
 
-
 .tf-skeleton-small {
-
   width: 120px;
   height: 11px;
 
@@ -2330,29 +2301,24 @@ body.dark-theme .profile-pic {
   margin-bottom: 7px;
 }
 
-
 .tf-skeleton-small.short {
   width: 80px;
 }
 
-
 /* Character placeholder */
 
 .tf-skeleton-character {
-
   width: 120px;
   height: 125px;
 
   border-radius: 50% 50% 10px 10px;
 }
 
-
 /* =========================================================
    TODAY
    ========================================================= */
 
 .tf-skeleton-today {
-
   width: 100%;
 
   padding: 17px 10px;
@@ -2364,11 +2330,9 @@ body.dark-theme .profile-pic {
   background: var(--surface);
 }
 
-
 /* Today title */
 
 .tf-skeleton-today-title {
-
   width: 80px;
   height: 22px;
 
@@ -2377,11 +2341,9 @@ body.dark-theme .profile-pic {
   margin: 0 8px 18px;
 }
 
-
 /* Lecture */
 
 .tf-skeleton-lecture {
-
   width: 100%;
   height: 68px;
 
@@ -2390,13 +2352,11 @@ body.dark-theme .profile-pic {
   margin-bottom: 8px;
 }
 
-
 /* =========================================================
    BOTTOM NAVIGATION
    ========================================================= */
 
 .tf-skeleton-nav {
-
   position: fixed;
 
   bottom: 10px;
@@ -2417,24 +2377,20 @@ body.dark-theme .profile-pic {
   padding: 6px;
 }
 
-
 /* Nav items */
 
 .tf-skeleton-nav-item {
-
   width: 50px;
   height: 50px;
 
   border-radius: 50%;
 }
 
-
 /* =========================================================
    TABLET
    ========================================================= */
 
 @media (max-width: 800px) {
-
   .tf-skeleton-content {
     width: calc(100% - 32px);
   }
@@ -2442,54 +2398,40 @@ body.dark-theme .profile-pic {
   .tf-skeleton-header {
     width: calc(100% - 32px);
   }
-
 }
-
 
 /* =========================================================
    MOBILE
    ========================================================= */
 
 @media (max-width: 600px) {
-
   .tf-skeleton-header {
-
     width: calc(100% - 23px);
     height: 70px;
   }
 
-
   .tf-skeleton-profile {
-
     width: 44px;
     height: 44px;
   }
 
-
   .tf-skeleton-logo {
-
     width: 120px;
     height: 34px;
   }
 
-
   .tf-skeleton-content {
-
     width: calc(100% - 28px);
 
     padding-top: 92px;
   }
 
-
   .tf-skeleton-greeting {
-
     width: 200px;
     height: 30px;
   }
 
-
   .tf-skeleton-class-card {
-
     min-height: 175px;
 
     padding: 15px;
@@ -2497,35 +2439,25 @@ body.dark-theme .profile-pic {
     border-radius: 23px;
   }
 
-
   .tf-skeleton-card-content {
-
     min-height: 120px;
   }
 
-
   .tf-skeleton-big {
-
     width: 125px;
     height: 26px;
   }
 
-
   .tf-skeleton-character {
-
     width: 100px;
     height: 110px;
   }
 
-
   .tf-skeleton-today {
-
     border-radius: 23px;
   }
 
-
   .tf-skeleton-nav {
-
     width: calc(100% - 28px);
 
     height: 65px;
@@ -2533,56 +2465,43 @@ body.dark-theme .profile-pic {
     bottom: 10px;
   }
 
-
   .tf-skeleton-nav-item {
-
     width: 50px;
     height: 50px;
   }
-
 }
-
 
 /* =========================================================
    SMALL PHONES
    ========================================================= */
 
 @media (max-width: 380px) {
-
   .tf-skeleton-content {
     width: calc(100% - 22px);
   }
-
 
   .tf-skeleton-class-card {
     min-height: 165px;
   }
 
-
   .tf-skeleton-character {
-
     width: 85px;
     height: 95px;
   }
-
 
   .tf-skeleton-big {
     width: 105px;
   }
 
-
   .tf-skeleton-nav {
-
     width: calc(100% - 20px);
   }
-
 }
 
 /* =========================================================
    TIMEFOLD AUTH FULL SKELETON
    LOGIN + REGISTER
    ========================================================= */
-
 
 /* =========================================================
    MAIN SKELETON
@@ -2611,7 +2530,6 @@ body.dark-theme .profile-pic {
   padding: 25px 18px;
 }
 
-
 /* =========================================================
    SAME WIDTH AS REAL .main-div
    ========================================================= */
@@ -2625,7 +2543,6 @@ body.dark-theme .profile-pic {
 
   box-sizing: border-box;
 }
-
 
 /* =========================================================
    TITLE AREA
@@ -2643,14 +2560,12 @@ body.dark-theme .profile-pic {
   box-sizing: border-box;
 }
 
-
 /* Register has a smaller top margin
    matching your real register title */
 
 #auth-skeleton.register-skeleton .auth-skeleton-title {
   margin-top: 25px;
 }
-
 
 /* =========================================================
    TIMEFOLD LOGO / TITLE
@@ -2667,7 +2582,6 @@ body.dark-theme .profile-pic {
   z-index: 2;
 }
 
-
 /*
    Skeleton representation of the TimeFold logo/text.
 */
@@ -2678,7 +2592,6 @@ body.dark-theme .profile-pic {
 
   border-radius: 8px;
 }
-
 
 /* =========================================================
    CHARACTER IMAGE
@@ -2697,7 +2610,6 @@ body.dark-theme .profile-pic {
 
   overflow: hidden;
 }
-
 
 /* =========================================================
    SKELETON CARD
@@ -2719,7 +2631,6 @@ body.dark-theme .profile-pic {
   border: 1px solid var(--line);
 }
 
-
 /* =========================================================
    HEADING
    ========================================================= */
@@ -2732,7 +2643,6 @@ body.dark-theme .profile-pic {
 
   border-radius: 8px;
 }
-
 
 /* =========================================================
    STUDENT / TEACHER TOGGLE
@@ -2759,14 +2669,12 @@ body.dark-theme .profile-pic {
   border: 1px solid var(--line);
 }
 
-
 .auth-skeleton-toggle-button {
   width: 49%;
   height: 50px;
 
   border-radius: 50px;
 }
-
 
 /* =========================================================
    INPUT FIELDS
@@ -2783,7 +2691,6 @@ body.dark-theme .profile-pic {
   border-radius: 50px;
 }
 
-
 /* =========================================================
    REGISTER NAME + ENROLLMENT ROW
    ========================================================= */
@@ -2799,13 +2706,11 @@ body.dark-theme .profile-pic {
   box-sizing: border-box;
 }
 
-
 .auth-skeleton-name-row .auth-skeleton-field {
   width: calc((100% - 8px) / 2);
 
   flex: 0 0 calc((100% - 8px) / 2);
 }
-
 
 /* =========================================================
    PASSWORD MESSAGE
@@ -2820,7 +2725,6 @@ body.dark-theme .profile-pic {
   border-radius: 5px;
 }
 
-
 /* =========================================================
    LOGIN / REGISTER LINK
    ========================================================= */
@@ -2833,7 +2737,6 @@ body.dark-theme .profile-pic {
 
   border-radius: 6px;
 }
-
 
 /* =========================================================
    BUTTON
@@ -2848,7 +2751,6 @@ body.dark-theme .profile-pic {
   border-radius: 50px;
 }
 
-
 /* =========================================================
    SHIMMER
    ========================================================= */
@@ -2861,20 +2763,19 @@ body.dark-theme .profile-pic {
 #auth-skeleton .auth-skeleton-password-message,
 #auth-skeleton .auth-skeleton-link,
 #auth-skeleton .auth-skeleton-button {
-
-  background: linear-gradient(90deg,
-      var(--surface-2) 25%,
-      var(--surface-3) 50%,
-      var(--surface-2) 75%);
+  background: linear-gradient(
+    90deg,
+    var(--surface-2) 25%,
+    var(--surface-3) 50%,
+    var(--surface-2) 75%
+  );
 
   background-size: 200% 100%;
 
   animation: authSkeletonShimmer 1.4s ease-in-out infinite;
 }
 
-
 @keyframes authSkeletonShimmer {
-
   0% {
     background-position: 200% 0;
   }
@@ -2882,16 +2783,13 @@ body.dark-theme .profile-pic {
   100% {
     background-position: -200% 0;
   }
-
 }
-
 
 /* =========================================================
    TABLET
    ========================================================= */
 
 @media (min-width: 601px) and (max-width: 1024px) {
-
   #auth-skeleton {
     padding-top: 35px;
   }
@@ -2903,26 +2801,21 @@ body.dark-theme .profile-pic {
   .auth-skeleton-card {
     padding: 22px;
   }
-
 }
-
 
 /* =========================================================
    MOBILE
    ========================================================= */
 
 @media (max-width: 600px) {
-
   #auth-skeleton {
     padding: 20px 14px;
   }
-
 
   .auth-skeleton-main-div {
     width: 100%;
     max-width: 430px;
   }
-
 
   .auth-skeleton-title {
     height: 150px;
@@ -2930,22 +2823,18 @@ body.dark-theme .profile-pic {
     margin-top: 18px;
   }
 
-
   .auth-skeleton-logo {
     width: 125px;
     height: 38px;
   }
 
-
   .auth-skeleton-character {
     height: 150px;
   }
 
-
   .auth-skeleton-card {
     padding: 18px;
   }
-
 
   .auth-skeleton-heading {
     width: 100px;
@@ -2954,65 +2843,52 @@ body.dark-theme .profile-pic {
     margin-bottom: 17px;
   }
 
-
   .auth-skeleton-toggle {
     height: 58px;
   }
-
 
   .auth-skeleton-toggle-button {
     height: 48px;
   }
 
-
   .auth-skeleton-field {
     height: 50px;
   }
 
-
   .auth-skeleton-button {
     height: 50px;
   }
-
 }
-
 
 /* =========================================================
    SMALL MOBILE
    ========================================================= */
 
 @media (max-width: 390px) {
-
   #auth-skeleton {
     padding: 15px 12px;
   }
-
 
   .auth-skeleton-main-div {
     width: 100%;
   }
 
-
   .auth-skeleton-title {
     height: 130px;
   }
-
 
   .auth-skeleton-logo {
     width: 110px;
     height: 36px;
   }
 
-
   .auth-skeleton-character {
     height: 130px;
   }
 
-
   .auth-skeleton-card {
     padding: 17px;
   }
-
 
   .auth-skeleton-heading {
     width: 95px;
@@ -3021,98 +2897,79 @@ body.dark-theme .profile-pic {
     margin-bottom: 16px;
   }
 
-
   .auth-skeleton-toggle {
     height: 56px;
   }
-
 
   .auth-skeleton-toggle-button {
     height: 46px;
   }
 
-
   .auth-skeleton-field {
     height: 48px;
   }
-
 
   .auth-skeleton-button {
     height: 48px;
   }
 
-
   .auth-skeleton-name-row {
     gap: 6px;
   }
-
 
   .auth-skeleton-name-row .auth-skeleton-field {
     width: calc((100% - 6px) / 2);
 
     flex-basis: calc((100% - 6px) / 2);
   }
-
 }
-
 
 /* =========================================================
    VERY SMALL PHONES
    ========================================================= */
 
 @media (max-width: 320px) {
-
   #auth-skeleton {
     padding: 12px 10px;
   }
 
-
   .auth-skeleton-title {
     height: 120px;
   }
-
 
   .auth-skeleton-logo {
     width: 95px;
     height: 32px;
   }
 
-
   .auth-skeleton-character {
     height: 120px;
   }
 
-
   .auth-skeleton-card {
     padding: 15px;
   }
-
 
   .auth-skeleton-heading {
     width: 88px;
     height: 28px;
   }
 
-
   .auth-skeleton-toggle {
     height: 54px;
   }
-
 
   .auth-skeleton-toggle-button {
     height: 44px;
   }
 
-
   .auth-skeleton-field {
     height: 46px;
   }
 
-
   .auth-skeleton-button {
     height: 46px;
   }
-
 }
 
 /* =========================================================
@@ -3128,8 +2985,8 @@ body.dark-theme .profile-pic {
   align-items: center;
   justify-content: center;
 
-  padding:
-    env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
 
   background: rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(5px);
@@ -3182,7 +3039,7 @@ body.dark-theme .profile-pic {
   width: clamp(30px, 6vw, 42px);
   height: clamp(30px, 6vw, 42px);
 
-  border: clamp(3px, 0.6vw, 4px) solid rgba(180, 99, 62, 0.20);
+  border: clamp(3px, 0.6vw, 4px) solid rgba(180, 99, 62, 0.2);
   border-top-color: var(--pri);
 
   border-radius: 50%;
@@ -3272,7 +3129,9 @@ body.dark-theme .profile-pic {
   visibility: hidden;
   pointer-events: none;
 
-  transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+  transition:
+    opacity 0.2s ease,
+    visibility 0s linear 0.2s;
 }
 
 .post-loader.active {
@@ -3280,7 +3139,9 @@ body.dark-theme .profile-pic {
   visibility: visible;
   pointer-events: all;
 
-  transition: opacity 0.2s ease, visibility 0s linear 0s;
+  transition:
+    opacity 0.2s ease,
+    visibility 0s linear 0s;
 }
 
 .post-loader-content {
@@ -3305,7 +3166,7 @@ body.dark-theme .profile-pic {
   width: 40px;
   height: 40px;
 
-  border: 4px solid rgba(180, 99, 62, 0.20);
+  border: 4px solid rgba(180, 99, 62, 0.2);
   border-top-color: var(--pri);
 
   border-radius: 50%;
@@ -3332,11 +3193,9 @@ body.dark-theme .profile-pic {
   white-space: nowrap;
 }
 
-
 /* Mobile */
 
 @media (max-width: 600px) {
-
   .post-loader-content {
     gap: 10px;
     padding: 18px 22px;
@@ -3353,11 +3212,9 @@ body.dark-theme .profile-pic {
   }
 }
 
-
 /* Reduced motion */
 
 @media (prefers-reduced-motion: reduce) {
-
   .post-loader-spinner {
     animation-duration: 1.5s;
   }

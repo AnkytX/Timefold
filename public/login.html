@@ -147,7 +147,7 @@
                                 </button>
                             </div>
 
-                            <div class="forgot-password" id="forgot-password">
+                            <div class="forgot-password" id="forgot-password" onclick="forgatepasward()">
                                 Forgot password?
                             </div>
 
@@ -230,25 +230,29 @@
 
         </div>
 
-        <div class="forgot-password-popup">
-            <div class="fp-left-section">
-                <h1>
-                    Forgot password?
-                </h1>
-                <p>No worries! Timefold's team is in your service.</p>
-                <div class="forgot-pass-inputs">
-                    <input class="input" type="text" placeholder="Email">
-                    <input class="input" type="text" placeholder="Enrollment Number">
-                    <button class="forgot-button"
-                        style="width: 27.5vw; border-radius: 50px; padding: 0px 10px; height: 7vh;" type="button">
-                        Get Password
-                    </button>
+
+        <div id="popupforgate" class="popup-overlay">
+            <div class="forgot-password-popup">
+                <div class="fp-left-section">
+                    <h1>Forgot password?</h1>
+                    <p>No worries! Timefold's team is in your service.</p>
+
+                    <div class="forgot-pass-inputs">
+                        <input class="input" type="email" placeholder="Email" id="Email">
+                        <input class="input" type="text" placeholder="Enrollment Number" id="Enrollment-number">
+
+                        <button class="forgot-button" type="button" onclick="getpasward()">
+                            Get Password
+                        </button>
+                    </div>
+                </div>
+
+                <div class="fp-right-section">
+                    <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/forgot-pass.svg">
                 </div>
             </div>
-            <div class="fp-right-section">
-                <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/forgot-pass.svg">
-            </div>
         </div>
+
     </main>
 
 
@@ -342,6 +346,27 @@
             alert("Unable to connect to server");
         }
     }
+
+
+    // ------------------------------------------------------------------------------------------------------------------
+    // forgate pasward
+    // ------------------------------------------------------------------------------------------------------------------
+
+   
+function forgatepasward() {
+    document.getElementById("popupforgate").style.display = "flex";
+}
+
+function getpasward() {
+    
+    const Email = document.getElementById('Email');
+    const Enrollment_number = document.getElementById('Enrollment-number');
+     
+    document.getElementById("popupforgate").style.display = "none";
+
+}
+
+
 
     // ------------------------------------------------------------------------------------------------------------------
     // STUDENT-TEACHER TOGGLE BUTTON
