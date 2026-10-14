@@ -391,18 +391,17 @@ section {
   font-size: 0.8rem;
   font-weight: 500;
   color: white;
-  outline: 0.1px solid white;
   border: none;
-  background-color: inherit;
+  background-color: #574880;
   border-radius: 15px;
+  box-shadow: rgba(47, 50, 84, 0.54) 2px 3px 4px 0px;
   padding: 4px 10px;
   cursor: pointer;
-  animation: bellShake 1s ease-in-out;
 }
 
 .next-notification:active {
-  transform: scaleX(0.95);
-  transform: translateY(0.5px);
+  transform: translateY(1px);
+  box-shadow: inset rgba(39, 42, 69, 0.54) 1.5px 2px 4px 0px
 }
 
 /* =========================================================
