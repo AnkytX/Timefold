@@ -147,26 +147,26 @@
                                 </button>
                             </div>
 
-                            <div class="forgot-password" id="forgot-password" onclick="forgatepasward()">
-                                Forgot password?
+                                <div class="forgot-password">
+                                    <button type="button" id="forgot-password">Forgot password?</button>
+                                </div>
+
+                                <div class="input-div">
+                                    <input type="text" id="batch" placeholder="Batch" required>
+                                </div>
+
                             </div>
 
-                            <div class="input-div">
-                                <input type="text" id="batch" placeholder="Batch" required>
+                            <div class="reg-link">
+                                Haven't Register Yet? <a
+                                    style="text-decoration: none; font-size: 1rem; font-weight: 700; text-decoration: underline; align-items: center; width: 15vw;"
+                                    href="register.html">Register here</a>
                             </div>
+                            <br>
 
-                        </div>
-
-                        <div class="reg-link">
-                            Haven't Register Yet? <a
-                                style="text-decoration: none; font-size: 1rem; font-weight: 700; text-decoration: underline; align-items: center; width: 15vw;"
-                                href="register.html">Register here</a>
-                        </div>
-                        <br>
-
-                        <button class="login-button"
-                            style="width: 27.5vw; border-radius: 50px; padding: 0px 10px; height: 7vh;" type="button"
-                            onclick="login()">Log In</button>
+                            <button class="login-button"
+                                style="width: 27.5vw; border-radius: 50px; padding: 0px 10px; height: 7vh;"
+                                type="button" onclick="login()">Log In</button>
                     </form>
                 </div>
             </div>
@@ -230,26 +230,28 @@
 
         </div>
 
-
-        <div id="popupforgate" class="popup-overlay">
-            <div class="forgot-password-popup">
-                <div class="fp-left-section">
-                    <h1>Forgot password?</h1>
+        <div class="forgot-password-popup">
+            <div class="forgot-pass-top">
+                <span class="back-button">
+                    <h1>
+                        Forgot password?
+                    </h1>
+                    <button id="back-button">❌</button>
+                </span>
+            </div>
+            <div class="forgot-pass-bottom">
+                <span>
                     <p>No worries! Timefold's team is in your service.</p>
-
                     <div class="forgot-pass-inputs">
-                        <input class="input" type="email" placeholder="Email" id="Email">
-                        <input class="input" type="text" placeholder="Enrollment Number" id="Enrollment-number">
-
-                        <button class="forgot-button" type="button" onclick="getpasward()">
+                        <input class="input" type="text" placeholder="Email">
+                        <input class="input" type="text" placeholder="Enrollment Number">
+                        <button class="forgot-button"
+                            style="width: 27.5vw; border-radius: 50px; padding: 0px 10px; height: 7vh;" type="button">
                             Get Password
                         </button>
                     </div>
-                </div>
-
-                <div class="fp-right-section">
-                    <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/forgot-pass.svg">
-                </div>
+                </span>
+                <img src="https://pub-65a41022099b4c7d9a5694377a7e4ac5.r2.dev/svgs/forgot-pass.svg" height="250px">
             </div>
         </div>
 
@@ -352,19 +354,19 @@
     // forgate pasward
     // ------------------------------------------------------------------------------------------------------------------
 
-   
-function forgatepasward() {
-    document.getElementById("popupforgate").style.display = "flex";
-}
 
-function getpasward() {
-    
-    const Email = document.getElementById('Email');
-    const Enrollment_number = document.getElementById('Enrollment-number');
-     
-    document.getElementById("popupforgate").style.display = "none";
+    function forgatepasward() {
+        document.getElementById("popupforgate").style.display = "flex";
+    }
 
-}
+    function getpasward() {
+
+        const Email = document.getElementById('Email');
+        const Enrollment_number = document.getElementById('Enrollment-number');
+
+        document.getElementById("popupforgate").style.display = "none";
+
+    }
 
 
 
@@ -413,6 +415,29 @@ function getpasward() {
         showLoginType("student");
     });
 
+    // FORGOT PASSWORD POPUP
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const forgotPassword = document.getElementById("forgot-password");
+        const popup = document.querySelector(".forgot-password-popup");
+        const backButton = document.getElementById("back-button");
+
+        // Open popup without submitting the login form
+        forgotPassword.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            popup.classList.add("active");
+            document.body.classList.add("forgot-popup-active");
+        });
+
+        // Close popup
+        backButton.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            popup.classList.remove("active");
+            document.body.classList.remove("forgot-popup-active");
+        });
+    });
 
 
     // ANKIT KA JAVASCRIPT

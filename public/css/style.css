@@ -258,6 +258,7 @@ section {
 }
 
 @keyframes signalGlow {
+
   /* Normal — no glow */
   0% {
     box-shadow: 0 0 0 var(--green);
@@ -449,14 +450,14 @@ section {
   align-items: center;
 }
 
-.lecture-div > div {
+.lecture-div>div {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 3px;
 }
 
-.lecture-div > :last-child {
+.lecture-div> :last-child {
   align-items: flex-end;
   justify-content: center;
   /* color: var(--text); */
@@ -595,7 +596,7 @@ section {
   /* background-color: red; */
 }
 
-.map-lecture > span {
+.map-lecture>span {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -661,7 +662,7 @@ section {
   border: 1px solid var(--line);
 }
 
-.notice-container > span {
+.notice-container>span {
   display: flex;
   text-align: end;
   align-items: baseline;
@@ -829,7 +830,7 @@ section {
   border: 1px solid var(--line);
 }
 
-.main-setting > div:first-child {
+.main-setting>div:first-child {
   padding-bottom: 7px;
 }
 
@@ -1174,7 +1175,7 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
   padding-top: 25px;
 }
 
-.title-sub-div > img {
+.title-sub-div>img {
   height: 45px;
   display: block;
 }
@@ -1301,6 +1302,7 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
 #batch,
 #password,
 #enroll,
+#email,
 #faculty_Id,
 .faculty_id,
 .faculty_password,
@@ -1317,10 +1319,6 @@ nav:has(.nav-button-div:nth-child(5).current-page)::before {
   font-size: 0.9rem;
 }
 
-#confirm_password {
-  margin-top: 10px;
-}
-
 input:focus {
   outline: 2px solid rgba(77, 110, 216, 0.35);
   border-color: var(--sec);
@@ -1330,13 +1328,13 @@ input:focus::placeholder {
   color: transparent;
 }
 
-.register-div form > .input-div:first-child {
+.register-div form>.input-div:first-child {
   display: flex;
   gap: 8px;
 }
 
-.register-div form > .input-div:first-child #name,
-.register-div form > .input-div:first-child #enroll {
+.register-div form>.input-div:first-child #name,
+.register-div form>.input-div:first-child #enroll {
   width: calc((100% - 8px) / 2) !important;
   flex: 0 0 calc((100% - 8px) / 2);
   min-width: 0;
@@ -1348,7 +1346,7 @@ input:focus::placeholder {
   font-weight: 600;
 }
 
-.reg-link > a {
+.reg-link>a {
   color: var(--pri) !important;
 }
 
@@ -1389,12 +1387,17 @@ input:focus::placeholder {
 }
 
 .forgot-password {
-  text-decoration: underline;
-  color: var(--pri);
   text-align: right;
   margin-top: 10px;
-  padding: 0px 15px;
   width: 100%;
+  padding-right: 10px;
+}
+
+#forgot-password {
+  border: none;
+  background-color: transparent;
+  text-decoration: underline;
+  color: var(--pri);
   font-size: 0.98rem;
   font-weight: 700;
   cursor: pointer;
@@ -1403,44 +1406,52 @@ input:focus::placeholder {
 /* FORGOT PASSWORD POP UP CARD */
 /* Full-screen overlay */
 
-/* Full-screen blur overlay */
-.popup-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-
-    justify-content: center;
-    align-items: center;
-
-    background: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+/* Background blur when popup is active */
+body.forgot-popup-active main> :not(.forgot-password-popup) {
+  filter: blur(10px);
+  pointer-events: none;
+  user-select: none;
 }
 
-/* Actual popup stays sharp */
+/* Forgot Password Popup */
 .forgot-password-popup {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 50px;
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2000;
 
-    width: fit-content;
-    height: fit-content;
-    margin: 0;
-    padding: 30px 35px;
+  justify-content: center;
+  gap: 50px;
 
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-xl);
-    box-shadow: 0 5px 20px #0005;
+  width: fit-content;
+  height: fit-content;
+  max-width: calc(100% - 30px);
+
+  background-color: var(--surface);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--line);
+  padding: 20px;
 }
 
-.fp-left-section > h1 {
+/* Show popup */
+.forgot-password-popup.active {
+  display: inline;
+  justify-content: center;
+}
+
+.forgot-pass-bottom {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.forgot-pass-bottom>h1 {
   font-size: 2.5rem;
 }
 
-.fp-left-section > p {
+.forgot-pass-bottom>p {
   font-size: 0.9rem;
   font-weight: 500;
   margin: 10px 0px 0px;
@@ -1454,10 +1465,34 @@ input:focus::placeholder {
   gap: 15px;
 }
 
-.forgot-password-popup img {
-  height: 280px;
-  margin: 0;
-  padding: 0;
+
+.forgot-pass-top {
+  display: flex;
+  flex-direction: column;
+}
+
+.back-button {
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+}
+
+#back-button {
+  border-radius: 5px;
+  border: 1px solid var(--line);
+  background-color: var(--input-bg);
+  box-shadow: 3px 4px 4px 0px #8383838a;
+  animation: 0.5s ease-in-out;
+  cursor: pointer;
+  height: fit-content;
+  width: fit-content;
+  font-size: 0.8rem;
+  padding: 2px;
+}
+
+#back-button:active {
+  transform: translateY(1px);
+  box-shadow: inset 1px 2px 4px 0px #8383838a;
 }
 
 /* =========================================================
@@ -1465,6 +1500,7 @@ input:focus::placeholder {
    ========================================================= */
 
 @media (min-width: 800px) {
+
   .hero-first-div,
   .today {
     max-width: 760px;
@@ -1563,7 +1599,7 @@ input:focus::placeholder {
     padding-left: 12px;
   }
 
-  .map-lecture > span {
+  .map-lecture>span {
     font-size: 0.78rem;
   }
 
@@ -1593,6 +1629,28 @@ input:focus::placeholder {
     width: 22px;
     height: 22px;
   }
+
+  /* forgot password card */
+
+  .forgot-password-popup {
+    padding: 15px 12px;
+    width: 100%;
+  }
+
+  .forgot-pass-bottom img {
+    display: none;
+  }
+
+  .back-button {
+    padding-bottom: 10px;
+  }
+
+  #back-button {
+    padding: 3px;
+    box-shadow: 2px 3px 4px 0px #8383838a;
+  }
+
+
 
   /* =========================================================
      TEACHER NAV - MOBILE
@@ -1642,7 +1700,7 @@ input:focus::placeholder {
     z-index: 2;
   }
 
-  .title-sub-div > img {
+  .title-sub-div>img {
     height: 42px;
     max-width: 100%;
     object-fit: contain;
@@ -1721,7 +1779,7 @@ input:focus::placeholder {
     margin-top: 15px !important;
   }
 
-  .title-sub-div > img {
+  .title-sub-div>img {
     height: 36px;
   }
 
@@ -1737,12 +1795,12 @@ input:focus::placeholder {
     padding: 17px;
   }
 
-  .register-div form > .input-div:first-child {
+  .register-div form>.input-div:first-child {
     gap: 6px;
   }
 
-  .register-div form > .input-div:first-child #name,
-  .register-div form > .input-div:first-child #enroll {
+  .register-div form>.input-div:first-child #name,
+  .register-div form>.input-div:first-child #enroll {
     width: calc((100% - 6px) / 2) !important;
     flex-basis: calc((100% - 6px) / 2);
   }
@@ -1753,6 +1811,7 @@ input:focus::placeholder {
    ========================================================= */
 
 @media (hover: none) and (pointer: coarse) {
+
   /* Remove hover effects on touch devices */
   .nav-button:hover,
   #save-changes:hover,
@@ -1769,6 +1828,7 @@ input:focus::placeholder {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -1874,7 +1934,7 @@ body.dark-theme .profile-pic {
   gap: 12px;
 }
 
-.map-lecture > span {
+.map-lecture>span {
   width: 100%;
   height: auto;
   min-height: 0;
@@ -1987,7 +2047,7 @@ body.dark-theme .profile-pic {
     gap: 9px;
   }
 
-  .map-lecture > span {
+  .map-lecture>span {
     width: 100%;
   }
 
@@ -2126,17 +2186,15 @@ body.dark-theme .profile-pic {
    SHIMMER
    ========================================================= */
 
-#timefold-skeleton .tf-skeleton-header > *,
-#timefold-skeleton .tf-skeleton-content > *,
-#timefold-skeleton .tf-skeleton-class-card > *,
-#timefold-skeleton .tf-skeleton-today > *,
-#timefold-skeleton .tf-skeleton-nav > * {
-  background: linear-gradient(
-    90deg,
-    var(--surface-2) 25%,
-    var(--surface-3) 50%,
-    var(--surface-2) 75%
-  );
+#timefold-skeleton .tf-skeleton-header>*,
+#timefold-skeleton .tf-skeleton-content>*,
+#timefold-skeleton .tf-skeleton-class-card>*,
+#timefold-skeleton .tf-skeleton-today>*,
+#timefold-skeleton .tf-skeleton-nav>* {
+  background: linear-gradient(90deg,
+      var(--surface-2) 25%,
+      var(--surface-3) 50%,
+      var(--surface-2) 75%);
 
   background-size: 200% 100%;
 
@@ -2763,12 +2821,10 @@ body.dark-theme .profile-pic {
 #auth-skeleton .auth-skeleton-password-message,
 #auth-skeleton .auth-skeleton-link,
 #auth-skeleton .auth-skeleton-button {
-  background: linear-gradient(
-    90deg,
-    var(--surface-2) 25%,
-    var(--surface-3) 50%,
-    var(--surface-2) 75%
-  );
+  background: linear-gradient(90deg,
+      var(--surface-2) 25%,
+      var(--surface-3) 50%,
+      var(--surface-2) 75%);
 
   background-size: 200% 100%;
 
@@ -2985,8 +3041,7 @@ body.dark-theme .profile-pic {
   align-items: center;
   justify-content: center;
 
-  padding: env(safe-area-inset-top) env(safe-area-inset-right)
-    env(safe-area-inset-bottom) env(safe-area-inset-left);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 
   background: rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(5px);
